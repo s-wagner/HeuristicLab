@@ -1,6 +1,6 @@
 #region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2013 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2014 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -130,7 +130,6 @@ namespace HeuristicLab.Problems.DataAnalysis.Symbolic {
     public static IEnumerable<KeyValuePair<string, double>> CalculateVariableFrequencies(IEnumerable<ISymbolicExpressionTree> trees, bool aggregateLaggedVariables = true) {
 
       var variableFrequencies = trees
-        .AsParallel()
         .SelectMany(t => GetVariableReferences(t, aggregateLaggedVariables))
         .GroupBy(pair => pair.Key, pair => pair.Value)
         .ToDictionary(g => g.Key, g => (double)g.Sum());

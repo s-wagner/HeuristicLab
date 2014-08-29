@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2013 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2014 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -54,13 +54,13 @@ namespace HeuristicLab.Problems.VehicleRouting.Encodings.Potvin {
 
     protected abstract void Manipulate(IRandom random, PotvinEncoding individual);
 
-    protected int SelectRandomTourBiasedByLength(IRandom random, PotvinEncoding individual) {
+    protected static int SelectRandomTourBiasedByLength(IRandom random, PotvinEncoding individual, IVRPProblemInstance instance) {
       int tourIndex = -1;
 
       double sum = 0.0;
       double[] probabilities = new double[individual.Tours.Count];
       for (int i = 0; i < individual.Tours.Count; i++) {
-        probabilities[i] = 1.0 / ((double)individual.Tours[i].Stops.Count / (double)ProblemInstance.Cities.Value);
+        probabilities[i] = 1.0 / ((double)individual.Tours[i].Stops.Count / (double)instance.Cities.Value);
         sum += probabilities[i];
       }
 
@@ -81,12 +81,12 @@ namespace HeuristicLab.Problems.VehicleRouting.Encodings.Potvin {
       return tourIndex;
     }
 
-    protected bool FindInsertionPlace(PotvinEncoding individual, int city, int routeToAvoid, bool allowInfeasible, out int route, out int place) {
+    protected static bool FindInsertionPlace(PotvinEncoding individual, int city, int routeToAvoid, bool allowInfeasible, out int route, out int place) {
       return individual.FindInsertionPlace(
         city, routeToAvoid, allowInfeasible, out route, out place);
     }
 
-    public override IOperation Apply() {
+    public override IOperation InstrumentedApply() {
       IVRPEncoding solution = VRPToursParameter.ActualValue;
       if (!(solution is PotvinEncoding)) {
         VRPToursParameter.ActualValue = PotvinEncoding.ConvertFrom(solution, ProblemInstance);
@@ -95,7 +95,7 @@ namespace HeuristicLab.Problems.VehicleRouting.Encodings.Potvin {
       Manipulate(RandomParameter.ActualValue, VRPToursParameter.ActualValue as PotvinEncoding);
       (VRPToursParameter.ActualValue as PotvinEncoding).Repair();
 
-      return base.Apply();
+      return base.InstrumentedApply();
     }
   }
 }

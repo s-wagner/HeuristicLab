@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2013 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2014 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -44,11 +44,11 @@ namespace HeuristicLab.Encodings.ScheduleEncoding.ScheduleEncoding {
 
     public abstract Schedule Cross(IRandom random, Schedule parent1, Schedule parent2);
 
-    public override IOperation Apply() {
+    public override IOperation InstrumentedApply() {
       var parents = ParentsParameter.ActualValue;
       ChildParameter.ActualValue =
         Cross(RandomParameter.ActualValue, parents[0] as Schedule, parents[1] as Schedule);
-      return base.Apply();
+      return base.InstrumentedApply();
     }
   }
 }

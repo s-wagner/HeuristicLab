@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2013 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2014 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -48,11 +48,13 @@ namespace HeuristicLab.Problems.VehicleRouting.Views {
     }
 
     private void UpdateContent() {
+      var view = problemInstanceView.ActiveView as VRPProblemInstanceView;
+      if (view != null) view.Solution = null;
+
       problemInstanceView.Content = Content.ProblemInstance;
-      VRPProblemInstanceView view = problemInstanceView.ActiveView as VRPProblemInstanceView;
-      if (view != null) {
-        view.Solution = Content.Solution;
-      }
+
+      view = problemInstanceView.ActiveView as VRPProblemInstanceView;
+      if (view != null) view.Solution = Content.Solution;
 
       UpdateTourView();
     }

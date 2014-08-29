@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2013 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2014 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -24,7 +24,7 @@ namespace HeuristicLab.Encodings.SymbolicExpressionTreeEncoding {
   // total size of this class should be small to improve cache access while executing the code
   public class LinearInstruction : Instruction {
     public double value;
-    public byte childIndex;
+    public int childIndex;
     public bool skip;
   }
 }

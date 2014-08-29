@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2013 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2014 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -22,7 +22,7 @@
 using HeuristicLab.PluginInfrastructure;
 
 namespace HeuristicLab.Algorithms.GradientDescent {
-  [Plugin("HeuristicLab.Algorithms.GradientDescent", "3.3.9.10032")]
+  [Plugin("HeuristicLab.Algorithms.GradientDescent", "3.3.10.11173")]
   [PluginFile("HeuristicLab.Algorithms.GradientDescent-3.3.dll", PluginFileType.Assembly)]
   [PluginDependency("HeuristicLab.ALGLIB", "3.7.0")]
   [PluginDependency("HeuristicLab.Analysis", "3.3.0")]

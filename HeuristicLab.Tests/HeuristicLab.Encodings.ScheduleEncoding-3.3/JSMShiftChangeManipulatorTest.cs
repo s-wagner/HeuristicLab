@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2013 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2014 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -50,7 +50,7 @@ namespace HeuristicLab.Encodings.ScheduleEncoding.Tests {
       }
       expected.JobSequenceMatrix = jsm;
 
-      Assert.IsTrue(individual.Equals(expected));
+      Assert.IsTrue(TestUtils.JSMEncodingEquals(expected, individual));
     }
   }
 }

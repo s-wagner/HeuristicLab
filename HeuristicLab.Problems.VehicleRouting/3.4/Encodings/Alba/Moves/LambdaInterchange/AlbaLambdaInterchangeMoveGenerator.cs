@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2013 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2014 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -67,8 +67,8 @@ namespace HeuristicLab.Problems.VehicleRouting.Encodings.Alba {
 
     protected abstract AlbaLambdaInterchangeMove[] GenerateMoves(AlbaEncoding individual, IVRPProblemInstance problemInstance, int lambda);
 
-    public override IOperation Apply() {
-      IOperation next = base.Apply();
+    public override IOperation InstrumentedApply() {
+      IOperation next = base.InstrumentedApply();
 
       AlbaEncoding individual = VRPToursParameter.ActualValue as AlbaEncoding;
       AlbaLambdaInterchangeMove[] moves = GenerateMoves(individual, ProblemInstanceParameter.ActualValue, LambdaParameter.Value.Value);

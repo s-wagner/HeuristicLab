@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2013 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2014 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -39,11 +39,11 @@ namespace HeuristicLab.Encodings.ScheduleEncoding.ScheduleEncoding {
 
     protected abstract void Manipulate(IRandom random, Schedule individual);
 
-    public override IOperation Apply() {
+    public override IOperation InstrumentedApply() {
       var schedule = ScheduleEncodingParameter.ActualValue as Schedule;
       if (schedule == null) throw new InvalidOperationException("ScheduleEncoding was not found or is not of type Schedule.");
       Manipulate(RandomParameter.ActualValue, schedule);
-      return base.Apply();
+      return base.InstrumentedApply();
     }
 
   }

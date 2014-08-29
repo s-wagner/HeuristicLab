@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2013 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2014 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -36,7 +36,7 @@ namespace HeuristicLab.Core {
       : base(constrainedValue, comparisonOperation, comparisonValue) {
     }
     public ComparisonConstraint(IItem constrainedValue, ConstraintOperation comparisonOperation, object comparisonValue, bool active)
-      : base(constrainedValue, comparisonOperation, comparisonOperation, active) {
+      : base(constrainedValue, comparisonOperation, comparisonValue, active) {
     }
 
     public override IEnumerable<ConstraintOperation> AllowedConstraintOperations {

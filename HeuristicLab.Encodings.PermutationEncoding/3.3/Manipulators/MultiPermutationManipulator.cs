@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2013 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2014 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -56,6 +56,8 @@ namespace HeuristicLab.Encodings.PermutationEncoding {
         if (!typeof(MultiOperator<IPermutationManipulator>).IsAssignableFrom(type))
           Operators.Add((IPermutationManipulator)Activator.CreateInstance(type), true);
       }
+
+      SelectedOperatorParameter.ActualName = "SelectedManipulationOperator";
     }
 
     public override IDeepCloneable Clone(Cloner cloner) {
@@ -81,9 +83,9 @@ namespace HeuristicLab.Encodings.PermutationEncoding {
       }
     }
 
-    public override IOperation Apply() {
+    public override IOperation InstrumentedApply() {
       if (Operators.Count == 0) throw new InvalidOperationException(Name + ": Please add at least one permutation manipulator to choose from.");
-      return base.Apply();
+      return base.InstrumentedApply();
     }
   }
 }

@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2013 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2014 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -124,7 +124,7 @@ namespace HeuristicLab.Problems.VehicleRouting.Encodings.Alba {
       }
     }
 
-    public override IOperation Apply() {
+    public override IOperation InstrumentedApply() {
       int maxIterations = MaximumIterationsParameter.ActualValue.Value;
       AlbaEncoding solution = null;
 
@@ -145,7 +145,7 @@ namespace HeuristicLab.Problems.VehicleRouting.Encodings.Alba {
       EvaluatedSolutionsParameter.ActualValue.Value += evaluatedSolutions;
       QualityParameter.ActualValue.Value = quality;
 
-      return base.Apply();
+      return base.InstrumentedApply();
     }
   }
 }

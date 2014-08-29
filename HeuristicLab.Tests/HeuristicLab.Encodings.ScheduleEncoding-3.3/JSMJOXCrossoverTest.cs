@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2013 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2014 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -52,7 +52,7 @@ namespace HeuristicLab.Encodings.ScheduleEncoding.Tests {
       JSMEncoding actual;
       actual = JSMJOXCrossover.Apply(random, p1, p2);
 
-      Assert.IsTrue(expected.Equals(actual));
+      Assert.IsTrue(TestUtils.JSMEncodingEquals(expected, actual));
     }
   }
 }

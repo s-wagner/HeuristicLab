@@ -1,6 +1,6 @@
 #region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2013 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2014 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -75,16 +75,16 @@ namespace HeuristicLab.Problems.DataAnalysis {
       for (int i = 0; i < this.variableNames.Count; i++) {
         var values = variableValues.ElementAt(i);
         IList clonedValues = null;
-        if (values is List<double>)
+        if (values is IList<double>)
           clonedValues = new List<double>(values.Cast<double>());
-        else if (values is List<string>)
+        else if (values is IList<string>)
           clonedValues = new List<string>(values.Cast<string>());
-        else if (values is List<DateTime>)
+        else if (values is IList<DateTime>)
           clonedValues = new List<DateTime>(values.Cast<DateTime>());
         else {
           this.variableNames = new List<string>();
           this.variableValues = new Dictionary<string, IList>();
-          throw new ArgumentException("The variable values must be of type List<double>, List<string> or List<DateTime>");
+          throw new ArgumentException("The variable values must be of type IList<double>, IList<string> or IList<DateTime>");
         }
         this.variableValues.Add(this.variableNames[i], clonedValues);
       }
@@ -169,6 +169,31 @@ namespace HeuristicLab.Problems.DataAnalysis {
       foreach (double value in values)
         yield return value;
     }
+
+    public IEnumerable<string> GetStringValues(string variableName) {
+      IList list;
+      if (!variableValues.TryGetValue(variableName, out list))
+        throw new ArgumentException("The variable " + variableName + " does not exist in the dataset.");
+      List<string> values = list as List<string>;
+      if (values == null) throw new ArgumentException("The variable " + variableName + " is not a string variable.");
+
+      //mkommend yield return used to enable lazy evaluation
+      foreach (string value in values)
+        yield return value;
+    }
+
+    public IEnumerable<DateTime> GetDateTimeValues(string variableName) {
+      IList list;
+      if (!variableValues.TryGetValue(variableName, out list))
+        throw new ArgumentException("The variable " + variableName + " does not exist in the dataset.");
+      List<DateTime> values = list as List<DateTime>;
+      if (values == null) throw new ArgumentException("The variable " + variableName + " is not a datetime variable.");
+
+      //mkommend yield return used to enable lazy evaluation
+      foreach (DateTime value in values)
+        yield return value;
+    }
+
     public ReadOnlyCollection<double> GetReadOnlyDoubleValues(string variableName) {
       IList list;
       if (!variableValues.TryGetValue(variableName, out list))
@@ -193,6 +218,10 @@ namespace HeuristicLab.Problems.DataAnalysis {
       if (values == null) throw new ArgumentException("The variable " + variableName + " is not a double variable.");
 
       return rows.Select(index => values[index]);
+    }
+
+    public bool VariableHasType<T>(string variableName) {
+      return variableValues[variableName] is IList<T>;
     }
 
     #region IStringConvertibleMatrix Members

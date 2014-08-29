@@ -1,6 +1,6 @@
 #region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2013 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2014 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -120,7 +120,6 @@ namespace HeuristicLab.Problems.DataAnalysis.Symbolic {
       IExecutionContext childContext = (IExecutionContext)ExecutionContext.CreateChildOperation(evaluator);
 
       var qualities = tree
-        .AsParallel()
         .Select(t => evaluator.Evaluate(childContext, t, problemData, rows))
         .ToArray();
       for (int i = 0; i < tree.Length; i++) {

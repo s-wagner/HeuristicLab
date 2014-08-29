@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2013 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2014 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -38,9 +38,13 @@ namespace HeuristicLab.Problems.DataAnalysis {
     IEnumerable<int> TrainingIndices { get; }
     IEnumerable<int> TestIndices { get; }
 
+    IEnumerable<ITransformation> Transformations { get; }
+
     bool IsTrainingSample(int index);
     bool IsTestSample(int index);
 
     event EventHandler Changed;
+
+    void AdjustProblemDataProperties(IDataAnalysisProblemData problemData);
   }
 }

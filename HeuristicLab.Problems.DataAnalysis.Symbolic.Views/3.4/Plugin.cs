@@ -1,6 +1,6 @@
 #region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2013 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2014 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -25,12 +25,13 @@ using System.Text;
 using HeuristicLab.PluginInfrastructure;
 
 namespace HeuristicLab.Problems.DataAnalysis.Symbolic.Views {
-  [Plugin("HeuristicLab.Problems.DataAnalysis.Symbolic.Views","Provides views for symbolic data analysis problem classes.", "3.4.5.10032")]
+  [Plugin("HeuristicLab.Problems.DataAnalysis.Symbolic.Views","Provides views for symbolic data analysis problem classes.", "3.4.6.11173")]
   [PluginFile("HeuristicLab.Problems.DataAnalysis.Symbolic.Views-3.4.dll", PluginFileType.Assembly)]
   [PluginFile("displayModelFrame.html", PluginFileType.Data)]
   [PluginDependency("HeuristicLab.ALGLIB", "3.7.0")]
   [PluginDependency("HeuristicLab.Collections", "3.3")]
   [PluginDependency("HeuristicLab.Common", "3.3")]
+  [PluginDependency("HeuristicLab.Common.Resources", "3.3")]
   [PluginDependency("HeuristicLab.Core", "3.3")]
   [PluginDependency("HeuristicLab.Core.Views", "3.3")]
   [PluginDependency("HeuristicLab.Data", "3.3")]

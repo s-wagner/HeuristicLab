@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2013 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2014 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -41,7 +41,7 @@ namespace HeuristicLab.Encodings.SymbolicExpressionTreeEncoding.Views {
       foreach (var treeCreator in ApplicationManager.Manager.GetInstances<ISymbolicExpressionTreeCreator>()) {
         treeCreatorComboBox.Items.Add(treeCreator);
       }
-      treeCreatorComboBox.SelectedIndex = 0;
+      treeCreatorComboBox.SelectedItem = treeCreatorComboBox.Items.OfType<ProbabilisticTreeCreator>().First();
     }
 
     private int maxSampleTreeLength;

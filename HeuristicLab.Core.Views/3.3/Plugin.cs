@@ -1,6 +1,6 @@
 #region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2013 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2014 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -25,7 +25,7 @@ namespace HeuristicLab.Core.Views {
   /// <summary>
   /// Plugin class for HeuristicLab.Core.Views plugin.
   /// </summary>
-  [Plugin("HeuristicLab.Core.Views", "3.3.9.10032")]
+  [Plugin("HeuristicLab.Core.Views", "3.3.10.11173")]
   [PluginFile("HeuristicLab.Core.Views-3.3.dll", PluginFileType.Assembly)]
   [PluginDependency("HeuristicLab.Collections", "3.3")]
   [PluginDependency("HeuristicLab.Common", "3.3")]

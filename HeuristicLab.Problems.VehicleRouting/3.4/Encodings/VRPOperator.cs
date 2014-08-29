@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2013 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2014 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -29,7 +29,7 @@ using HeuristicLab.Problems.VehicleRouting.Interfaces;
 namespace HeuristicLab.Problems.VehicleRouting.Encodings {
   [Item("VRPOperator", "Represents a VRP operator.")]
   [StorableClass]
-  public abstract class VRPOperator : SingleSuccessorOperator, IVRPOperator {
+  public abstract class VRPOperator : InstrumentedOperator, IVRPOperator {
     public ILookupParameter<IVRPProblemInstance> ProblemInstanceParameter {
       get { return (LookupParameter<IVRPProblemInstance>)Parameters["ProblemInstance"]; }
     }

@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2013 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2014 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -69,6 +69,8 @@ namespace HeuristicLab.Encodings.IntegerVectorEncoding {
         if (!typeof(MultiOperator<IIntegerVectorCrossover>).IsAssignableFrom(type))
           Operators.Add((IIntegerVectorCrossover)Activator.CreateInstance(type), true);
       }
+
+      SelectedOperatorParameter.ActualName = "SelectedCrossoverOperator";
     }
 
     public override IDeepCloneable Clone(Cloner cloner) {
@@ -98,9 +100,9 @@ namespace HeuristicLab.Encodings.IntegerVectorEncoding {
       }
     }
 
-    public override IOperation Apply() {
+    public override IOperation InstrumentedApply() {
       if (Operators.Count == 0) throw new InvalidOperationException(Name + ": Please add at least one integer vector crossover to choose from.");
-      return base.Apply();
+      return base.InstrumentedApply();
     }
   }
 }

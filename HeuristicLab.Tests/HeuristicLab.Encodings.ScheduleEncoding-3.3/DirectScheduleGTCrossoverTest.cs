@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2013 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2014 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -19,6 +19,7 @@
  */
 #endregion
 
+using System.Linq;
 using HeuristicLab.Core;
 using HeuristicLab.Encodings.ScheduleEncoding.PermutationWithRepetition;
 using HeuristicLab.Encodings.ScheduleEncoding.ScheduleEncoding;
@@ -47,7 +48,8 @@ namespace HeuristicLab.Encodings.ScheduleEncoding.Tests {
       Schedule actual;
       actual = DirectScheduleGTCrossover.Apply(random, parent1, parent2, jobData, mutProp);
       Schedule expected = DirectScheduleRandomCreator.Apply(3, 3, new PWREncoding(3, 3, new TestRandom(new int[] { 0, 2, 1, 1, 0, 2, 1, 2, 0 }, null)), TestUtils.CreateJobData());
-      Assert.IsTrue(actual.Equals(expected));
+      Assert.IsTrue(TestUtils.ScheduleEquals(actual, expected));
     }
+
   }
 }

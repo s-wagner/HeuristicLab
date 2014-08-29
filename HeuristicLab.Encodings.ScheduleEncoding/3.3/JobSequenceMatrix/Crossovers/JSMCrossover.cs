@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2013 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2014 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -39,13 +39,13 @@ namespace HeuristicLab.Encodings.ScheduleEncoding.JobSequenceMatrix {
 
     public abstract JSMEncoding Cross(IRandom random, JSMEncoding parent1, JSMEncoding parent2);
 
-    public override IOperation Apply() {
+    public override IOperation InstrumentedApply() {
       var parents = ParentsParameter.ActualValue;
 
       ChildParameter.ActualValue =
         Cross(RandomParameter.ActualValue, parents[0] as JSMEncoding, parents[1] as JSMEncoding);
 
-      return base.Apply();
+      return base.InstrumentedApply();
     }
   }
 }

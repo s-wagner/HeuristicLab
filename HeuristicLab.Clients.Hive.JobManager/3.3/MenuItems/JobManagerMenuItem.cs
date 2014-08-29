@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2013 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2014 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -21,10 +21,10 @@
 
 using System.Collections.Generic;
 using System.Windows.Forms;
-using HeuristicLab.Clients.Hive;
 using HeuristicLab.MainForm;
+using HeuristicLab.Optimizer;
 
-namespace HeuristicLab.Optimizer.MenuItems {
+namespace HeuristicLab.Clients.Hive.JobManager {
   public class JobManagerMenuItem : HeuristicLab.MainForm.WindowsForms.MenuItem, IOptimizerUserInterfaceItemProvider {
     public override string Name {
       get { return "&Job Manager"; }

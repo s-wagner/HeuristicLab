@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2013 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2014 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -20,7 +20,6 @@
 #endregion
 
 using System;
-using System.Diagnostics;
 using System.Windows.Forms;
 
 namespace HeuristicLab.PluginInfrastructure {
@@ -30,7 +29,7 @@ namespace HeuristicLab.PluginInfrastructure {
         return string.Empty;
       } else {
         string message =
-          "HeuristicLab version: " + FileVersionInfo.GetVersionInfo(typeof(ErrorHandling).Assembly.Location).FileVersion + Environment.NewLine +
+          "HeuristicLab version: " + AssemblyHelpers.GetFileVersion(typeof(ErrorHandling).Assembly) + Environment.NewLine +
           exception.GetType().Name + ": " + exception.Message + Environment.NewLine +
                          exception.StackTrace;
 

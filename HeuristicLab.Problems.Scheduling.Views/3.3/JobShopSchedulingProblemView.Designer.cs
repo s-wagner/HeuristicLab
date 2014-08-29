@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2013 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2014 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -59,21 +59,9 @@ namespace HeuristicLab.Problems.Scheduling.Views {
       this.visualizationTabPage.SuspendLayout();
       this.SuspendLayout();
       // 
-      // problemInstanceSplitContainer
-      // 
-      this.problemInstanceSplitContainer.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)));
-      this.problemInstanceSplitContainer.Dock = System.Windows.Forms.DockStyle.Fill;
-      // 
       // problemInstanceSplitContainer.Panel2
       // 
       this.problemInstanceSplitContainer.Panel2.Controls.Add(this.problemTabControl);
-      // 
-      // ProblemInstanceConsumerViewHost
-      // 
-      this.problemInstanceProviderViewHost.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)));
-      this.problemInstanceProviderViewHost.Dock = System.Windows.Forms.DockStyle.Fill;
-      this.problemInstanceProviderViewHost.Location = new System.Drawing.Point(0, 0);
-      this.problemInstanceProviderViewHost.Size = new System.Drawing.Size(511, 26);
       // 
       // parameterCollectionView
       // 

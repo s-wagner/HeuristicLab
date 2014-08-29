@@ -1,6 +1,6 @@
 #region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2013 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2014 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -32,7 +32,7 @@ namespace HeuristicLab.Selection {
   /// </summary>
   [Item("Selector", "A base class for selection operators.")]
   [StorableClass]
-  public abstract class Selector : SingleSuccessorOperator {
+  public abstract class Selector : InstrumentedOperator {
     public override bool CanChangeName {
       get { return false; }
     }
@@ -53,7 +53,7 @@ namespace HeuristicLab.Selection {
       Parameters.Add(new ScopeParameter("CurrentScope", "The current scope from which sub-scopes should be selected."));
     }
 
-    public sealed override IOperation Apply() {
+    public sealed override IOperation InstrumentedApply() {
       List<IScope> scopes = new List<IScope>(CurrentScope.SubScopes);
       IScope[] selected = Select(scopes);
 
@@ -65,7 +65,7 @@ namespace HeuristicLab.Selection {
       selectedScope.SubScopes.AddRange(selected);
       CurrentScope.SubScopes.Add(selectedScope);
 
-      return base.Apply();
+      return base.InstrumentedApply();
     }
 
     protected abstract IScope[] Select(List<IScope> scopes);

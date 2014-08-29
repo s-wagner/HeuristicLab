@@ -1,6 +1,6 @@
 #region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2013 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2014 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -68,12 +68,12 @@ namespace HeuristicLab.Problems.TravelingSalesman {
       return length;
     }
 
-    public override IOperation Apply() {
+    public override IOperation InstrumentedApply() {
       Permutation p = PermutationParameter.ActualValue;
       DistanceMatrix dm = DistanceMatrixParameter.ActualValue;
 
       QualityParameter.ActualValue = new DoubleValue(Apply(dm, p));
-      return base.Apply();
+      return base.InstrumentedApply();
     }
   }
 }

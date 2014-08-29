@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2013 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2014 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -29,7 +29,7 @@ using HeuristicLab.Persistence.Default.CompositeSerializers.Storable;
 namespace HeuristicLab.Encodings.ScheduleEncoding {
   [Item("ScheduleCrossover", "A scheduling crossover operation.")]
   [StorableClass]
-  public abstract class ScheduleCrossover : SingleSuccessorOperator, IScheduleCrossover, IStochasticOperator {
+  public abstract class ScheduleCrossover : InstrumentedOperator, IScheduleCrossover, IStochasticOperator {
 
     public ILookupParameter<IScheduleEncoding> ChildParameter {
       get { return (ILookupParameter<IScheduleEncoding>)Parameters["Child"]; }

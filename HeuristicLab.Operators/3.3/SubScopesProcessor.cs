@@ -1,6 +1,6 @@
 #region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2013 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2014 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -66,9 +66,9 @@ namespace HeuristicLab.Operators {
       return new SubScopesProcessor(this, cloner);
     }
 
-    public override IOperation Apply() {
+    public override IOperation InstrumentedApply() {
       List<IScope> scopes = GetScopesOnLevel(ExecutionContext.Scope, Depth.Value).ToList();
-      OperationCollection next = new OperationCollection(base.Apply());
+      OperationCollection next = new OperationCollection(base.InstrumentedApply());
       if (scopes.Count != Operators.Count)
         throw new ArgumentException("The number of operators doesn't match the number of sub-scopes at depth " + Depth.Value);
       OperationCollection inner = new OperationCollection();

@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2013 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2014 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -64,13 +64,13 @@ namespace HeuristicLab.Problems.VehicleRouting.Encodings.General.Crossovers {
       : base(original, cloner) {
     }
 
-    public override IOperation Apply() {
+    public override IOperation InstrumentedApply() {
       if (RandomParameter.ActualValue.Next() < 0.5)
         ChildParameter.ActualValue = ParentsParameter.ActualValue[0].Clone() as IVRPEncoding;
       else
         ChildParameter.ActualValue = ParentsParameter.ActualValue[1].Clone() as IVRPEncoding;
 
-      return base.Apply();
+      return base.InstrumentedApply();
     }
   }
 }

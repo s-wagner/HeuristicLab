@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2013 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2014 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -105,6 +105,8 @@ namespace HeuristicLab.Encodings.SymbolicExpressionTreeEncoding {
       checkedItemList.AddRange(list.OrderBy(op => op.Name));
       Operators = checkedItemList.AsReadOnly();
       Operators_ItemsAdded(this, new CollectionItemsChangedEventArgs<IndexedItem<ISymbolicExpressionTreeManipulator>>(Operators.CheckedItems));
+
+      SelectedOperatorParameter.ActualName = "SelectedManipulationOperator";
     }
 
     public override IDeepCloneable Clone(Cloner cloner) {

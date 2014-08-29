@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2013 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2014 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -20,17 +20,16 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using HeuristicLab.Core;
-using HeuristicLab.Persistence.Default.CompositeSerializers.Storable;
-using HeuristicLab.Common;
 using HeuristicLab.Analysis;
-using HeuristicLab.Parameters;
-using HeuristicLab.Optimization;
-using HeuristicLab.Data;
 using HeuristicLab.Collections;
+using HeuristicLab.Common;
+using HeuristicLab.Core;
+using HeuristicLab.Data;
+using HeuristicLab.Optimization;
+using HeuristicLab.Parameters;
+using HeuristicLab.Persistence.Default.CompositeSerializers.Storable;
+using HeuristicLab.Random;
 
 namespace HeuristicLab.Problems.VehicleRouting.Encodings.General {
   [Item("BiasedMultiVRPSolutionCrossover", "Randomly selects and applies one of its crossovers every time it is called based on the success progress.")]
@@ -68,6 +67,8 @@ namespace HeuristicLab.Problems.VehicleRouting.Encodings.General {
       Parameters.Add(new ValueLookupParameter<DoubleValue>("Factor", "The factor with which the probabilities should be updated", new DoubleValue(0.2)));
       Parameters.Add(new ValueParameter<DoubleValue>("LowerBound", "The depth of the individuals in the scope tree.", new DoubleValue(0.01)));
       Parameters.Add(new ValueParameter<IntValue>("Depth", "The depth of the individuals in the scope tree.", new IntValue(1)));
+
+      SelectedOperatorParameter.ActualName = "SelectedCrossoverOperator";
     }
 
     public override IDeepCloneable Clone(Cloner cloner) {
@@ -80,7 +81,7 @@ namespace HeuristicLab.Problems.VehicleRouting.Encodings.General {
       ActualProbabilitiesParameter.Value = null;
     }
 
-    public override IOperation Apply() {
+    public override IOperation InstrumentedApply() {
       IOperator successor = null;
 
       if (ActualProbabilitiesParameter.ActualValue == null) {
@@ -132,7 +133,7 @@ namespace HeuristicLab.Problems.VehicleRouting.Encodings.General {
         }
       }
 
-      ////////////////
+      //////////////// code has to be duplicated since ActualProbabilitiesParameter.ActualValue are updated and used for operator selection
       IRandom random = RandomParameter.ActualValue;
       DoubleArray probabilities = ActualProbabilitiesParameter.ActualValue;
       if (probabilities.Length != Operators.Count) {
@@ -141,17 +142,7 @@ namespace HeuristicLab.Problems.VehicleRouting.Encodings.General {
       var checkedOperators = Operators.CheckedItems;
       if (checkedOperators.Count() > 0) {
         // select a random operator from the checked operators
-        double sum = (from indexedItem in checkedOperators select probabilities[indexedItem.Index]).Sum();
-        if (sum == 0) throw new InvalidOperationException(Name + ": All selected operators have zero probability.");
-        double r = random.NextDouble() * sum;
-        sum = 0;
-        foreach (var indexedItem in checkedOperators) {
-          sum += probabilities[indexedItem.Index];
-          if (sum > r) {
-            successor = indexedItem.Value;
-            break;
-          }
-        }
+        successor = checkedOperators.SampleProportional(random, 1, checkedOperators.Select(x => probabilities[x.Index]), false, false).First().Value;
       }
 
       IOperation successorOp = null;

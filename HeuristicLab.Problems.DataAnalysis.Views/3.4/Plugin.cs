@@ -1,6 +1,6 @@
 #region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2013 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2014 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -25,7 +25,7 @@ using System.Text;
 using HeuristicLab.PluginInfrastructure;
 
 namespace HeuristicLab.Problems.DataAnalysis.Views {
-  [Plugin("HeuristicLab.Problems.DataAnalysis.Views", "Provides views for base classes for data analysis tasks.", "3.4.5.10032")]
+  [Plugin("HeuristicLab.Problems.DataAnalysis.Views", "Provides views for base classes for data analysis tasks.", "3.4.6.11173")]
   [PluginFile("HeuristicLab.Problems.DataAnalysis.Views-3.4.dll", PluginFileType.Assembly)]
   [PluginDependency("HeuristicLab.ALGLIB", "3.7.0")]
   [PluginDependency("HeuristicLab.Analysis", "3.3")]
@@ -41,6 +41,7 @@ namespace HeuristicLab.Problems.DataAnalysis.Views {
   [PluginDependency("HeuristicLab.Optimization","3.3")]
   [PluginDependency("HeuristicLab.Optimization.Views","3.3")]
   [PluginDependency("HeuristicLab.Optimizer", "3.3")]
+  [PluginDependency("HeuristicLab.Persistence", "3.3")]
   [PluginDependency("HeuristicLab.Problems.DataAnalysis", "3.4")]
   [PluginDependency("HeuristicLab.Visualization.ChartControlsExtensions", "3.3")]
   public class HeuristicLabProblemsDataAnalysisViewsPlugin : PluginBase {

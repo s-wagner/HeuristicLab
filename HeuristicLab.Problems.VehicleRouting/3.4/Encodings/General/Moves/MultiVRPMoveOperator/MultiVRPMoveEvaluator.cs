@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2013 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2014 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -52,13 +52,13 @@ namespace HeuristicLab.Problems.VehicleRouting {
 
     protected override void EvaluateMove() { }
 
-    public override IOperation Apply() {
+    public override IOperation InstrumentedApply() {
       IVRPMove move = VRPMoveParameter.ActualValue as IVRPMove;
 
       VRPMoveEvaluator moveEvaluator = move.GetMoveEvaluator();
       moveEvaluator.VRPMoveParameter.ActualName = VRPMoveParameter.Name;
 
-      OperationCollection next = new OperationCollection(base.Apply());
+      OperationCollection next = new OperationCollection(base.InstrumentedApply());
       next.Insert(0, ExecutionContext.CreateOperation(moveEvaluator));
 
       return next;

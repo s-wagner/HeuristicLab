@@ -1,6 +1,6 @@
 #region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2013 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2014 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -22,6 +22,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using HeuristicLab.Collections;
 using HeuristicLab.Common;
 using HeuristicLab.Core;
@@ -36,6 +37,7 @@ namespace HeuristicLab.Problems.DataAnalysis {
     protected const string InputVariablesParameterName = "InputVariables";
     protected const string TrainingPartitionParameterName = "TrainingPartition";
     protected const string TestPartitionParameterName = "TestPartition";
+    protected const string TransformationsParameterName = "Transformations";
 
     #region parameter properites
     public IFixedValueParameter<Dataset> DatasetParameter {
@@ -49,6 +51,9 @@ namespace HeuristicLab.Problems.DataAnalysis {
     }
     public IFixedValueParameter<IntRange> TestPartitionParameter {
       get { return (IFixedValueParameter<IntRange>)Parameters[TestPartitionParameterName]; }
+    }
+    public IFixedValueParameter<ReadOnlyItemList<ITransformation>> TransformationsParameter {
+      get { return (IFixedValueParameter<ReadOnlyItemList<ITransformation>>)Parameters[TransformationsParameterName]; }
     }
     #endregion
 
@@ -87,6 +92,10 @@ namespace HeuristicLab.Problems.DataAnalysis {
       }
     }
 
+    public IEnumerable<ITransformation> Transformations {
+      get { return TransformationsParameter.Value; }
+    }
+
     public virtual bool IsTrainingSample(int index) {
       return index >= 0 && index < Dataset.Rows &&
         TrainingPartition.Start <= index && index < TrainingPartition.End &&
@@ -109,10 +118,14 @@ namespace HeuristicLab.Problems.DataAnalysis {
 
     [StorableHook(HookType.AfterDeserialization)]
     private void AfterDeserialization() {
+      if (!Parameters.ContainsKey(TransformationsParameterName)) {
+        Parameters.Add(new FixedValueParameter<ReadOnlyItemList<ITransformation>>(TransformationsParameterName, "", new ItemList<ITransformation>().AsReadOnly()));
+        TransformationsParameter.Hidden = true;
+      }
       RegisterEventHandlers();
     }
 
-    protected DataAnalysisProblemData(Dataset dataset, IEnumerable<string> allowedInputVariables) {
+    protected DataAnalysisProblemData(Dataset dataset, IEnumerable<string> allowedInputVariables, IEnumerable<ITransformation> transformations = null) {
       if (dataset == null) throw new ArgumentNullException("The dataset must not be null.");
       if (allowedInputVariables == null) throw new ArgumentNullException("The allowedInputVariables must not be null.");
 
@@ -128,10 +141,15 @@ namespace HeuristicLab.Problems.DataAnalysis {
       int testPartitionStart = dataset.Rows / 2;
       int testPartitionEnd = dataset.Rows;
 
+      var transformationsList = new ItemList<ITransformation>(transformations ?? Enumerable.Empty<ITransformation>());
+
       Parameters.Add(new FixedValueParameter<Dataset>(DatasetParameterName, "", dataset));
       Parameters.Add(new FixedValueParameter<ReadOnlyCheckedItemList<StringValue>>(InputVariablesParameterName, "", inputVariables.AsReadOnly()));
       Parameters.Add(new FixedValueParameter<IntRange>(TrainingPartitionParameterName, "", new IntRange(trainingPartitionStart, trainingPartitionEnd)));
       Parameters.Add(new FixedValueParameter<IntRange>(TestPartitionParameterName, "", new IntRange(testPartitionStart, testPartitionEnd)));
+      Parameters.Add(new FixedValueParameter<ReadOnlyItemList<ITransformation>>(TransformationsParameterName, "", transformationsList.AsReadOnly()));
+
+      TransformationsParameter.Hidden = true;
 
       ((ValueParameter<Dataset>)DatasetParameter).ReactOnValueToStringChangedAndValueItemImageChanged = false;
       RegisterEventHandlers();
@@ -142,6 +160,7 @@ namespace HeuristicLab.Problems.DataAnalysis {
       InputVariables.CheckedItemsChanged += new CollectionItemsChangedEventHandler<IndexedItem<StringValue>>(InputVariables_CheckedItemsChanged);
       TrainingPartition.ValueChanged += new EventHandler(Parameter_ValueChanged);
       TestPartition.ValueChanged += new EventHandler(Parameter_ValueChanged);
+      TransformationsParameter.ValueChanged += new EventHandler(Parameter_ValueChanged);
     }
 
     private void InputVariables_CheckedItemsChanged(object sender, CollectionItemsChangedEventArgs<IndexedItem<StringValue>> e) {
@@ -156,6 +175,45 @@ namespace HeuristicLab.Problems.DataAnalysis {
     protected virtual void OnChanged() {
       var listeners = Changed;
       if (listeners != null) listeners(this, EventArgs.Empty);
+    }
+
+    protected virtual bool IsProblemDataCompatible(IDataAnalysisProblemData problemData, out string errorMessage) {
+      errorMessage = string.Empty;
+      if (problemData == null) throw new ArgumentNullException("problemData", "The provided problemData is null.");
+
+      //check allowed input variables
+      StringBuilder message = new StringBuilder();
+      var variables = new HashSet<string>(problemData.InputVariables.Select(x => x.Value));
+      foreach (var item in AllowedInputVariables) {
+        if (!variables.Contains(item))
+          message.AppendLine("Input variable '" + item + "' is not present in the new problem data.");
+      }
+
+      if (message.Length != 0) {
+        errorMessage = message.ToString();
+        return false;
+      }
+      return true;
+
+    }
+
+    public virtual void AdjustProblemDataProperties(IDataAnalysisProblemData problemData) {
+      DataAnalysisProblemData data = problemData as DataAnalysisProblemData;
+      if (data == null) throw new ArgumentException("The problem data is not a data analysis problem data. Instead a " + problemData.GetType().GetPrettyName() + " was provided.", "problemData");
+
+      string errorMessage;
+      if (!data.IsProblemDataCompatible(this, out errorMessage)) {
+        throw new InvalidOperationException(errorMessage);
+      }
+
+      foreach (var inputVariable in InputVariables) {
+        var variable = data.InputVariables.FirstOrDefault(i => i.Value == inputVariable.Value);
+        InputVariables.SetItemCheckedState(inputVariable, variable != null && data.InputVariables.ItemChecked(variable));
+      }
+
+      TrainingPartition.Start = TrainingPartition.End = 0;
+      TestPartition.Start = 0;
+      TestPartition.End = Dataset.Rows;
     }
   }
 }

@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2013 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2014 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -22,7 +22,7 @@
 using HeuristicLab.PluginInfrastructure;
 
 namespace HeuristicLab.EPPlus {
-  [Plugin("HeuristicLab.EPPlus", "HeuristicLab wrapper for EPPlus", "3.1.3.9931")]
+  [Plugin("HeuristicLab.EPPlus", "HeuristicLab wrapper for EPPlus", "3.1.3.11170")]
   [PluginFile("HeuristicLab.EPPlus-3.1.3.dll", PluginFileType.Assembly)]
   [PluginFile("EPPlus-3.1.3.dll", PluginFileType.Assembly)]
   [PluginFile("EPPlus License-3.1.3.txt", PluginFileType.License)]

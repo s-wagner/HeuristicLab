@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2013 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2014 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -53,9 +53,9 @@ namespace HeuristicLab.Encodings.SymbolicExpressionTreeEncoding {
       Parameters.Add(new LookupParameter<ISymbolicExpressionTree>(SymbolicExpressionTreeParameterName, "The symbolic expression tree that should be created."));
     }
 
-    public override IOperation Apply() {
+    public override IOperation InstrumentedApply() {
       SymbolicExpressionTree = Create(Random);
-      return base.Apply();
+      return base.InstrumentedApply();
     }
 
     protected abstract ISymbolicExpressionTree Create(IRandom random);

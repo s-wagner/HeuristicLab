@@ -1,6 +1,6 @@
 #region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2013 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2014 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -25,7 +25,7 @@ namespace HeuristicLab.Algorithms.SimulatedAnnealing {
   /// <summary>
   /// Plugin class for HeuristicLab.Algorithms.SimulatedAnnealing plugin.
   /// </summary>
-  [Plugin("HeuristicLab.Algorithms.SimulatedAnnealing", "3.3.9.10032")]
+  [Plugin("HeuristicLab.Algorithms.SimulatedAnnealing", "3.3.10.11173")]
   [PluginFile("HeuristicLab.Algorithms.SimulatedAnnealing-3.3.dll", PluginFileType.Assembly)]
   [PluginDependency("HeuristicLab.Analysis", "3.3")]
   [PluginDependency("HeuristicLab.Collections", "3.3")]

@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2013 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2014 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -20,7 +20,7 @@
 #endregion
 
 using System;
-using System.Windows.Forms;
+using System.Linq;
 using HeuristicLab.MainForm;
 using HeuristicLab.Problems.DataAnalysis.Views;
 
@@ -37,8 +37,13 @@ namespace HeuristicLab.Problems.DataAnalysis.Symbolic.TimeSeriesPrognosis.Views 
       set { base.Content = value; }
     }
 
+    protected override void SetEnabledStateOfControls() {
+      base.SetEnabledStateOfControls();
+      btnSimplify.Enabled = Content != null && !Locked && Content.ProblemData.TrainingIndices.Any(); // simplification is only possible if there are trainings samples
+    }
+
     private void btn_SimplifyModel_Click(object sender, EventArgs e) {
-      InteractiveSymbolicTimeSeriesPrognosisSolutionSimplifierView view = new InteractiveSymbolicTimeSeriesPrognosisSolutionSimplifierView();
+      var view = new InteractiveSymbolicTimeSeriesPrognosisSolutionSimplifierView();
       view.Content = (SymbolicTimeSeriesPrognosisSolution)this.Content.Clone();
       view.Show();
     }

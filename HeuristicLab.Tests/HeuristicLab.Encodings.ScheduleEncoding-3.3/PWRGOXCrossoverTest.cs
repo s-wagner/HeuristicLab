@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2013 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2014 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -46,7 +46,7 @@ namespace HeuristicLab.Encodings.ScheduleEncoding.Tests {
       expected.PermutationWithRepetition = new IntegerVector(new int[] { 1, 0, 1, 0, 2, 0, 1, 2, 2 });
       PWREncoding actual;
       actual = PWRGOXCrossover.Apply(random, parent1, parent2);
-      Assert.IsTrue(actual.Equals(expected));
+      Assert.IsTrue(TestUtils.PRWEncodingEquals(expected, actual));
     }
   }
 }

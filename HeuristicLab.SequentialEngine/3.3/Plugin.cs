@@ -1,6 +1,6 @@
 #region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2013 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2014 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -28,7 +28,7 @@ namespace HeuristicLab.SequentialEngine {
   /// <summary>
   /// Plugin class for HeuristicLab.SequentialEngine plugin.
   /// </summary>
-  [Plugin("HeuristicLab.SequentialEngine", "3.3.9.10032")]
+  [Plugin("HeuristicLab.SequentialEngine", "3.3.10.11173")]
   [PluginFile("HeuristicLab.SequentialEngine-3.3.dll", PluginFileType.Assembly)]
   [PluginDependency("HeuristicLab.Common", "3.3")]
   [PluginDependency("HeuristicLab.Core", "3.3")]

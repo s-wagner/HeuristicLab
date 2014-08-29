@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2013 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2014 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -47,25 +47,24 @@ namespace HeuristicLab.Problems.DataAnalysis.Symbolic.Views {
       this.symbolicExpressionTreeView = new HeuristicLab.Encodings.SymbolicExpressionTreeEncoding.Views.SymbolicExpressionView();
       this.SuspendLayout();
       // 
-      // expressionTreeView
+      // symbolicExpressionTreeView
       // 
       this.symbolicExpressionTreeView.AllowDrop = true;
       this.symbolicExpressionTreeView.Caption = "Graphical SymbolicExpressionTree View";
       this.symbolicExpressionTreeView.Content = null;
       this.symbolicExpressionTreeView.Dock = System.Windows.Forms.DockStyle.Fill;
       this.symbolicExpressionTreeView.Location = new System.Drawing.Point(0, 0);
-      this.symbolicExpressionTreeView.Name = "expressionTreeView";
+      this.symbolicExpressionTreeView.Name = "symbolicExpressionTreeView";
       this.symbolicExpressionTreeView.ReadOnly = false;
       this.symbolicExpressionTreeView.Size = new System.Drawing.Size(352, 413);
       this.symbolicExpressionTreeView.TabIndex = 0;
       // 
-      // SymbolicExpressionModelView
+      // TextualSymbolicDataAnalysisModelView
       // 
       this.AllowDrop = true;
-      this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
       this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Inherit;
       this.Controls.Add(this.symbolicExpressionTreeView);
-      this.Name = "SymbolicExpressionModelView";
+      this.Name = "TextualSymbolicDataAnalysisModelView";
       this.Size = new System.Drawing.Size(352, 413);
       this.ResumeLayout(false);
 

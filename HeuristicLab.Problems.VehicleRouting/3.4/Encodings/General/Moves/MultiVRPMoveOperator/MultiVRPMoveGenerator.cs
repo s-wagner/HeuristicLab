@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2013 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2014 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -30,6 +30,8 @@ using HeuristicLab.Operators;
 using HeuristicLab.Optimization;
 using HeuristicLab.Parameters;
 using HeuristicLab.Persistence.Default.CompositeSerializers.Storable;
+using HeuristicLab.Problems.VehicleRouting.Encodings.Alba;
+using HeuristicLab.Problems.VehicleRouting.Encodings.Potvin;
 using HeuristicLab.Problems.VehicleRouting.Interfaces;
 using HeuristicLab.Problems.VehicleRouting.Variants;
 
@@ -98,7 +100,7 @@ namespace HeuristicLab.Problems.VehicleRouting.Encodings.General {
     public void SetOperators(IEnumerable<IOperator> operators) {
       foreach (IOperator op in operators) {
         if (op is IMultiVRPMoveGenerator && !(op is MultiOperator<IMultiVRPMoveGenerator>)) {
-          Operators.Add(op.Clone() as IMultiVRPMoveGenerator, true);
+          Operators.Add(op.Clone() as IMultiVRPMoveGenerator, !(op is IAlbaOperator || op is PotvinVehicleAssignmentMultiMoveGenerator));
         }
       }
     }
@@ -152,9 +154,9 @@ namespace HeuristicLab.Problems.VehicleRouting.Encodings.General {
       }
     }
 
-    public override IOperation Apply() {
+    public override IOperation InstrumentedApply() {
       if (Operators.Count == 0) throw new InvalidOperationException(Name + ": Please add at least one VRP move generator choose from.");
-      OperationCollection next = new OperationCollection(base.Apply());
+      OperationCollection next = new OperationCollection(base.InstrumentedApply());
 
       for (int i = 0; i < SelectedOperatorsParameter.ActualValue.Value; i++) {
         IRandom random = RandomParameter.ActualValue;

@@ -1,6 +1,6 @@
 #region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2013 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2014 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -42,6 +42,10 @@ namespace HeuristicLab.Core.Views {
     public new IItemCollection<T> Content {
       get { return (IItemCollection<T>)base.Content; }
       set { base.Content = value; }
+    }
+
+    public ObservableCollection<T> ItemCollection {
+      get { return Content as ObservableCollection<T>; }
     }
 
     public bool ShowDetails {
@@ -231,8 +235,11 @@ namespace HeuristicLab.Core.Views {
     protected virtual void itemsListView_KeyDown(object sender, KeyEventArgs e) {
       if (e.KeyCode == Keys.Delete) {
         if ((itemsListView.SelectedItems.Count > 0) && !Content.IsReadOnly && !ReadOnly) {
-          foreach (ListViewItem item in itemsListView.SelectedItems)
-            Content.Remove((T)item.Tag);
+          if (ItemCollection != null) ItemCollection.RemoveRange(itemsListView.SelectedItems.Cast<ListViewItem>().Select(i => (T)i.Tag));
+          else {
+            foreach (ListViewItem item in itemsListView.SelectedItems)
+              Content.Remove((T)item.Tag);
+          }
         }
       }
     }
@@ -303,8 +310,11 @@ namespace HeuristicLab.Core.Views {
             Cloner cloner = new Cloner();
             items = items.Select(x => cloner.Clone(x));
           }
-          foreach (T item in items)
-            Content.Add(item);
+          if (ItemCollection != null) ItemCollection.AddRange(items);
+          else {
+            foreach (T item in items)
+              Content.Add(item);
+          }
         }
       }
     }
@@ -324,8 +334,12 @@ namespace HeuristicLab.Core.Views {
     }
     protected virtual void removeButton_Click(object sender, EventArgs e) {
       if (itemsListView.SelectedItems.Count > 0) {
-        foreach (ListViewItem item in itemsListView.SelectedItems)
-          Content.Remove((T)item.Tag);
+        if (ItemCollection != null) {
+          ItemCollection.RemoveRange(itemsListView.SelectedItems.Cast<ListViewItem>().Select(i => (T)i.Tag));
+        } else {
+          foreach (ListViewItem item in itemsListView.SelectedItems)
+            Content.Remove((T)item.Tag);
+        }
         itemsListView.SelectedItems.Clear();
       }
     }

@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2013 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2014 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -58,6 +58,8 @@ namespace HeuristicLab.Problems.VehicleRouting.Encodings.General {
       : base() {
       Parameters.Add(new LookupParameter<IVRPProblemInstance>("ProblemInstance", "The VRP problem instance"));
       Parameters.Add(new LookupParameter<IVRPEncoding>("VRPTours", "The VRP tours to be manipulated."));
+
+      SelectedOperatorParameter.ActualName = "SelectedManipulationOperator";
     }
 
     public override IDeepCloneable Clone(Cloner cloner) {
@@ -96,9 +98,9 @@ namespace HeuristicLab.Problems.VehicleRouting.Encodings.General {
       }
     }
 
-    public override IOperation Apply() {
+    public override IOperation InstrumentedApply() {
       if (Operators.Count == 0) throw new InvalidOperationException(Name + ": Please add at least one permutation manipulator to choose from.");
-      return base.Apply();
+      return base.InstrumentedApply();
     }
   }
 }

@@ -1,6 +1,6 @@
 #region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2013 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2014 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -33,7 +33,7 @@ namespace HeuristicLab.Operators {
   /// </summary>
   [Item("Operator", "Base class for operators.")]
   [StorableClass]
-  public abstract class Operator : ParameterizedNamedItem, IOperator, IStatefulItem {
+  public abstract partial class Operator : ParameterizedNamedItem, IOperator, IStatefulItem {
     public static new Image StaticItemImage {
       get { return HeuristicLab.Common.Resources.VSImageLibrary.Method; }
     }

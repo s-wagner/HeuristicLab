@@ -1,6 +1,6 @@
 #region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2013 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2014 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -1581,8 +1581,8 @@ namespace HeuristicLab.Problems.DataAnalysis {
       : this(defaultDataset, defaultAllowedInputVariables, defaultTargetVariable) {
       TrainingPartition.Start = 50;
     }
-    public TimeSeriesPrognosisProblemData(Dataset dataset, IEnumerable<string> allowedInputVariables, string targetVariable)
-      : base(dataset, allowedInputVariables, targetVariable) {
+    public TimeSeriesPrognosisProblemData(Dataset dataset, IEnumerable<string> allowedInputVariables, string targetVariable, IEnumerable<ITransformation> transformations = null)
+      : base(dataset, allowedInputVariables, targetVariable, transformations ?? Enumerable.Empty<ITransformation>()) {
       Parameters.Add(new FixedValueParameter<IntValue>(TrainingHorizonParameterName, "Specifies the horizon (how far the prognosis reaches in the future) for each training sample.", new IntValue(1)));
       Parameters.Add(new FixedValueParameter<IntValue>(TestHorizonParameterName, "Specifies the horizon (how far the prognosis reaches in the future) for each test sample.", new IntValue(1)));
 
@@ -1618,6 +1618,37 @@ namespace HeuristicLab.Problems.DataAnalysis {
 
     private void Parameter_ValueChanged(object sender, EventArgs e) {
       OnChanged();
+    }
+
+    protected override bool IsProblemDataCompatible(IDataAnalysisProblemData problemData, out string errorMessage) {
+      if (problemData == null) throw new ArgumentNullException("problemData", "The provided problemData is null.");
+      ITimeSeriesPrognosisProblemData timeseriesProblemData = problemData as ITimeSeriesPrognosisProblemData;
+      if (timeseriesProblemData == null)
+        throw new ArgumentException("The problem data is not a time-series problem data. Instead a " + problemData.GetType().GetPrettyName() + " was provided.", "problemData");
+
+      var returnValue = base.IsProblemDataCompatible(problemData, out errorMessage);
+      //check targetVariable
+      if (problemData.InputVariables.All(var => var.Value != TargetVariable)) {
+        errorMessage = string.Format("The target variable {0} is not present in the new problem data.", TargetVariable)
+                       + Environment.NewLine + errorMessage;
+        return false;
+      }
+      return returnValue;
+    }
+
+    public override void AdjustProblemDataProperties(IDataAnalysisProblemData problemData) {
+      TimeSeriesPrognosisProblemData timeSeriesProblemData = problemData as TimeSeriesPrognosisProblemData;
+      if (timeSeriesProblemData == null)
+        throw new ArgumentException("The problem data is not a timeseries problem data. Instead a " + problemData.GetType().GetPrettyName() + " was provided.", "problemData");
+
+      var trainingDataStart = TrainingIndices.First();
+
+      base.AdjustProblemDataProperties(problemData);
+
+      TestPartition.Start = trainingDataStart;
+
+      TrainingHorizon = timeSeriesProblemData.TrainingHorizon;
+      TestHorizon = timeSeriesProblemData.TestHorizon;
     }
 
   }

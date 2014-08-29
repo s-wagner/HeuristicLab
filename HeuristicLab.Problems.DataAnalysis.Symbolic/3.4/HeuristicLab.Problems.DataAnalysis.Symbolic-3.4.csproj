@@ -111,6 +111,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Analyzers\SymbolicDataAnalysisSingleObjectivePruningAnalyzer.cs" />
     <Compile Include="Analyzers\SymbolicDataAnalysisSingleObjectiveValidationParetoBestSolutionAnalyzer.cs" />
     <Compile Include="Analyzers\SymbolicDataAnalysisSingleObjectiveTrainingParetoBestSolutionAnalyzer.cs" />
     <Compile Include="Analyzers\SymbolicDataAnalysisMultiObjectiveValidationAnalyzer.cs" />
@@ -124,6 +125,11 @@
     <Compile Include="Analyzers\SymbolicDataAnalysisSingleObjectiveTrainingBestSolutionAnalyzer.cs">
       <SubType>Code</SubType>
     </Compile>
+
+    <Compile Include="Interfaces\IModelBacktransformator.cs" />
+
+    <Compile Include="SymbolicExpressionTreeBacktransformator.cs" />
+    <Compile Include="SymbolicDataAnalysisExpressionPruningOperator.cs" />
     <Compile Include="Analyzers\SymbolicDataAnalysisVariableFrequencyAnalyzer.cs" />
     <Compile Include="Analyzers\SymbolicDataAnalysisAlleleFrequencyAnalyzer.cs" />
     <Compile Include="Creators\MultiSymbolicDataAnalysisExpressionCreator.cs" />
@@ -139,7 +145,7 @@
     <Compile Include="Crossovers\SymbolicDataAnalysisExpressionProbabilisticFunctionalCrossover.cs" />
     <Compile Include="Crossovers\SymbolicDataAnalysisExpressionSemanticSimilarityCrossover.cs" />
     <Compile Include="Formatters\SymbolicDataAnalysisExpressionExcelFormatter.cs" />
-	<Compile Include="Formatters\SymbolicDataAnalysisExpressionSmalltalkFormatter.cs" />
+    <Compile Include="Formatters\SymbolicDataAnalysisExpressionSmalltalkFormatter.cs" />
     <Compile Include="Interfaces\ISymbolicDataAnalysisExpressionCrossover.cs" />
     <Compile Include="Interfaces\ISymbolicDataAnalysisImpactValuesCalculator.cs" />
     <Compile Include="Interpreter\InterpreterState.cs" />
@@ -177,6 +183,7 @@
     <Compile Include="Symbols\AiryA.cs" />
     <Compile Include="Symbols\AiryB.cs" />
     <Compile Include="Symbols\Bessel.cs" />
+    <Compile Include="Symbols\Xor.cs" />
     <Compile Include="Symbols\Erf.cs" />
     <Compile Include="Symbols\Norm.cs" />
     <Compile Include="Symbols\FresnelCosineIntegral.cs" />
@@ -218,6 +225,7 @@
     <Compile Include="Symbols\VariableCondition.cs" />
     <Compile Include="Symbols\VariableConditionTreeNode.cs" />
     <Compile Include="Symbols\VariableTreeNode.cs" />
+    <Compile Include="TransformationToSymbolicTreeMapper.cs" />
     <None Include="HeuristicLab.snk" />
     <None Include="Plugin.cs.frame" />
     <None Include="Properties\AssemblyInfo.cs.frame" />

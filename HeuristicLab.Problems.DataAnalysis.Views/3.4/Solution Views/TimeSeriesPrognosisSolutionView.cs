@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2013 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2014 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -43,6 +43,7 @@ namespace HeuristicLab.Problems.DataAnalysis.Views {
 
       var dropData = e.Data.GetData(HeuristicLab.Common.Constants.DragDropDataFormat);
       if (dropData is ITimeSeriesPrognosisProblemData) validDragOperation = true;
+      else if (dropData is ITimeSeriesPrognosisProblem) validDragOperation = true;
       else if (dropData is IValueParameter) {
         var param = (IValueParameter)dropData;
         if (param.Value is ITimeSeriesPrognosisProblemData) validDragOperation = true;

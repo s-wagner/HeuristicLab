@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2013 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2014 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -31,8 +31,8 @@ namespace HeuristicLab.Clients.Hive {
 
     #region Constructors and cloning
     public EngineHiveTask() { }
-    public EngineHiveTask(EngineTask engineJob, IScope parentScopeClone)
-      : base(engineJob) {
+    public EngineHiveTask(EngineTask engineTask, IScope parentScopeClone)
+      : base(engineTask) {
       this.parentScopeClone = parentScopeClone;
     }
 

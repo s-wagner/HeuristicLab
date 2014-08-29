@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2013 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2014 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -26,7 +26,9 @@ using HeuristicLab.Common;
 namespace HeuristicLab.Clients.Hive {
   public partial class Task : LightweightTask {
 
-    public Task() { }
+    public Task() {
+      Priority = 1;
+    }
 
     protected Task(Task original, Cloner cloner)
       : base(original, cloner) {

@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2013 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2014 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -60,9 +60,9 @@ namespace HeuristicLab.Tests {
     }
 
     public TestRandom(int[] intNumbers, double[] doubleNumbers) {
-      if (intNumbers == null) intNumbers = new int[0];
+      if (intNumbers == null) this.intNumbers = new int[0];
       else this.intNumbers = intNumbers;
-      if (doubleNumbers == null) doubleNumbers = new double[0];
+      if (doubleNumbers == null) this.doubleNumbers = new double[0];
       else this.doubleNumbers = doubleNumbers;
       nextIntIndex = 0;
       nextDoubleIndex = 0;

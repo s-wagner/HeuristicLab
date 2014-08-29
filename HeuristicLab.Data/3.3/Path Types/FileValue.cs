@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2013 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2014 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -55,6 +55,8 @@ namespace HeuristicLab.Data {
     }
 
     public override bool Exists() {
+      if (string.IsNullOrEmpty(Value)) return false;
+      if (string.IsNullOrEmpty(Path.GetDirectoryName(Value))) return false;
       return File.Exists(Value);
     }
   }

@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2013 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2014 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -127,7 +127,7 @@ namespace HeuristicLab.Problems.VehicleRouting.ProblemInstances {
       return evaluation;
     }
 
-    public override IOperation Apply() {
+    public override IOperation InstrumentedApply() {
       InitResultParameters();
 
       VRPEvaluation evaluation = CreateTourEvaluation();
@@ -139,7 +139,7 @@ namespace HeuristicLab.Problems.VehicleRouting.ProblemInstances {
 
       QualityParameter.ActualValue = new DoubleValue(evaluation.Quality);
 
-      return base.Apply();
+      return base.InstrumentedApply();
     }
 
     #endregion

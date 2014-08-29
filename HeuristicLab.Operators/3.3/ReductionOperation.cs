@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2013 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2014 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -26,6 +26,18 @@ using HeuristicLab.Data;
 using HeuristicLab.Persistence.Default.CompositeSerializers.Storable;
 
 namespace HeuristicLab.Operators {
+  public enum ReductionOperations {
+    Sum,
+    Product,
+    Count,
+    Min,
+    Max,
+    Avg,
+    Assign,
+    All,
+    Any
+  }
+
   [Item("ReductionOperation", "Represents a certain type of reduction operation.")]
   [StorableClass]
   public class ReductionOperation : ValueTypeValue<ReductionOperations> {

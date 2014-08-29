@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2013 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2014 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -61,12 +61,12 @@ namespace HeuristicLab.Collections {
       get { return secondToFirst.Count; }
     }
 
-    public IEnumerable<IEnumerable<TSecond>> FirstValues {
-      get { return firstToSecond.Values.AsEnumerable(); }
+    public IEnumerable<TFirst> FirstKeys {
+      get { return firstToSecond.Keys.AsEnumerable(); }
     }
 
-    public IEnumerable<IEnumerable<TFirst>> SecondValues {
-      get { return secondToFirst.Values.AsEnumerable(); }
+    public IEnumerable<TSecond> SecondKeys {
+      get { return secondToFirst.Keys.AsEnumerable(); }
     }
 
     public IEnumerable<IGrouping<TFirst, TSecond>> FirstEnumerable {

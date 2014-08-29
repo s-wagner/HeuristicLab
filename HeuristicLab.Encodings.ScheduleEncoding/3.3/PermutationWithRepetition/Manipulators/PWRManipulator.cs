@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2013 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2014 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -39,11 +39,11 @@ namespace HeuristicLab.Encodings.ScheduleEncoding.PermutationWithRepetition {
 
     protected abstract void Manipulate(IRandom random, PWREncoding individual);
 
-    public override IOperation Apply() {
+    public override IOperation InstrumentedApply() {
       var solution = ScheduleEncodingParameter.ActualValue as PWREncoding;
       if (solution == null) throw new InvalidOperationException("ScheduleEncoding was not found or is not of type PWREncoding.");
       Manipulate(RandomParameter.ActualValue, solution);
-      return base.Apply();
+      return base.InstrumentedApply();
     }
 
   }

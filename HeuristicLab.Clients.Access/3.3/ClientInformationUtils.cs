@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2013 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2014 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -29,6 +29,7 @@ using System.Text;
 using HeuristicLab.Algorithms.Benchmarks;
 using HeuristicLab.Data;
 using HeuristicLab.Optimization;
+using HeuristicLab.PluginInfrastructure;
 
 namespace HeuristicLab.Clients.Access {
   public static class ClientInformationUtils {
@@ -71,8 +72,7 @@ namespace HeuristicLab.Clients.Access {
     }
 
     public static string GetHLVersion() {
-      FileVersionInfo versionInfo = FileVersionInfo.GetVersionInfo(Assembly.GetExecutingAssembly().Location);
-      return versionInfo.FileVersion;
+      return AssemblyHelpers.GetFileVersion(Assembly.GetExecutingAssembly());
     }
 
     public static bool IsClientHeuristicLab() {

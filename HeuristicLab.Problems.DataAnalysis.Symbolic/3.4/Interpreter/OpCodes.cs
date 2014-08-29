@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2013 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2014 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -45,6 +45,7 @@ namespace HeuristicLab.Problems.DataAnalysis.Symbolic {
     public const byte AND = 13;
     public const byte OR = 14;
     public const byte NOT = 15;
+    public const byte XOR = 45;
 
 
     public const byte Average = 16;
@@ -98,6 +99,7 @@ namespace HeuristicLab.Problems.DataAnalysis.Symbolic {
       { typeof(And), OpCodes.AND },
       { typeof(Or), OpCodes.OR },
       { typeof(Not), OpCodes.NOT},
+      { typeof(Xor),OpCodes.XOR},
       { typeof(Average), OpCodes.Average},
       { typeof(InvokeFunction), OpCodes.Call },
       { typeof(Variable), OpCodes.Variable },

@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2013 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2014 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -46,14 +46,14 @@ namespace HeuristicLab.Problems.DataAnalysis.Trading.Symbolic {
 
     public override bool Maximization { get { return true; } }
 
-    public override IOperation Apply() {
+    public override IOperation InstrumentedApply() {
       var solution = SymbolicExpressionTreeParameter.ActualValue;
       IEnumerable<int> rows = GenerateRowsToEvaluate();
 
       double quality = Calculate(SymbolicDataAnalysisTreeInterpreterParameter.ActualValue, solution, ProblemDataParameter.ActualValue, rows);
       QualityParameter.ActualValue = new DoubleValue(quality);
 
-      return base.Apply();
+      return base.InstrumentedApply();
     }
 
     public static double Calculate(ISymbolicDataAnalysisExpressionTreeInterpreter interpreter, ISymbolicExpressionTree solution, IProblemData problemData, IEnumerable<int> rows) {

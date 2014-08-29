@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2013 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2014 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -33,7 +33,7 @@ namespace HeuristicLab.Encodings.SymbolicExpressionTreeEncoding {
   /// </summary>
   [Item("SymbolicExpressionTreeOperator", "A base class for operators for symbolic expression trees.")]
   [StorableClass]
-  public abstract class SymbolicExpressionTreeOperator : SingleSuccessorOperator, IStochasticOperator, ISymbolicExpressionTreeOperator {
+  public abstract class SymbolicExpressionTreeOperator : InstrumentedOperator, IStochasticOperator, ISymbolicExpressionTreeOperator {
     private const string RandomParameterName = "Random";
 
     public override bool CanChangeName {

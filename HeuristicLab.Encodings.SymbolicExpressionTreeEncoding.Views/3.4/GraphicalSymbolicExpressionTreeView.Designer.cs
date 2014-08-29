@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2013 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2014 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -18,6 +18,8 @@
  * along with HeuristicLab. If not, see <http://www.gnu.org/licenses/>.
  */
 #endregion
+
+using System.Drawing;
 
 namespace HeuristicLab.Encodings.SymbolicExpressionTreeEncoding.Views {
   partial class GraphicalSymbolicExpressionTreeView {
@@ -58,7 +60,7 @@ namespace HeuristicLab.Encodings.SymbolicExpressionTreeEncoding.Views {
       this.symbolicExpressionTreeChart.Size = new System.Drawing.Size(407, 367);
       this.symbolicExpressionTreeChart.Spacing = 5;
       this.symbolicExpressionTreeChart.TabIndex = 0;
-      this.symbolicExpressionTreeChart.TextFont = new System.Drawing.Font("Times New Roman", 6F);
+      this.symbolicExpressionTreeChart.TextFont = new System.Drawing.Font(FontFamily.GenericSerif, 8F);
       // 
       // FunctionTreeView
       // 

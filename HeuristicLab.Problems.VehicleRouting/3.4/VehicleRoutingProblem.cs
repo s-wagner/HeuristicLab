@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2013 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2014 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -38,16 +38,10 @@ using HeuristicLab.Problems.VehicleRouting.ProblemInstances;
 using HeuristicLab.Problems.VehicleRouting.Variants;
 
 namespace HeuristicLab.Problems.VehicleRouting {
-  public interface IVRPInstanceConsumer :  
-    IProblemInstanceConsumer<CVRPData>, IProblemInstanceConsumer<CVRPTWData>, 
-    IProblemInstanceConsumer<MDCVRPData>, IProblemInstanceConsumer<MDCVRPTWData>,
-    IProblemInstanceConsumer<PDPTWData> {
-  }
-
   [Item("Vehicle Routing Problem", "Represents a Vehicle Routing Problem.")]
   [Creatable("Problems")]
   [StorableClass]
-  public sealed class VehicleRoutingProblem : Problem, ISingleObjectiveHeuristicOptimizationProblem, IStorableContent, IVRPInstanceConsumer {
+  public sealed class VehicleRoutingProblem : Problem, ISingleObjectiveHeuristicOptimizationProblem, IStorableContent, IProblemInstanceConsumer<VRPData> {
     public string Filename { get; set; }
 
     public static new Image StaticItemImage {
@@ -142,6 +136,8 @@ namespace HeuristicLab.Problems.VehicleRouting {
 
       AttachEventHandlers();
       AttachProblemInstanceEventHandlers();
+
+      EvaluatorParameter.Value = ProblemInstance.SolutionEvaluator;
     }
 
     public override IDeepCloneable Clone(Cloner cloner) {
@@ -152,6 +148,9 @@ namespace HeuristicLab.Problems.VehicleRouting {
     private VehicleRoutingProblem(VehicleRoutingProblem original, Cloner cloner)
       : base(original, cloner) {
       this.AttachEventHandlers();
+      this.AttachProblemInstanceEventHandlers();
+
+      ProblemInstance.SolutionEvaluator = EvaluatorParameter.Value;
     }
 
     #region Events
@@ -172,6 +171,8 @@ namespace HeuristicLab.Problems.VehicleRouting {
     private void AfterDeserialization() {
       AttachEventHandlers();
       AttachProblemInstanceEventHandlers();
+
+      ProblemInstance.SolutionEvaluator = EvaluatorParameter.Value;
     }
 
     [Storable(Name = "operators", AllowOneWay = true)]
@@ -188,7 +189,6 @@ namespace HeuristicLab.Problems.VehicleRouting {
 
     private void AttachProblemInstanceEventHandlers() {
       if (ProblemInstance != null) {
-        EvaluatorParameter.Value = ProblemInstance.SolutionEvaluator;
         ProblemInstance.EvaluationChanged += new EventHandler(ProblemInstance_EvaluationChanged);
       }
     }
@@ -208,13 +208,14 @@ namespace HeuristicLab.Problems.VehicleRouting {
     }
 
     void ProblemInstance_EvaluationChanged(object sender, EventArgs e) {
-      EvaluatorParameter.Value = ProblemInstance.SolutionEvaluator;
       EvalBestKnownSolution();
     }
 
     void ProblemInstanceParameter_ValueChanged(object sender, EventArgs e) {
       InitializeOperators();
       AttachProblemInstanceEventHandlers();
+
+      EvaluatorParameter.Value = ProblemInstance.SolutionEvaluator;
 
       OnSolutionCreatorChanged();
       OnEvaluatorChanged();
@@ -363,6 +364,10 @@ namespace HeuristicLab.Problems.VehicleRouting {
 
       Name = instance.Name;
       Description = instance.Description;
+
+      BestKnownQuality = null;
+      BestKnownSolution = null;
+
       if (ProblemInstance != null && instance.ProblemInstance != null &&
         instance.ProblemInstance.GetType() == ProblemInstance.GetType())
         SetProblemInstance(instance.ProblemInstance);
@@ -370,8 +375,6 @@ namespace HeuristicLab.Problems.VehicleRouting {
         ProblemInstance = instance.ProblemInstance;
 
       OnReset();
-      BestKnownQuality = null;
-      BestKnownSolution = null;
 
       if (instance.BestKnownQuality != null) {
         BestKnownQuality = new DoubleValue((double)instance.BestKnownQuality);
@@ -382,25 +385,27 @@ namespace HeuristicLab.Problems.VehicleRouting {
         BestKnownSolution = solution;
       }
     }
+    #endregion
 
-    public void Load(CVRPData data) {
-      Load(data, new CVRPInterpreter());
+    #region IProblemInstanceConsumer<VRPData> Members
+
+    public void Load(VRPData data) {
+      var interpreterDataType = data.GetType();
+      var interpreterType = typeof(IVRPDataInterpreter<>).MakeGenericType(interpreterDataType);
+
+      var interpreters = ApplicationManager.Manager.GetTypes(interpreterType);
+
+      var concreteInterpreter = interpreters.Single(t => GetInterpreterDataType(t) == interpreterDataType);
+
+      Load(data, (IVRPDataInterpreter)Activator.CreateInstance(concreteInterpreter));
     }
 
-    public void Load(CVRPTWData data) {
-      Load(data, new CVRPTWInterpreter());
-    }
+    private Type GetInterpreterDataType(Type type) {
+      var parentInterfaces = type.BaseType.GetInterfaces();
+      var interfaces = type.GetInterfaces().Except(parentInterfaces);
 
-    public void Load(MDCVRPData data) {
-      Load(data, new MDCVRPInterpreter());
-    }
-
-    public void Load(MDCVRPTWData data) {
-      Load(data, new MDCVRPTWInterpreter());
-    }
-
-    public void Load(PDPTWData data) {
-      Load(data, new PDPTWInterpreter());
+      var interpreterInterface = interfaces.Single(i => typeof(IVRPDataInterpreter).IsAssignableFrom(i));
+      return interpreterInterface.GetGenericArguments()[0];
     }
 
     #endregion

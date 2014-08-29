@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2013 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2014 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -61,6 +61,8 @@ namespace HeuristicLab.Encodings.RealVectorEncoding {
       Operators.Add(new PolynomialAllPositionManipulator());
       Operators.Add(new PolynomialOnePositionManipulator());
       Operators.Add(new UniformOnePositionManipulator());
+
+      SelectedOperatorParameter.ActualName = "SelectedManipulationOperator";
     }
 
     public override IDeepCloneable Clone(Cloner cloner) {
@@ -87,9 +89,9 @@ namespace HeuristicLab.Encodings.RealVectorEncoding {
       }
     }
 
-    public override IOperation Apply() {
+    public override IOperation InstrumentedApply() {
       if (Operators.Count == 0) throw new InvalidOperationException(Name + ": Please add at least one real vector manipulator to choose from.");
-      return base.Apply();
+      return base.InstrumentedApply();
     }
   }
 }

@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2013 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2014 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -28,7 +28,7 @@ using HeuristicLab.Persistence.Default.CompositeSerializers.Storable;
 namespace HeuristicLab.Encodings.IntegerVectorEncoding {
   [Item("IntegerVectorOperator", "Base class for integer vectoro operators.")]
   [StorableClass]
-  public abstract class IntegerVectorOperator : SingleSuccessorOperator, IIntegerVectorOperator {
+  public abstract class IntegerVectorOperator : InstrumentedOperator, IIntegerVectorOperator {
 
     [StorableConstructor]
     protected IntegerVectorOperator(bool deserializing) : base(deserializing) { }

@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2013 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2014 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -34,7 +34,7 @@ using HeuristicLab.Random;
 
 namespace HeuristicLab.Problems.DataAnalysis.Symbolic {
   [StorableClass]
-  public abstract class SymbolicDataAnalysisEvaluator<T> : SingleSuccessorOperator,
+  public abstract class SymbolicDataAnalysisEvaluator<T> : InstrumentedOperator,
     ISymbolicDataAnalysisEvaluator<T>, ISymbolicDataAnalysisInterpreterOperator, ISymbolicDataAnalysisBoundedOperator, IStochasticOperator
   where T : class, IDataAnalysisProblemData {
     private const string RandomParameterName = "Random";
