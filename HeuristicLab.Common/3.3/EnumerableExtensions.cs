@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2014 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2015 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -85,6 +85,17 @@ namespace HeuristicLab.Common {
         }
       }
       return result;
+    }
+
+    /// <summary>
+    /// Compute the n-ary cartesian product of arbitrarily many sequences: http://blogs.msdn.com/b/ericlippert/archive/2010/06/28/computing-a-cartesian-product-with-linq.aspx
+    /// </summary>
+    /// <typeparam name="T">The type of the elements inside each sequence</typeparam>
+    /// <param name="sequences">The collection of sequences</param>
+    /// <returns>An enumerable sequence of all the possible combinations of elements</returns>
+    public static IEnumerable<IEnumerable<T>> CartesianProduct<T>(this IEnumerable<IEnumerable<T>> sequences) {
+      IEnumerable<IEnumerable<T>> result = new[] { Enumerable.Empty<T>() };
+      return sequences.Where(s => s.Any()).Aggregate(result, (current, s) => (from seq in current from item in s select seq.Concat(new[] { item })));
     }
   }
 }

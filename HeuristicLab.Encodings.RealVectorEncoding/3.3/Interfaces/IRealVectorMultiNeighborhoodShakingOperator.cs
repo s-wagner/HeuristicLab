@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2014 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2015 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -20,9 +20,11 @@
 #endregion
 
 using HeuristicLab.Core;
+using HeuristicLab.Data;
 
 namespace HeuristicLab.Encodings.RealVectorEncoding {
   public interface IRealVectorMultiNeighborhoodShakingOperator : IRealVectorOperator {
     ILookupParameter<RealVector> RealVectorParameter { get; }
+    IValueLookupParameter<DoubleMatrix> BoundsParameter { get; }
   }
 }

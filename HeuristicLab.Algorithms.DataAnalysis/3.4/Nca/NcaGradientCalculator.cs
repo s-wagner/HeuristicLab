@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2014 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2015 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -27,6 +27,7 @@ using HeuristicLab.Core;
 using HeuristicLab.Data;
 using HeuristicLab.Encodings.RealVectorEncoding;
 using HeuristicLab.Operators;
+using HeuristicLab.Optimization;
 using HeuristicLab.Parameters;
 using HeuristicLab.Persistence.Default.CompositeSerializers.Storable;
 using HeuristicLab.Problems.DataAnalysis;
@@ -34,7 +35,7 @@ using HeuristicLab.Problems.DataAnalysis;
 namespace HeuristicLab.Algorithms.DataAnalysis {
   [Item("NcaGradientCalculator", "Calculates the quality and gradient of a certain NCA matrix.")]
   [StorableClass]
-  public class NcaGradientCalculator : SingleSuccessorOperator {
+  public class NcaGradientCalculator : SingleSuccessorOperator, ISingleObjectiveOperator {
 
     #region Parameter Properties
     public ILookupParameter<IntValue> DimensionsParameter {

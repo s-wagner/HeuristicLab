@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2014 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2015 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -31,7 +31,7 @@ using HeuristicLab.Problems.VehicleRouting.Interfaces;
 namespace HeuristicLab.Problems.VehicleRouting.Encodings.Potvin {
   [Item("PotvinPDExchangeMoveTabuMaker", "Declares a given exchange move as tabu.")]
   [StorableClass]
-  public class PotvinPDExchangeMoveTabuMaker : SingleSuccessorOperator, ITabuMaker, IPotvinPDExchangeMoveOperator, IPotvinOperator, IVRPMoveOperator {
+  public class PotvinPDExchangeMoveTabuMaker : SingleSuccessorOperator, ITabuMaker, IPotvinPDExchangeMoveOperator, IPotvinOperator, ISingleObjectiveOperator {
     public LookupParameter<ItemList<IItem>> TabuListParameter {
       get { return (LookupParameter<ItemList<IItem>>)Parameters["TabuList"]; }
     }

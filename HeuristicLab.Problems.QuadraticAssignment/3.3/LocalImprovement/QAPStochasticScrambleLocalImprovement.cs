@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2014 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2015 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -33,18 +33,7 @@ using HeuristicLab.Persistence.Default.CompositeSerializers.Storable;
 namespace HeuristicLab.Problems.QuadraticAssignment {
   [Item("QAPStochasticScrambleLocalImprovement", "Takes a solution and finds the local optimum with respect to the scramble neighborhood by decending along the steepest gradient.")]
   [StorableClass]
-  public class QAPStochasticScrambleLocalImprovement : SingleSuccessorOperator, ILocalImprovementOperator, IStochasticOperator {
-
-    public Type ProblemType {
-      get { return typeof(QuadraticAssignmentProblem); }
-    }
-
-    [Storable]
-    private QuadraticAssignmentProblem problem;
-    public IProblem Problem {
-      get { return problem; }
-      set { problem = (QuadraticAssignmentProblem)value; }
-    }
+  public class QAPStochasticScrambleLocalImprovement : SingleSuccessorOperator, ILocalImprovementOperator, IStochasticOperator, ISingleObjectiveOperator {
 
     public ILookupParameter<IntValue> LocalIterationsParameter {
       get { return (ILookupParameter<IntValue>)Parameters["LocalIterations"]; }
@@ -94,7 +83,6 @@ namespace HeuristicLab.Problems.QuadraticAssignment {
     protected QAPStochasticScrambleLocalImprovement(bool deserializing) : base(deserializing) { }
     protected QAPStochasticScrambleLocalImprovement(QAPStochasticScrambleLocalImprovement original, Cloner cloner)
       : base(original, cloner) {
-      this.problem = cloner.Clone(original.problem);
     }
     public QAPStochasticScrambleLocalImprovement()
       : base() {

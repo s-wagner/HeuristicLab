@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2014 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2015 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -38,7 +38,7 @@ namespace HeuristicLab.Problems.Instances.DataAnalysis {
       }
     }
     public override Uri WebLink {
-      get { return new Uri("http://dev.heuristiclab.com/trac/hl/core/wiki/UsersFAQ#DataAnalysisImportFileFormat"); }
+      get { return new Uri("http://dev.heuristiclab.com/trac.fcgi/wiki/Documentation/FAQ#DataAnalysisImportFileFormat"); }
     }
     public override string ReferencePublication {
       get { return ""; }
@@ -60,19 +60,17 @@ namespace HeuristicLab.Problems.Instances.DataAnalysis {
       csvFileParser.Parse(path, csvFileParser.AreColumnNamesInFirstLine(path));
 
       Dataset dataset = new Dataset(csvFileParser.VariableNames, csvFileParser.Values);
-      string targetVar = dataset.DoubleVariables.Last();
 
       // turn of input variables that are constant in the training partition
       var allowedInputVars = new List<string>();
       var trainingIndizes = Enumerable.Range(0, (csvFileParser.Rows * 2) / 3);
       if (trainingIndizes.Count() >= 2) {
         foreach (var variableName in dataset.DoubleVariables) {
-          if (dataset.GetDoubleValues(variableName, trainingIndizes).Range() > 0 &&
-            variableName != targetVar)
+          if (dataset.GetDoubleValues(variableName, trainingIndizes).Range() > 0)
             allowedInputVars.Add(variableName);
         }
       } else {
-        allowedInputVars.AddRange(dataset.DoubleVariables.Where(x => !x.Equals(targetVar)));
+        allowedInputVars.AddRange(dataset.DoubleVariables);
       }
 
       ClusteringProblemData clusteringData = new ClusteringProblemData(dataset, allowedInputVars);
@@ -95,7 +93,6 @@ namespace HeuristicLab.Problems.Instances.DataAnalysis {
       }
 
       Dataset dataset = new Dataset(csvFileParser.VariableNames, values);
-      string targetVar = dataset.DoubleVariables.Last();
 
       // turn of input variables that are constant in the training partition
       var allowedInputVars = new List<string>();
@@ -103,12 +100,11 @@ namespace HeuristicLab.Problems.Instances.DataAnalysis {
       var trainingIndizes = Enumerable.Range(0, trainingPartEnd);
       if (trainingIndizes.Count() >= 2) {
         foreach (var variableName in dataset.DoubleVariables) {
-          if (dataset.GetDoubleValues(variableName, trainingIndizes).Range() > 0 &&
-            variableName != targetVar)
+          if (dataset.GetDoubleValues(variableName, trainingIndizes).Range() > 0)
             allowedInputVars.Add(variableName);
         }
       } else {
-        allowedInputVars.AddRange(dataset.DoubleVariables.Where(x => !x.Equals(targetVar)));
+        allowedInputVars.AddRange(dataset.DoubleVariables);
       }
 
       ClusteringProblemData clusteringData = new ClusteringProblemData(dataset, allowedInputVars);

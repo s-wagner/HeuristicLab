@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2014 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2015 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -30,7 +30,7 @@ using HeuristicLab.Persistence.Default.CompositeSerializers.Storable;
 namespace HeuristicLab.Optimization.Operators {
   [Item("TabuMaker", "Base class for all operators that set a move tabu.")]
   [StorableClass]
-  public abstract class TabuMaker : SingleSuccessorOperator, ITabuMaker {
+  public abstract class TabuMaker : SingleSuccessorOperator, ITabuMaker, ISingleObjectiveOperator {
     public override bool CanChangeName {
       get { return false; }
     }

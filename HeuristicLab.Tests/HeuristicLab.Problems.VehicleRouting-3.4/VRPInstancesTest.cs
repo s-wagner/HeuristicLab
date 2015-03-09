@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2014 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2015 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -20,10 +20,10 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using HeuristicLab.PluginInfrastructure;
-using HeuristicLab.Problems.Instances.VehicleRouting;
+using HeuristicLab.Problems.Instances;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace HeuristicLab.Problems.VehicleRouting.Tests {
@@ -33,22 +33,22 @@ namespace HeuristicLab.Problems.VehicleRouting.Tests {
     [TestCategory("Problems.VehicleRouting")]
     [TestProperty("Time", "long")]
     public void TestVRPInstances() {
-      var providers = ApplicationManager.Manager.GetInstances<VRPInstanceProvider>();
       var vrp = new VehicleRoutingProblem();
+      var providers = ProblemInstanceManager.GetProviders(vrp);
       var failedInstances = new StringBuilder();
 
       Assert.IsTrue(providers.Any(), "No providers could be found.");
 
       foreach (var provider in providers) {
-        var instances = provider.GetDataDescriptors();
+        IEnumerable<IDataDescriptor> instances = ((dynamic)provider).GetDataDescriptors();
         Assert.IsTrue(instances.Any(), "No instances could be found.");
 
         foreach (var instance in instances) {
           try {
             // throws InvalidOperationException if zero or more than one interpreter is found
-            vrp.Load(provider.LoadData(instance));
+            ((dynamic)vrp).Load(((dynamic)provider).LoadData(instance));
           } catch (Exception exc) {
-            failedInstances.AppendLine(instance + ": " + exc.Message);
+            failedInstances.AppendLine(instance.Name + ": " + exc.Message);
           }
         }
       }

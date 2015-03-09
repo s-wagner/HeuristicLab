@@ -1,6 +1,6 @@
 #region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2014 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2015 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -23,6 +23,7 @@ using System.Linq;
 using HeuristicLab.Common;
 using HeuristicLab.Core;
 using HeuristicLab.Data;
+using HeuristicLab.Encodings.SymbolicExpressionTreeEncoding;
 using HeuristicLab.Optimization;
 using HeuristicLab.Persistence.Default.CompositeSerializers.Storable;
 
@@ -101,6 +102,9 @@ namespace HeuristicLab.Problems.DataAnalysis.Symbolic.Regression {
     }
     public SymbolicRegressionSolution(ISymbolicRegressionModel model, IRegressionProblemData problemData)
       : base(model, problemData) {
+      foreach (var node in model.SymbolicExpressionTree.Root.IterateNodesPrefix().OfType<SymbolicExpressionTreeTopLevelNode>())
+        node.SetGrammar(null);
+
       Add(new Result(ModelLengthResultName, "Length of the symbolic regression model.", new IntValue()));
       Add(new Result(ModelDepthResultName, "Depth of the symbolic regression model.", new IntValue()));
 

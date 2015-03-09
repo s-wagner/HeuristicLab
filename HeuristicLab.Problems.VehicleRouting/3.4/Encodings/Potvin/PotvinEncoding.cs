@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2014 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2015 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -35,6 +35,7 @@ namespace HeuristicLab.Problems.VehicleRouting.Encodings.Potvin {
     [Storable]
     public List<int> Unrouted { get; set; }
 
+    // VehicleAssignment[tour] retreives the assigned vehicle for the given tour
     [Storable]
     public Permutation VehicleAssignment { get; private set; }
 

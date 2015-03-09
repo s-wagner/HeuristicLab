@@ -1,6 +1,6 @@
 #region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2014 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2015 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -26,7 +26,7 @@ namespace HeuristicLab.Optimization {
   /// <summary>
   /// An interface which represents a selection operator for selecting solutions of single-objective optimization problems.
   /// </summary>
-  public interface ISingleObjectiveSelector : ISelector {
+  public interface ISingleObjectiveSelector : ISelector, ISingleObjectiveOperator {
     IValueLookupParameter<BoolValue> MaximizationParameter { get; }
     ILookupParameter<ItemArray<DoubleValue>> QualityParameter { get; }
   }

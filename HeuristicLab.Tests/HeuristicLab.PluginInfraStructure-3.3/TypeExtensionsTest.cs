@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2014 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2015 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -28,9 +28,6 @@ using HeuristicLab.Problems.DataAnalysis;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace HeuristicLab.PluginInfrastructure.Tests {
-  /// <summary>
-  /// Summary description for TypeDiscoveryTest
-  /// </summary>
   [TestClass]
   public class TypeExtensionsTest {
     [TestMethod]

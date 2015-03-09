@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2014 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2015 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -30,11 +30,6 @@ namespace HeuristicLab.Tests {
 
   [TestClass]
   public class InstantiateCreatablesTest {
-    // Use ClassInitialize to run code before running the first test in the class
-    [ClassInitialize]
-    public static void MyClassInitialize(TestContext testContext) {
-      PluginLoader.Assemblies.Any();
-    }
     [TestMethod]
     [TestCategory("General")]
     [TestCategory("Essential")]

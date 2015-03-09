@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2014 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2015 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -33,18 +33,7 @@ using HeuristicLab.Persistence.Default.CompositeSerializers.Storable;
 namespace HeuristicLab.Problems.QuadraticAssignment {
   [Item("QAPExhaustiveSwap2LocalImprovement", "Takes a solution and finds the local optimum with respect to the swap2 neighborhood by decending along the steepest gradient.")]
   [StorableClass]
-  public class QAPExhaustiveSwap2LocalImprovement : SingleSuccessorOperator, ILocalImprovementOperator {
-
-    public Type ProblemType {
-      get { return typeof(QuadraticAssignmentProblem); }
-    }
-
-    [Storable]
-    private QuadraticAssignmentProblem problem;
-    public IProblem Problem {
-      get { return problem; }
-      set { problem = (QuadraticAssignmentProblem)value; }
-    }
+  public class QAPExhaustiveSwap2LocalImprovement : SingleSuccessorOperator, ILocalImprovementOperator, ISingleObjectiveOperator {
 
     public ILookupParameter<IntValue> LocalIterationsParameter {
       get { return (ILookupParameter<IntValue>)Parameters["LocalIterations"]; }
@@ -90,7 +79,6 @@ namespace HeuristicLab.Problems.QuadraticAssignment {
     protected QAPExhaustiveSwap2LocalImprovement(bool deserializing) : base(deserializing) { }
     protected QAPExhaustiveSwap2LocalImprovement(QAPExhaustiveSwap2LocalImprovement original, Cloner cloner)
       : base(original, cloner) {
-      this.problem = cloner.Clone(original.problem);
     }
     public QAPExhaustiveSwap2LocalImprovement()
       : base() {

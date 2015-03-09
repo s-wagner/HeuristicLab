@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2014 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2015 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -32,6 +32,7 @@ using HeuristicLab.Parameters;
 using HeuristicLab.Persistence.Default.CompositeSerializers.Storable;
 using HeuristicLab.PluginInfrastructure;
 using HeuristicLab.Problems.Instances;
+using HeuristicLab.Problems.VehicleRouting.Encodings.Alba;
 using HeuristicLab.Problems.VehicleRouting.Interfaces;
 using HeuristicLab.Problems.VehicleRouting.Interpreters;
 using HeuristicLab.Problems.VehicleRouting.ProblemInstances;
@@ -41,7 +42,7 @@ namespace HeuristicLab.Problems.VehicleRouting {
   [Item("Vehicle Routing Problem", "Represents a Vehicle Routing Problem.")]
   [Creatable("Problems")]
   [StorableClass]
-  public sealed class VehicleRoutingProblem : Problem, ISingleObjectiveHeuristicOptimizationProblem, IStorableContent, IProblemInstanceConsumer<VRPData> {
+  public sealed class VehicleRoutingProblem : Problem, ISingleObjectiveHeuristicOptimizationProblem, IStorableContent, IProblemInstanceConsumer<IVRPData> {
     public string Filename { get; set; }
 
     public static new Image StaticItemImage {
@@ -262,6 +263,7 @@ namespace HeuristicLab.Problems.VehicleRouting {
           if (creator is Encodings.Alba.RandomCreator)
             defaultCreator = creator;
         }
+        Operators.Add(new AlbaLambdaInterchangeLocalImprovementOperator());
         if (defaultCreator != null)
           solutionCreatorParameter.Value = defaultCreator;
       }
@@ -389,7 +391,7 @@ namespace HeuristicLab.Problems.VehicleRouting {
 
     #region IProblemInstanceConsumer<VRPData> Members
 
-    public void Load(VRPData data) {
+    public void Load(IVRPData data) {
       var interpreterDataType = data.GetType();
       var interpreterType = typeof(IVRPDataInterpreter<>).MakeGenericType(interpreterDataType);
 

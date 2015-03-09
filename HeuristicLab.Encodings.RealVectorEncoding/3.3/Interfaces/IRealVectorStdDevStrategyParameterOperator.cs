@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2014 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2015 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -18,9 +18,9 @@
  * along with HeuristicLab. If not, see <http://www.gnu.org/licenses/>.
  */
 #endregion
-
+using HeuristicLab.Core;
 
 namespace HeuristicLab.Encodings.RealVectorEncoding {
-  public interface IRealVectorStdDevStrategyParameterOperator {
+  public interface IRealVectorStdDevStrategyParameterOperator : IOperator {
   }
 }

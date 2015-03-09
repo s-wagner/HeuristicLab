@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2014 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2015 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -28,7 +28,7 @@ using HeuristicLab.Persistence.Default.CompositeSerializers.Storable;
 using HeuristicLab.Selection;
 
 namespace HeuristicLab.Optimization.Operators {
-  public class RankAndCrowdingSorter : AlgorithmOperator {
+  public class RankAndCrowdingSorter : AlgorithmOperator, IMultiObjectiveOperator {
     public ValueLookupParameter<BoolArray> MaximizationParameter {
       get { return (ValueLookupParameter<BoolArray>)Parameters["Maximization"]; }
     }

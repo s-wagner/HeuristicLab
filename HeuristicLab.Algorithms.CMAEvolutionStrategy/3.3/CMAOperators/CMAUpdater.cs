@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2014 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2015 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -33,7 +33,7 @@ using System.Linq;
 namespace HeuristicLab.Algorithms.CMAEvolutionStrategy {
   [Item("CMAUpdater", "Updates the covariance matrix and strategy parameters of CMA-ES.")]
   [StorableClass]
-  public class CMAUpdater : SingleSuccessorOperator, ICMAUpdater, IIterationBasedOperator {
+  public class CMAUpdater : SingleSuccessorOperator, ICMAUpdater, IIterationBasedOperator, ISingleObjectiveOperator {
 
     public Type CMAType {
       get { return typeof(CMAParameters); }

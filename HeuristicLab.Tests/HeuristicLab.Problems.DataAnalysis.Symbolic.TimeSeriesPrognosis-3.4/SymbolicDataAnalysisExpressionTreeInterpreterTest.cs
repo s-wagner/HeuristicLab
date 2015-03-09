@@ -1,6 +1,6 @@
 #region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2014 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2015 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -337,7 +337,8 @@ namespace HeuristicLab.Problems.DataAnalysis.Symbolic.TimeSeriesPrognosis.Tests 
 
       Assert.IsFalse(double.IsNaN(actual) && !double.IsNaN(expected));
       Assert.IsFalse(!double.IsNaN(actual) && double.IsNaN(expected));
-      Assert.AreEqual(expected, actual, 1.0E-12, expr);
+      if (!double.IsNaN(actual) && !double.IsNaN(expected))
+        Assert.AreEqual(expected, actual, 1.0E-12, expr);
     }
   }
 }

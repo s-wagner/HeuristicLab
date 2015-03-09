@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2014 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2015 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -20,7 +20,6 @@
 #endregion
 
 using System;
-using System.Linq;
 using System.Reflection;
 using System.Text;
 using HeuristicLab.Common;
@@ -30,12 +29,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace HeuristicLab.Tests {
   [TestClass]
   public class CloningConstructorTest {
-    // Use ClassInitialize to run code before running the first test in the class
-    [ClassInitialize]
-    public static void MyClassInitialize(TestContext testContext) {
-      PluginLoader.Assemblies.Any();
-    }
-
     [TestMethod]
     [TestCategory("General")]
     [TestCategory("Essential")]
@@ -46,6 +39,7 @@ namespace HeuristicLab.Tests {
       foreach (Type deepCloneableType in ApplicationManager.Manager.GetTypes(typeof(IDeepCloneable))) {
         //test only types contained in HL plugin assemblies
         if (!PluginLoader.Assemblies.Contains(deepCloneableType.Assembly)) continue;
+        if (deepCloneableType.IsSealed) continue;
 
         bool found = false;
         foreach (ConstructorInfo constructor in deepCloneableType.GetConstructors(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public)) {

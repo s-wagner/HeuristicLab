@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2014 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2015 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -23,6 +23,7 @@ using System;
 using HeuristicLab.Common;
 using HeuristicLab.Core;
 using HeuristicLab.Data;
+using HeuristicLab.Optimization;
 using HeuristicLab.Parameters;
 using HeuristicLab.Persistence.Default.CompositeSerializers.Storable;
 
@@ -34,7 +35,7 @@ namespace HeuristicLab.Encodings.IntegerVectorEncoding {
   /// </summary>
   [Item("RoundedHeuristicCrossover", "The heuristic crossover produces offspring that extend the better parent in direction from the worse to the better parent.")]
   [StorableClass]
-  public class RoundedHeuristicCrossover : BoundedIntegerVectorCrossover {
+  public class RoundedHeuristicCrossover : BoundedIntegerVectorCrossover, ISingleObjectiveOperator {
     /// <summary>
     /// Whether the problem is a maximization or minimization problem.
     /// </summary>

@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2014 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2015 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -23,7 +23,7 @@ using HeuristicLab.Core;
 using HeuristicLab.Data;
 
 namespace HeuristicLab.Optimization {
-  public interface ISingleObjectiveMoveEvaluator : IOperator {
+  public interface ISingleObjectiveMoveEvaluator : IOperator, ISingleObjectiveOperator {
     ILookupParameter<DoubleValue> QualityParameter { get; }
     ILookupParameter<DoubleValue> MoveQualityParameter { get; }
   }

@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2014 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2015 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -37,7 +37,7 @@ namespace HeuristicLab.Algorithms.SimulatedAnnealing {
   /// </summary>
   [Item("SimulatedAnnealingImprovementOperator", "A simulated annealing improvement operator.")]
   [StorableClass]
-  public sealed class SimulatedAnnealingImprovementOperator : SingleSuccessorOperator, ILocalImprovementOperator, IStochasticOperator {
+  public sealed class SimulatedAnnealingImprovementOperator : SingleSuccessorOperator, ILocalImprovementAlgorithmOperator, IStochasticOperator, ISingleObjectiveOperator {
     #region IGenericLocalImprovementOperator Properties
     public Type ProblemType { get { return typeof(ISingleObjectiveHeuristicOptimizationProblem); } }
     public IProblem Problem {

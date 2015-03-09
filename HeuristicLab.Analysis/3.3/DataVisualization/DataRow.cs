@@ -1,6 +1,6 @@
 #region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2014 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2015 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -75,6 +75,7 @@ namespace HeuristicLab.Analysis {
       this.VisualProperties = (DataRowVisualProperties)cloner.Clone(original.visualProperties);
       this.values = new ObservableList<double>(original.values);
     }
+    public DataRow() : this("DataRow") { }
     public DataRow(string name)
       : base(name) {
       if (string.IsNullOrEmpty(name)) throw new ArgumentException("Name of a DataRow cannot be empty", name);
@@ -114,6 +115,10 @@ namespace HeuristicLab.Analysis {
 
     private void VisualProperties_PropertyChanged(object sender, PropertyChangedEventArgs e) {
       OnVisualPropertiesChanged();
+    }
+    protected override void OnNameChanged() {
+      base.OnNameChanged();
+      VisualProperties.DisplayName = Name;
     }
   }
 }

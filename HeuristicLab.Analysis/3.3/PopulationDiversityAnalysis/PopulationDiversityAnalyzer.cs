@@ -1,6 +1,6 @@
 #region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2014 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2015 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -39,7 +39,7 @@ namespace HeuristicLab.Analysis {
   [Obsolete]
   [Item("PopulationDiversityAnalyzer", "An operator for analyzing the solution diversity in a population.")]
   [StorableClass]
-  public abstract class PopulationDiversityAnalyzer<T> : SingleSuccessorOperator, IAnalyzer where T : class, IItem {
+  public abstract class PopulationDiversityAnalyzer<T> : SingleSuccessorOperator, IAnalyzer, ISingleObjectiveOperator where T : class, IItem {
     public virtual bool EnabledByDefault {
       get { return false; }
     }

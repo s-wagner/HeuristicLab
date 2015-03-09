@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2014 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2015 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -21,6 +21,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using HeuristicLab.Common;
 using HeuristicLab.Problems.DataAnalysis;
 
@@ -30,9 +31,10 @@ namespace HeuristicLab.DataPreprocessing {
     private readonly IPreprocessingContext context;
 
     private Dataset ExportedDataset {
-      get { return exporteDataset ?? (exporteDataset = context.Data.ExportToDataset()); }
+      get {
+        return context.Data.ExportToDataset();
+      }
     }
-    private Dataset exporteDataset;
 
     private IList<ITransformation> Transformations { get { return context.Data.Transformations; } }
 
@@ -57,6 +59,12 @@ namespace HeuristicLab.DataPreprocessing {
       }
 
       SetTrainingAndTestPartition(problemData);
+      // set the input variables to the correct checked state
+      var inputVariables = problemData.InputVariables.ToDictionary(x => x.Value, x => x);
+      foreach (var variable in oldProblemData.InputVariables) {
+        bool @checked = oldProblemData.InputVariables.ItemChecked(variable);
+        problemData.InputVariables.SetItemCheckedState(inputVariables[variable.Value], @checked);
+      }
 
       return problemData;
     }

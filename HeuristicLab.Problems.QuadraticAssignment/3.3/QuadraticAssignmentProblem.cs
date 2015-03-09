@@ -1,6 +1,6 @@
 #region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2014 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2015 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -301,7 +301,12 @@ namespace HeuristicLab.Problems.QuadraticAssignment {
       Operators.Add(new BestQAPSolutionAnalyzer());
       Operators.Add(new QAPAlleleFrequencyAnalyzer());
       Operators.Add(new QAPPopulationDiversityAnalyzer());
+
+      Operators.Add(new QAPExhaustiveInsertionLocalImprovement());
+      Operators.Add(new QAPExhaustiveInversionLocalImprovement());
+      Operators.Add(new QAPStochasticScrambleLocalImprovement());
       Operators.Add(new QAPExhaustiveSwap2LocalImprovement());
+
       Operators.Add(new QAPSimilarityCalculator());
       ParameterizeAnalyzers();
       ParameterizeOperators();

@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2014 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2015 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -23,7 +23,7 @@ namespace HeuristicLab.Optimization {
   /// <summary>
   /// An interface which represents an operator for similarity calculation between single objective solutions.
   /// </summary>
-  public interface ISingleObjectiveSolutionSimilarityCalculator : ISolutionSimilarityCalculator {
+  public interface ISingleObjectiveSolutionSimilarityCalculator : ISolutionSimilarityCalculator, ISingleObjectiveOperator {
     string SolutionVariableName { get; set; }
     string QualityVariableName { get; set; }
   }

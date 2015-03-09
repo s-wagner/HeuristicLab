@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2014 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2015 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -20,15 +20,13 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.IO;
-
+using System.IO.Compression;
+using System.Linq;
 using HeuristicLab.PluginInfrastructure;
 
 namespace HeuristicLab.MathJax {
-  [Plugin("HeuristicLab.MathJax", "HeuristicLab transport plugin for MathJax (www.mathjax.org) , an open source JavaScript display engine for mathematics that works in all browsers", "1.1.11170")]
+  [Plugin("HeuristicLab.MathJax", "HeuristicLab transport plugin for MathJax (www.mathjax.org) , an open source JavaScript display engine for mathematics that works in all browsers", "1.1.12009")]
   [PluginFile("HeuristicLab.MathJax-1.1.dll", PluginFileType.Assembly)]
   [PluginFile("MathJax license.txt", PluginFileType.License)]
   [PluginFile("mathjax.zip", PluginFileType.Data)]
@@ -37,8 +35,7 @@ namespace HeuristicLab.MathJax {
     public override void OnLoad() {
       base.OnLoad();
       if (!Directory.EnumerateFiles(AppDomain.CurrentDomain.BaseDirectory, "mathjax.js", SearchOption.TopDirectoryOnly).Any()) {
-        var zip = new ICSharpCode.SharpZipLib.Zip.FastZip();
-        zip.ExtractZip("mathjax.zip", AppDomain.CurrentDomain.BaseDirectory, "");
+        ZipFile.ExtractToDirectory("mathjax.zip", AppDomain.CurrentDomain.BaseDirectory);
       }
     }
   }

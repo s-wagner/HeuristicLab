@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2014 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2015 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -19,18 +19,21 @@
  */
 #endregion
 
+using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace HeuristicLab.Problems.Instances.VehicleRouting {
-  public abstract class SolomonFormatInstanceProvider : VRPInstanceProvider {
-    protected override VRPData LoadData(Stream stream) {
+  public abstract class SolomonFormatInstanceProvider : VRPInstanceProvider<CVRPTWData> {
+    protected override CVRPTWData LoadData(Stream stream) {
       return LoadInstance(new SolomonParser(stream));
     }
 
     public override bool CanImportData {
       get { return true; }
     }
-    public override VRPData ImportData(string path) {
+    public override CVRPTWData ImportData(string path) {
       return LoadInstance(new SolomonParser(path));
     }
 
@@ -52,6 +55,31 @@ namespace HeuristicLab.Problems.Instances.VehicleRouting {
       instance.Name = parser.ProblemName;
 
       return instance;
+    }
+
+    protected override void LoadSolution(Stream stream, CVRPTWData instance) {
+      using (var reader = new StreamReader(stream)) {
+        string instanceName = ExtractValue(reader.ReadLine());
+        string authors = ExtractValue(reader.ReadLine());
+        string date = ExtractValue(reader.ReadLine());
+        string reference = ExtractValue(reader.ReadLine());
+        reader.ReadLine(); // Solution
+
+        var routesQuery =
+          from line in reader.ReadAllLines()
+          where !string.IsNullOrEmpty(line)
+          let tokens = ExtractValue(line).Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries)
+          let stops = tokens.Select(int.Parse).Select(s => s - 1)
+          select stops;
+
+        var routes = routesQuery.Select(s => s.ToArray()).ToArray();
+
+        instance.BestKnownTour = routes;
+      }
+    }
+
+    private static string ExtractValue(string line) {
+      return line.Split(new[] { ':' }, StringSplitOptions.RemoveEmptyEntries).Last().Trim();
     }
   }
 }

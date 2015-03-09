@@ -1,6 +1,6 @@
 #region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2014 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2015 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -226,17 +226,7 @@ namespace HeuristicLab.Optimization {
     }
     public virtual void CollectResultValues(IDictionary<string, IItem> values) {
       values.Add("Execution Time", new TimeSpanValue(ExecutionTime));
-      CollectResultsRecursively("", Results, values);
-    }
-
-    private void CollectResultsRecursively(string path, ResultCollection results, IDictionary<string, IItem> values) {
-      foreach (IResult result in results) {
-        values.Add(path + result.Name, result.Value);
-        ResultCollection childCollection = result.Value as ResultCollection;
-        if (childCollection != null) {
-          CollectResultsRecursively(path + result.Name + ".", childCollection, values);
-        }
-      }
+      Results.CollectResultValues(values);
     }
 
     protected override IEnumerable<KeyValuePair<string, IItem>> GetCollectedValues(IValueParameter param) {

@@ -1,6 +1,6 @@
 #region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2014 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2015 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -110,7 +110,8 @@ namespace HeuristicLab.Problems.TravelingSalesman.Views {
               if (permutation != null && permutation.Length > 1) {
                 Point[] tour = new Point[permutation.Length];
                 for (int i = 0; i < permutation.Length; i++) {
-                  tour[i] = points[permutation[i]];
+                  if (permutation[i] >= 0 && permutation[i] < points.Length)
+                    tour[i] = points[permutation[i]];
                 }
                 graphics.DrawPolygon(Pens.Black, tour);
               }

@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2014 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2015 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -85,8 +85,11 @@ namespace HeuristicLab.Problems.LawnMower {
       Parameters.Add(new ValueParameter<Grammar>(LawnMowerGrammarParameterName, "Grammar for the lawn mower program.",
                      new Grammar()));
       Maximization.Value = true;
-      InitializeOperators();
 
+      GrammarParameter.Value.MaximumFunctionDefinitions = MaxFunctionDefinitionsParameter.Value.Value;
+      GrammarParameter.Value.MaximumFunctionArguments = MaxArgumentDefinitionsParameter.Value.Value;
+
+      InitializeOperators();      
       RegisterEventHandlers();
     }
 

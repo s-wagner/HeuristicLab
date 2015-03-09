@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2014 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2015 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -36,7 +36,7 @@ namespace HeuristicLab.Optimization.Operators {
   [Item("FastNonDominatedSort", @"FastNonDominatedSort as described in: Deb, Pratap, Agrawal and Meyarivan, ""A Fast and Elitist Multiobjective
 Genetic Algorithm: NSGA-II"", IEEE Transactions On Evolutionary Computation, Vol. 6, No. 2, April 2002")]
   [StorableClass]
-  public class FastNonDominatedSort : SingleSuccessorOperator {
+  public class FastNonDominatedSort : SingleSuccessorOperator, IMultiObjectiveOperator {
     private enum DominationResult { Dominates, IsDominated, IsNonDominated };
 
     public IValueLookupParameter<BoolArray> MaximizationParameter {

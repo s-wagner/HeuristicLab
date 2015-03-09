@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2014 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2015 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -32,11 +32,12 @@ using HeuristicLab.Optimization;
 using HeuristicLab.Optimization.Operators;
 using HeuristicLab.Parameters;
 using HeuristicLab.Persistence.Default.CompositeSerializers.Storable;
+using HeuristicLab.PluginInfrastructure;
 
 namespace HeuristicLab.Problems.ExternalEvaluation {
   [Item("External Evaluation Problem", "A problem that is evaluated in a different process.")]
-  [Creatable("Problems")]
   [StorableClass]
+  [NonDiscoverableType]
   public sealed class ExternalEvaluationProblem : ParameterizedNamedItem, ISingleObjectiveHeuristicOptimizationProblem, IStorableContent {
     public string Filename { get; set; }
 
@@ -119,6 +120,9 @@ namespace HeuristicLab.Problems.ExternalEvaluation {
     public IEnumerable<IItem> Operators {
       get { return OperatorsParameter.Value; }
     }
+
+    public IEnumerable<IParameterizedItem> ExecutionContextItems { get { return new[] { this }; } }
+
     private BestScopeSolutionAnalyzer BestScopeSolutionAnalyzer {
       get { return OperatorsParameter.Value.OfType<BestScopeSolutionAnalyzer>().FirstOrDefault(); }
     }
@@ -239,7 +243,6 @@ namespace HeuristicLab.Problems.ExternalEvaluation {
       BestScopeSolutionAnalyzer.ResultsParameter.ActualName = "Results";
       BestScopeSolutionAnalyzer.QualityParameter.ActualName = Evaluator.QualityParameter.ActualName;
       BestScopeSolutionAnalyzer.BestKnownQualityParameter.ActualName = BestKnownQualityParameter.Name;
-      BestScopeSolutionAnalyzer.BestKnownSolutionParameter.ActualName = BestKnownSolutionParameter.Name;
       BestScopeSolutionAnalyzer.MaximizationParameter.ActualName = MaximizationParameter.Name;
     }
     private void ParameterizeEvaluator() {

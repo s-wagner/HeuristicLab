@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2014 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2015 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -19,6 +19,7 @@
  */
 #endregion
 
+using System.IO;
 using HeuristicLab.Data;
 using HeuristicLab.Problems.Instances;
 using HeuristicLab.Problems.VehicleRouting.Encodings.Potvin;
@@ -43,6 +44,13 @@ namespace HeuristicLab.Problems.VehicleRouting.Interpreters {
           }
         }
 
+        if (data.BestKnownTourVehicleAssignment != null) {
+          if (data.BestKnownTourVehicleAssignment.Length != solution.VehicleAssignment.Length)
+            throw new InvalidDataException("Number of vehicles of the best known tour does not match the number vehicles of the instance.");
+          for (int i = 0; i < data.BestKnownTourVehicleAssignment.Length; i++)
+            solution.VehicleAssignment[i] = data.BestKnownTourVehicleAssignment[i];
+        }
+
         return solution;
       } else {
         return null;
@@ -50,7 +58,7 @@ namespace HeuristicLab.Problems.VehicleRouting.Interpreters {
     }
 
     protected abstract IVRPProblemInstance CreateProblemInstance();
-    
+
     public VRPInstanceDescription Interpret(IVRPData data) {
       VRPInstanceDescription result = new VRPInstanceDescription();
       result.Name = data.Name;

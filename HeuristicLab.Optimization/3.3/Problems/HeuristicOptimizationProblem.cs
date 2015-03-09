@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2014 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2015 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -77,11 +77,11 @@ namespace HeuristicLab.Optimization {
     IParameter IHeuristicOptimizationProblem.EvaluatorParameter { get { return EvaluatorParameter; } }
 
     public U SolutionCreator {
-      get { return SolutionCreatorParameter.Value; }
+      get { return (U)SolutionCreatorParameter.Value; }
       protected set { SolutionCreatorParameter.Value = value; }
     }
-    public ValueParameter<U> SolutionCreatorParameter {
-      get { return (ValueParameter<U>)Parameters[SolutionCreateParameterName]; }
+    public IValueParameter SolutionCreatorParameter {
+      get { return (IValueParameter)Parameters[SolutionCreateParameterName]; }
     }
     ISolutionCreator IHeuristicOptimizationProblem.SolutionCreator { get { return SolutionCreator; } }
     IParameter IHeuristicOptimizationProblem.SolutionCreatorParameter { get { return SolutionCreatorParameter; } }
@@ -98,7 +98,7 @@ namespace HeuristicLab.Optimization {
         handler(this, EventArgs.Empty);
     }
 
-    private void SolutionCreatorParameter_ValueChanged(object sender, EventArgs e) {
+    protected virtual void SolutionCreatorParameter_ValueChanged(object sender, EventArgs e) {
       OnSolutionCreatorChanged();
     }
     public event EventHandler SolutionCreatorChanged;

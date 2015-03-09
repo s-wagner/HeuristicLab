@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2014 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2015 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -54,7 +54,7 @@ namespace HeuristicLab.Problems.DataAnalysis.Symbolic.Views {
 
     private void RegisterVariableNamesViewContentEvents() {
       variableNamesView.Content.ItemsAdded += new CollectionItemsChangedEventHandler<StringValue>(VariableNames_Changed);
-      variableNamesView.Content.ItemsRemoved += new CollectionItemsChangedEventHandler<StringValue>(VariableNames_Changed);
+      variableNamesView.Content.ItemsRemoved += new CollectionItemsChangedEventHandler<StringValue>(VariableNames_Removed);
       variableNamesView.Content.CheckedItemsChanged += new CollectionItemsChangedEventHandler<StringValue>(VariableNames_Changed);
       variableNamesView.Content.CollectionReset += new CollectionItemsChangedEventHandler<StringValue>(VariableNames_Changed);
       foreach (var variable in variableNamesView.Content) {
@@ -65,7 +65,7 @@ namespace HeuristicLab.Problems.DataAnalysis.Symbolic.Views {
 
     private void DeregisterVariableNamesViewContentEvents() {
       variableNamesView.Content.ItemsAdded -= new CollectionItemsChangedEventHandler<StringValue>(VariableNames_Changed);
-      variableNamesView.Content.ItemsRemoved -= new CollectionItemsChangedEventHandler<StringValue>(VariableNames_Changed);
+      variableNamesView.Content.ItemsRemoved -= new CollectionItemsChangedEventHandler<StringValue>(VariableNames_Removed);
       variableNamesView.Content.CheckedItemsChanged -= new CollectionItemsChangedEventHandler<StringValue>(VariableNames_Changed);
       variableNamesView.Content.CollectionReset -= new CollectionItemsChangedEventHandler<StringValue>(VariableNames_Changed);
       foreach (var variable in variableNamesView.Content) {
@@ -117,6 +117,12 @@ namespace HeuristicLab.Problems.DataAnalysis.Symbolic.Views {
       UpdateContent();
     }
 
+    private void VariableNames_Removed(object sender, CollectionItemsChangedEventArgs<StringValue> e) {
+      foreach (var newVar in e.Items)
+        newVar.ValueChanged -= new EventHandler(Variable_ValueChanged);
+      UpdateContent();
+    }
+
     private void Variable_ValueChanged(object sender, EventArgs e) {
       UpdateContent();
     }
@@ -125,7 +131,8 @@ namespace HeuristicLab.Problems.DataAnalysis.Symbolic.Views {
       if (Content != null) {
         Content.Fixed = true;
         DeregisterContentEvents();
-        Content.VariableNames = variableNamesView.Content.CheckedItems.Select(x => x.Value).ToList();
+        Content.VariableNames = variableNamesView.Content.CheckedItems.Select(x => x.Value);
+        Content.AllVariableNames = variableNamesView.Content.Select(x => x.Value);
         RegisterContentEvents();
       }
     }

@@ -11,9 +11,10 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>HeuristicLab.Tests</RootNamespace>
     <AssemblyName>HeuristicLab.Tests</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -23,6 +24,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -31,6 +33,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>true</SignAssembly>
@@ -53,6 +56,7 @@
     <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
     <CodeAnalysisRuleDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules</CodeAnalysisRuleDirectories>
     <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
     <OutputPath>..\bin\</OutputPath>
@@ -69,6 +73,7 @@
     <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
     <CodeAnalysisRuleDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules</CodeAnalysisRuleDirectories>
     <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <DebugSymbols>true</DebugSymbols>
@@ -85,6 +90,7 @@
     <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
     <CodeAnalysisRuleDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules</CodeAnalysisRuleDirectories>
     <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
     <OutputPath>..\bin\</OutputPath>
@@ -99,9 +105,10 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <CodeAnalysisRuleSetDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\\Rule Sets</CodeAnalysisRuleSetDirectories>
     <CodeAnalysisRuleDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules</CodeAnalysisRuleDirectories>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ALGLIB-3.7.0, Version=3.7.0.0, Culture=neutral, PublicKeyToken=ba48961d6f65dcec, processorArchitecture=MSIL">
+    <Reference Include="ALGLIB-3.7.0">
       <HintPath>..\bin\ALGLIB-3.7.0.dll</HintPath>
       <Private>False</Private>
     </Reference>
@@ -121,9 +128,14 @@
       <HintPath>..\bin\HeuristicLab.Algorithms.LocalSearch-3.3.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="HeuristicLab.Algorithms.OffspringSelectionGeneticAlgorithm-3.3, Version=3.3.0.0, Culture=neutral, PublicKeyToken=ba48961d6f65dcec, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="HeuristicLab.Algorithms.OffspringSelectionGeneticAlgorithm-3.3">
       <HintPath>..\bin\HeuristicLab.Algorithms.OffspringSelectionGeneticAlgorithm-3.3.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="HeuristicLab.Algorithms.ParameterlessPopulationPyramid-3.3">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\bin\HeuristicLab.Algorithms.ParameterlessPopulationPyramid-3.3.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="HeuristicLab.Algorithms.ParticleSwarmOptimization-3.3">
       <HintPath>..\bin\HeuristicLab.Algorithms.ParticleSwarmOptimization-3.3.dll</HintPath>
@@ -149,7 +161,7 @@
       <HintPath>..\bin\HeuristicLab.Algorithms.VariableNeighborhoodSearch-3.3.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="HeuristicLab.Analysis-3.3, Version=3.3.0.0">
+    <Reference Include="HeuristicLab.Analysis-3.3">
       <HintPath>..\bin\HeuristicLab.Analysis-3.3.dll</HintPath>
       <Private>False</Private>
     </Reference>
@@ -213,6 +225,14 @@
       <HintPath>..\bin\HeuristicLab.Optimization.Operators-3.3.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="HeuristicLab.Optimization.Views-3.3">
+      <HintPath>..\bin\HeuristicLab.Optimization.Views-3.3.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="HeuristicLab.Optimizer-3.3">
+      <HintPath>..\bin\HeuristicLab.Optimizer-3.3.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="HeuristicLab.ParallelEngine-3.3">
       <HintPath>..\bin\HeuristicLab.ParallelEngine-3.3.dll</HintPath>
       <Private>False</Private>
@@ -231,6 +251,11 @@
     </Reference>
     <Reference Include="HeuristicLab.Problems.ArtificialAnt-3.4">
       <HintPath>..\bin\HeuristicLab.Problems.ArtificialAnt-3.4.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="HeuristicLab.Problems.Binary-3.3, Version=3.3.0.0, Culture=neutral, PublicKeyToken=ba48961d6f65dcec, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\bin\HeuristicLab.Problems.Binary-3.3.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="HeuristicLab.Problems.DataAnalysis-3.4">
@@ -253,9 +278,24 @@
       <HintPath>..\bin\HeuristicLab.Problems.DataAnalysis.Symbolic.TimeSeriesPrognosis-3.4.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="HeuristicLab.Problems.GrammaticalEvolution-3.3, Version=3.3.0.0, Culture=neutral, PublicKeyToken=ba48961d6f65dcec, processorArchitecture=MSIL">
+    <Reference Include="HeuristicLab.Problems.ExternalEvaluation-3.4, Version=3.4.0.0, Culture=neutral, PublicKeyToken=ba48961d6f65dcec, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\bin\HeuristicLab.Problems.ExternalEvaluation-3.4.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="HeuristicLab.Problems.ExternalEvaluation.GP-3.5, Version=3.5.0.0, Culture=neutral, PublicKeyToken=ba48961d6f65dcec, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\bin\HeuristicLab.Problems.ExternalEvaluation.GP-3.5.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="HeuristicLab.Problems.ExternalEvaluation.Views-3.4, Version=3.4.0.0, Culture=neutral, PublicKeyToken=ba48961d6f65dcec, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\bin\HeuristicLab.Problems.ExternalEvaluation.Views-3.4.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="HeuristicLab.Problems.GrammaticalEvolution-3.3">
       <HintPath>..\bin\HeuristicLab.Problems.GrammaticalEvolution-3.3.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="HeuristicLab.Problems.Instances-3.3">
       <HintPath>..\bin\HeuristicLab.Problems.Instances-3.3.dll</HintPath>
@@ -297,6 +337,16 @@
       <HintPath>..\bin\HeuristicLab.Problems.LinearAssignment-3.3.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="HeuristicLab.Problems.Programmable-3.3, Version=3.3.0.0, Culture=neutral, PublicKeyToken=ba48961d6f65dcec, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\bin\HeuristicLab.Problems.Programmable-3.3.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="HeuristicLab.Problems.Programmable.Views-3.3, Version=3.3.0.0, Culture=neutral, PublicKeyToken=ba48961d6f65dcec, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\bin\HeuristicLab.Problems.Programmable.Views-3.3.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="HeuristicLab.Problems.QuadraticAssignment-3.3">
       <HintPath>..\bin\HeuristicLab.Problems.QuadraticAssignment-3.3.dll</HintPath>
       <Private>False</Private>
@@ -321,6 +371,10 @@
       <HintPath>..\bin\HeuristicLab.Random-3.3.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="HeuristicLab.Scripting-3.3">
+      <HintPath>..\bin\HeuristicLab.Scripting-3.3.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="HeuristicLab.Selection-3.3">
       <HintPath>..\bin\HeuristicLab.Selection-3.3.dll</HintPath>
       <Private>False</Private>
@@ -329,6 +383,11 @@
       <HintPath>..\bin\HeuristicLab.SequentialEngine-3.3.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="LibSVM-3.12">
+      <HintPath>..\bin\LibSVM-3.12.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <Private>false</Private>
     </Reference>
@@ -338,6 +397,7 @@
     </Reference>
     <Reference Include="System.Drawing" />
     <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
     <CodeAnalysisDependentAssemblyPaths Condition=" '$(VS100COMNTOOLS)' != '' " Include="$(VS100COMNTOOLS)..\IDE\PrivateAssemblies">
@@ -345,6 +405,7 @@
     </CodeAnalysisDependentAssemblyPaths>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AssemblyInitializer.cs" />
     <Compile Include="HeuristicLab-3.3\AlgorithmExtensions.cs" />
     <Compile Include="HeuristicLab-3.3\CloningConstructorTest.cs" />
     <Compile Include="HeuristicLab-3.3\CollectObjectGraphTest.cs" />
@@ -356,10 +417,27 @@
     <Compile Include="HeuristicLab-3.3\ParameterVisibilityTest.cs" />
     <Compile Include="HeuristicLab-3.3\PluginDependenciesTest.cs" />
     <Compile Include="HeuristicLab-3.3\PluginLoader.cs" />
+    <Compile Include="HeuristicLab-3.3\Samples\EsGriewankSampleTest.cs" />
+    <Compile Include="HeuristicLab-3.3\Samples\GaussianProcessRegressionSampleTest.cs" />
+    <Compile Include="HeuristicLab-3.3\Samples\GAVrpSampleTest.cs" />
+    <Compile Include="HeuristicLab-3.3\Samples\GeSymbolicRegressionSampleTest.cs" />
+    <Compile Include="HeuristicLab-3.3\Samples\GPArtificialAntSampleTest.cs" />
+    <Compile Include="HeuristicLab-3.3\Samples\GPLawnMowerSampleTest.cs" />
+    <Compile Include="HeuristicLab-3.3\Samples\GPSymbolicClassificationSampleTest.cs" />
+    <Compile Include="HeuristicLab-3.3\Samples\GPSymbolicRegressionSampleTest.cs" />
     <Compile Include="HeuristicLab-3.3\Samples\GPTimeSeriesSampleTest.cs" />
     <Compile Include="HeuristicLab-3.3\Samples\GPMultiplexerSampleTest.cs" />
-    <Compile Include="HeuristicLab-3.3\Samples\SamplesTest.cs" />
+    <Compile Include="HeuristicLab-3.3\Samples\LocalSearchKnapsackSampleTest.cs" />
+    <Compile Include="HeuristicLab-3.3\Samples\PsoSchwefelSampleTest.cs" />
+    <Compile Include="HeuristicLab-3.3\Samples\RAPGASchedulingSampleTest.cs" />
     <Compile Include="HeuristicLab-3.3\Samples\SamplesUtils.cs" />
+    <Compile Include="HeuristicLab-3.3\Samples\GATspSampleTest.cs" />
+    <Compile Include="HeuristicLab-3.3\Samples\IslandGaTspSampleTest.cs" />
+    <Compile Include="HeuristicLab-3.3\Samples\ScatterSearchVRPSampleTest.cs" />
+    <Compile Include="HeuristicLab-3.3\Samples\SimulatedAnnealingRastriginSampleTest.cs" />
+    <Compile Include="HeuristicLab-3.3\Samples\TabuSearchTspSampleTest.cs" />
+    <Compile Include="HeuristicLab-3.3\Samples\TabuSearchVRPSampleTest.cs" />
+    <Compile Include="HeuristicLab-3.3\Samples\VnsTspSampleTest.cs" />
     <Compile Include="HeuristicLab-3.3\StorableConstructorTest.cs" />
     <Compile Include="HeuristicLab-3.3\ThreadSafeLogTest.cs" />
     <Compile Include="HeuristicLab-3.3\ToStringTest.cs" />
@@ -367,6 +445,13 @@
     <Compile Include="HeuristicLab.Algorithms.DataAnalysis-3.4\GaussianProcessModelTest.cs" />
     <Compile Include="HeuristicLab.Algorithms.DataAnalysis-3.4\GaussianProcessFunctionsTest.cs" />
     <Compile Include="HeuristicLab.Algorithms.DataAnalysis-3.4\GaussianProcessRegressionTest.cs" />
+    <Compile Include="HeuristicLab.Algorithms.ParameterlessPopulationPyramid-3.3\EnumerableBoolEqualityComparerTest.cs" />
+    <Compile Include="HeuristicLab.Algorithms.ParameterlessPopulationPyramid-3.3\LinkageTreeTest.cs" />
+    <Compile Include="HeuristicLab.Algorithms.ParameterlessPopulationPyramid-3.3\ParameterlessPopulationPyramidTest.cs" />
+    <Compile Include="HeuristicLab.Analysis-3.3\BonferroniHolmUnitTests.cs" />
+    <Compile Include="HeuristicLab.Analysis-3.3\ConfidenceIntervalsTests.cs" />
+    <Compile Include="HeuristicLab.Analysis-3.3\EffectSizeUnitTests.cs" />
+    <Compile Include="HeuristicLab.Analysis-3.3\KruskalWallisUnitTests.cs" />
     <Compile Include="HeuristicLab.Analysis-3.3\MultidimensionalScalingTest.cs" />
     <Compile Include="HeuristicLab.Collections-3.3\BidirectionalDictionaryTest.cs" />
     <Compile Include="HeuristicLab.Collections-3.3\BidirectionalLookupTest.cs" />
@@ -444,6 +529,8 @@
     <Compile Include="HeuristicLab.Problems.DataAnalysis-3.4\ThresholdCalculatorsTest.cs" />
     <Compile Include="HeuristicLab.Problems.DataAnalysis-3.4\OnlineCalculatorPerformanceTest.cs" />
     <Compile Include="HeuristicLab.Problems.DataAnalysis-3.4\StatisticCalculatorsTest.cs" />
+    <Compile Include="HeuristicLab.Problems.DataAnalysis.Symbolic-3.4\SymbolicExpressionTreeBottomUpSimilarityCalculatorTest.cs" />
+    <Compile Include="HeuristicLab.Problems.DataAnalysis.Symbolic-3.4\SymbolicExpressionTreeMaxCommonSubtreeSimilarityCalculatorTest.cs" />
     <Compile Include="HeuristicLab.Problems.DataAnalysis.Symbolic.TimeSeriesPrognosis-3.4\SymbolicDataAnalysisExpressionTreeInterpreterTest.cs" />
     <Compile Include="HeuristicLab.Problems.DataAnalysis.Symbolic.TimeSeriesPrognosis-3.4\Util.cs" />
     <Compile Include="HeuristicLab.Problems.Instances.DataAnalysis-3.3\RegressionInstanceProviderTest.cs" />
@@ -451,8 +538,6 @@
     <Compile Include="HeuristicLab.Problems.DataAnalysis.Symbolic-3.4\SymbolicDataAnalysisExpressionCrossoverTest.cs" />
     <Compile Include="HeuristicLab.Problems.DataAnalysis.Symbolic-3.4\SymbolicDataAnalysisExpressionTreeInterpreterTest.cs" />
     <Compile Include="HeuristicLab.Problems.DataAnalysis.Symbolic-3.4\SymbolicDataAnalysisExpressionTreeSimplifierTest.cs" />
-    <Compile Include="HeuristicLab.Problems.DataAnalysis.Symbolic-3.4\SymbolicExpressionImporter.cs" />
-    <Compile Include="HeuristicLab.Problems.DataAnalysis.Symbolic-3.4\Token.cs" />
     <Compile Include="HeuristicLab.Problems.DataAnalysis.Symbolic-3.4\Util.cs" />
     <Compile Include="HeuristicLab.Problems.Instances-3.3\CordeauGQAPInstanceProviderTest.cs" />
     <Compile Include="HeuristicLab.Problems.Instances-3.3\ElloumiCTAPInstanceProviderTest.cs" />
@@ -476,7 +561,41 @@
     <Compile Include="HeuristicLab.Problems.LinearAssignment-3.3\LinearAssignmentProblemSolverTest.cs" />
     <Compile Include="HeuristicLab.Problems.VehicleRouting-3.4\VRPInstancesTest.cs" />
     <Compile Include="HeuristicLab.Random-3.3\RandomEnumerableSampleTest.cs" />
+    <Compile Include="HeuristicLab.Scripting-3.3\GAQAPScriptTest.cs" />
+    <Compile Include="HeuristicLab.Scripting-3.3\GridSearchRFClassificationScriptTest.cs" />
+    <Compile Include="HeuristicLab.Scripting-3.3\GridSearchRFRegressionScriptTest.cs" />
+    <Compile Include="HeuristicLab.Scripting-3.3\GridSearchSVMClassificationScriptTest.cs" />
+    <Compile Include="HeuristicLab.Scripting-3.3\GridSearchSVMRegressionScriptTest.cs" />
+    <Compile Include="HeuristicLab.Scripting-3.3\Script Sources\ScriptSources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ScriptSources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="HeuristicLab.Scripting-3.3\ScriptingUtils.cs" />
+    <Compile Include="HeuristicLab.Scripting-3.3\GUIAutomationScriptTest.cs" />
+    <Compile Include="HeuristicLab.Scripting-3.3\OSGARastriginScriptTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="HeuristicLab.Scripting-3.3\Script Sources\GridSearchRFClassificationScriptSource.cs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Compile>
+    <Compile Include="HeuristicLab.Scripting-3.3\Script Sources\GridSearchRFRegressionScriptSource.cs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Compile>
+    <Compile Include="HeuristicLab.Scripting-3.3\Script Sources\GridSearchSVMClassificationScriptSource.cs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Compile>
+    <Compile Include="HeuristicLab.Scripting-3.3\Script Sources\GridSearchSVMRegressionScriptSource.cs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Compile>
+    <Compile Include="HeuristicLab.Scripting-3.3\Script Sources\GAQAPScriptSource.cs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Compile>
+    <Compile Include="HeuristicLab.Scripting-3.3\Script Sources\OSGARastriginScriptSource.cs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Compile>
+    <Compile Include="HeuristicLab.Scripting-3.3\Script Sources\GUIAutomationScriptSource.cs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Compile>
     <Compile Include="TestRandom.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -516,6 +635,13 @@
     <Content Include="Test Resources\co2.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="HeuristicLab.Scripting-3.3\Script Sources\ScriptSources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>ScriptSources.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>HeuristicLab.Tests</CustomToolNamespace>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

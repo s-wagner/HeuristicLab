@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2014 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2015 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -47,8 +47,8 @@ namespace HeuristicLab.Problems.Instances.DataAnalysis {
 
     protected override List<List<double>> GenerateValues() {
       List<List<double>> data = new List<List<double>>();
-      data.Add(ValueGenerator.GenerateSteps(0, 100, 1).ToList());
-      data[0].AddRange(ValueGenerator.GenerateSteps(0, 100, 0.1));
+      data.Add(ValueGenerator.GenerateSteps(0m, 100, 1).Select(v => (double)v).ToList());
+      data[0].AddRange(ValueGenerator.GenerateSteps(0, 100, 0.1m).Select(v => (double)v));
 
       double x;
       List<double> results = new List<double>();

@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2014 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2015 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -109,6 +109,8 @@ namespace HeuristicLab.Clients.OKB.RunCreation {
     public IEnumerable<IItem> Operators {
       get { return Problem.Operators; }
     }
+
+    public IEnumerable<IParameterizedItem> ExecutionContextItems { get { return new[] { this }; } }
 
     #region Persistence Properties
     [Storable(Name = "ProblemId")]

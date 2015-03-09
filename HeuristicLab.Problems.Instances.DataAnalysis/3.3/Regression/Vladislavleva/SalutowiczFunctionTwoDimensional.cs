@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2014 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2015 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -48,13 +48,13 @@ namespace HeuristicLab.Problems.Instances.DataAnalysis {
     protected override List<List<double>> GenerateValues() {
       List<List<double>> data = new List<List<double>>();
       List<List<double>> trainingData = new List<List<double>>() {
-        ValueGenerator.GenerateSteps(0.05, 10, 0.1).ToList(),
-        ValueGenerator.GenerateSteps(0.05, 10.05, 2).ToList()
+        ValueGenerator.GenerateSteps(0.05m, 10, 0.1m).Select(v => (double)v).ToList(),
+        ValueGenerator.GenerateSteps(0.05m, 10.05m, 2).Select(v => (double)v).ToList()
       };
 
       List<List<double>> testData = new List<List<double>>() {
-        ValueGenerator.GenerateSteps(-0.5, 10.5, 0.05).ToList(),
-        ValueGenerator.GenerateSteps(-0.5, 10.5, 0.5).ToList()
+        ValueGenerator.GenerateSteps(-0.5m, 10.5m, 0.05m).Select(v => (double)v).ToList(),
+        ValueGenerator.GenerateSteps(-0.5m, 10.5m, 0.5m).Select(v => (double)v).ToList()
       };
 
       var trainingComb = ValueGenerator.GenerateAllCombinationsOfValuesInLists(trainingData).ToList<IEnumerable<double>>();

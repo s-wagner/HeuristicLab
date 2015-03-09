@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2014 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2015 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -19,50 +19,74 @@
  */
 #endregion
 
+using System;
+using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
+using System.Linq;
 
 namespace HeuristicLab.Problems.Instances.VehicleRouting {
-  public abstract class CordeauFormatInstanceProvider : VRPInstanceProvider {
-    protected override VRPData LoadData(Stream stream) {
+  public abstract class CordeauFormatInstanceProvider<TData> : VRPInstanceProvider<TData> where TData : MDCVRPData {
+    protected override TData LoadData(Stream stream) {
       return LoadInstance(new CordeauParser(stream));
     }
 
     public override bool CanImportData {
       get { return true; }
     }
-    public override VRPData ImportData(string path) {
+    public override TData ImportData(string path) {
       return LoadInstance(new CordeauParser(path));
     }
 
-    private MDCVRPTWData LoadInstance(CordeauParser parser) {
-      parser.Parse();
+    internal abstract TData LoadInstance(CordeauParser parser);
 
-      var instance = new MDCVRPTWData();
-      instance.Dimension = parser.Cities + 1;
-      instance.Depots = parser.Depots;
-      instance.Coordinates = parser.Coordinates;
-      instance.Capacity = parser.Capacity;
-      instance.Demands = parser.Demands;
-      instance.DistanceMeasure = DistanceMeasure.Euclidean;
-      instance.ReadyTimes = parser.Readytimes;
-      instance.ServiceTimes = parser.Servicetimes;
-      instance.DueTimes = parser.Duetimes;
-      instance.MaximumVehicles = parser.Vehicles;
+    protected override void LoadSolution(Stream stream, TData instance) {
+      using (var reader = new StreamReader(stream)) {
+        double costs = double.Parse(reader.ReadLine(), CultureInfo.InvariantCulture);
 
-      int depots = parser.Depots;
-      int vehicles = parser.Vehicles / parser.Depots;
-      instance.VehicleDepotAssignment = new int[depots * vehicles];
-      int index = 0;
+        var toursPerDepotQuery =
+          from line in reader.ReadAllLines()
+          where !string.IsNullOrEmpty(line)
+          let tokens = line.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries)
+          let depot = int.Parse(tokens[0])
+          //let vehicle = int.Parse(tokens[1])
+          //let duration = double.Parse(tokens[2], CultureInfo.InvariantCulture)
+          //let load = double.Parse(tokens[3], new CultureInfo.InvariantCulture)
+          let customers = tokens.Skip(4).Where(t => !t.StartsWith("(")).Select(int.Parse)
+          let numberOfCustomers = customers.Count()
+          //let serviceTimes = tokens.Skip(5).Where(t => t.StartsWith("(")).Select(t => double.Parse(t.Trim('(', ')'), CultureInfo.InvariantCulture))
+          let stops = customers.Skip(1).Take(numberOfCustomers - 2).Select(s => s - 1)
+          select new { depot, /*vehicle,*/ stops } into assignment
+          group assignment by assignment.depot;
 
-      for (int i = 0; i < depots; i++)
-        for (int j = 0; j < vehicles; j++) {
-          instance.VehicleDepotAssignment[index] = i;
-          index++;
-        }
+        var toursPerDepot = toursPerDepotQuery.Select(d => d.Select(v => v.stops.ToArray()).ToArray()).ToArray();
 
-      instance.Name = parser.ProblemName;
+        instance.BestKnownTour = toursPerDepot.SelectMany(depot => depot).ToArray();
 
-      return instance;
+        instance.BestKnownTourVehicleAssignment = DetermineTourToVehicleAssignment(toursPerDepot, instance.VehicleDepotAssignment);
+      }
+    }
+
+    private static int[] DetermineTourToVehicleAssignment(int[][][] toursPerDepot, int[] vehicleDepotAssignments) {
+      var usedVehiclesPerDepot = toursPerDepot.Select((d, i) => new { i, d }).ToDictionary(k => k.i, v => v.d.Length);
+      var availableVehiclesPerDepot = vehicleDepotAssignments.GroupBy(a => a).ToDictionary(k => k.Key, v => v.Count());
+
+      var tourToVehicle = new List<int>(vehicleDepotAssignments.Length);
+      var unusedVehicles = new List<int>();
+
+      int vehicle = 0;
+      for (int depot = 0; depot < toursPerDepot.Length; depot++) {
+        int used = usedVehiclesPerDepot[depot];
+        tourToVehicle.AddRange(Enumerable.Range(vehicle, used));
+        vehicle += used;
+
+        int unused = availableVehiclesPerDepot[depot] - used;
+        unusedVehicles.AddRange(Enumerable.Range(vehicle, unused));
+        vehicle += unused;
+      }
+      tourToVehicle.AddRange(unusedVehicles);
+
+      return tourToVehicle.ToArray();
     }
   }
 }

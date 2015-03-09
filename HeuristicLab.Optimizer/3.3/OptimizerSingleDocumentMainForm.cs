@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2014 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2015 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -115,6 +115,19 @@ namespace HeuristicLab.Optimizer {
         } else {
           Title = title;
         }
+      }
+    }
+
+    private void optimizerMainForm_DragEnter(object sender, DragEventArgs e) {
+      // perform type checking to ensure that the data being dragged is of an acceptable type
+      e.Effect = e.Data.GetDataPresent(DataFormats.FileDrop) ? DragDropEffects.Copy : DragDropEffects.None;
+
+    }
+
+    private void optimizerMainForm_DragDrop(object sender, DragEventArgs e) {
+      if (e.Data.GetDataPresent(DataFormats.FileDrop)) {
+        string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
+        FileManager.OpenFiles(files);
       }
     }
   }

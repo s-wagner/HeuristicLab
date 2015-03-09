@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2014 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2015 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -32,7 +32,7 @@ using HeuristicLab.Persistence.Default.CompositeSerializers.Storable;
 namespace HeuristicLab.Problems.LinearAssignment {
   [Item("BestLAPSolutionAnalyzer", "Analyzes the best solution found.")]
   [StorableClass]
-  public class BestLAPSolutionAnalyzer : SingleSuccessorOperator, IAnalyzer {
+  public class BestLAPSolutionAnalyzer : SingleSuccessorOperator, IAnalyzer, ISingleObjectiveOperator {
     public bool EnabledByDefault { get { return true; } }
 
     public ILookupParameter<BoolValue> MaximizationParameter {
@@ -100,7 +100,7 @@ namespace HeuristicLab.Problems.LinearAssignment {
       var results = ResultsParameter.ActualValue;
       bool max = MaximizationParameter.ActualValue.Value;
       DoubleValue bestKnownQuality = BestKnownQualityParameter.ActualValue;
-      
+
       var sorted = qualities.Select((x, index) => new { index, x.Value }).OrderBy(x => x.Value).ToArray();
       if (max) sorted = sorted.Reverse().ToArray();
       int i = sorted.First().index;

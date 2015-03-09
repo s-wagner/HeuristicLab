@@ -1,6 +1,6 @@
 #region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2014 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2015 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -37,7 +37,7 @@ namespace HeuristicLab.Problems.VehicleRouting {
   /// </summary>
   [Item("BestPickupAndDeliveryVRPSolutionAnalyzer", "An operator for analyzing the best solution of Pickup and Delivery Routing Problems.")]
   [StorableClass]
-  public sealed class BestPickupAndDeliveryVRPSolutionAnalyzer : SingleSuccessorOperator, IAnalyzer, IPickupAndDeliveryOperator {
+  public sealed class BestPickupAndDeliveryVRPSolutionAnalyzer : SingleSuccessorOperator, IAnalyzer, IPickupAndDeliveryOperator, ISingleObjectiveOperator {
     public ILookupParameter<IVRPProblemInstance> ProblemInstanceParameter {
       get { return (ILookupParameter<IVRPProblemInstance>)Parameters["ProblemInstance"]; }
     }

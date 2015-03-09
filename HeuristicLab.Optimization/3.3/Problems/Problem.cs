@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2014 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2015 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -113,7 +113,15 @@ namespace HeuristicLab.Optimization {
         return OperatorsParameter.Value;
       }
     }
-    IEnumerable<IItem> IProblem.Operators { get { return Operators; } }
+    IEnumerable<IItem> IProblem.Operators { get { return GetOperators(); } }
+
+    protected virtual IEnumerable<IItem> GetOperators() {
+      return Operators;
+    }
+
+    public virtual IEnumerable<IParameterizedItem> ExecutionContextItems {
+      get { yield return this; }
+    }
     #endregion
 
     protected override IEnumerable<KeyValuePair<string, IItem>> GetCollectedValues(IValueParameter param) {

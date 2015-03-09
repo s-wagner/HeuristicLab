@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2014 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2015 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -40,6 +40,8 @@ namespace HeuristicLab.Netron {
       SetStyle(ControlStyles.DoubleBuffer, true);
       SetStyle(ControlStyles.UserPaint, true);
       SetStyle(ControlStyles.ResizeRedraw, true);
+
+      AutoScroll = true;
 
       if (!DesignMode) {
         this.Controller = new Controller(this);

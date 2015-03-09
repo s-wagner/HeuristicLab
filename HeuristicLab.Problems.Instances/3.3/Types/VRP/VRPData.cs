@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2014 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2015 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -24,7 +24,7 @@ namespace HeuristicLab.Problems.Instances {
   /// <summary>
   /// Describes instances of the Vehicle Routing Problem (VRP).
   /// </summary>
-  public abstract class VRPData: IVRPData {
+  public class VRPData : IVRPData {
     /// <summary>
     /// The name of the instance
     /// </summary>
@@ -76,6 +76,10 @@ namespace HeuristicLab.Problems.Instances {
     /// Optional! The best-known solution as a list of tours in path-encoding.
     /// </summary>
     public int[][] BestKnownTour { get; set; }
+    /// <summary>
+    /// Optional! Specifies the used vehicle for a given tour.
+    /// </summary>
+    public int[] BestKnownTourVehicleAssignment { get; set; }
     /// <summary>
     /// Optional! The quality of the best-known solution.
     /// </summary>

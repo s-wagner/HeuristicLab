@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2014 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2015 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -100,7 +100,7 @@ namespace HeuristicLab.Encodings.ScheduleEncoding {
 
     private void RegisterEventHandlers() {
       Tasks.ItemsAdded += TasksOnItemsChanged;
-      Tasks.ItemsRemoved += TasksOnItemsChanged;
+      Tasks.ItemsRemoved += TasksOnItemsRemoved;
       Tasks.ItemsReplaced += TasksOnItemsChanged;
       Tasks.CollectionReset += TasksOnItemsChanged;
       foreach (var task in Tasks) {
@@ -117,6 +117,15 @@ namespace HeuristicLab.Encodings.ScheduleEncoding {
       foreach (var task in e.Items) {
         task.Value.PropertyChanged += TaskOnPropertyChanged;
         task.Value.ToStringChanged += TaskOnToStringChanged;
+      }
+      OnTasksChanged();
+      OnToStringChanged();
+    }
+
+    private void TasksOnItemsRemoved(object sender, CollectionItemsChangedEventArgs<IndexedItem<Task>> e) {
+      foreach (var task in e.Items) {
+        task.Value.PropertyChanged -= TaskOnPropertyChanged;
+        task.Value.ToStringChanged -= TaskOnToStringChanged;
       }
       OnTasksChanged();
       OnToStringChanged();

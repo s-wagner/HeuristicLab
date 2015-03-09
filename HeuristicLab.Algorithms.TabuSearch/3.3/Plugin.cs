@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2014 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2015 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -25,7 +25,7 @@ namespace HeuristicLab.Algorithms.TabuSearch {
   /// <summary>
   /// Plugin class for HeuristicLab.Algorithms.TabuSearch plugin.
   /// </summary>
-  [Plugin("HeuristicLab.Algorithms.TabuSearch", "3.3.10.11173")]
+  [Plugin("HeuristicLab.Algorithms.TabuSearch", "3.3.11.12009")]
   [PluginFile("HeuristicLab.Algorithms.TabuSearch-3.3.dll", PluginFileType.Assembly)]
   [PluginDependency("HeuristicLab.Analysis", "3.3")]
   [PluginDependency("HeuristicLab.Collections", "3.3")]

@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2014 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2015 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -25,6 +25,7 @@ using HeuristicLab.Optimization;
 
 namespace HeuristicLab.Encodings.IntegerVectorEncoding {
   public interface IIntegerVectorStdDevStrategyParameterManipulator : IIntegerVectorStdDevStrategyParameterOperator, IStrategyParameterManipulator {
+    ILookupParameter<DoubleArray> StrategyParameterParameter { get; }
     IValueLookupParameter<DoubleMatrix> BoundsParameter { get; }
   }
 }

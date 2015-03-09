@@ -1,6 +1,6 @@
 #region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2014 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2015 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -34,7 +34,7 @@ namespace HeuristicLab.Problems.Knapsack {
   /// </summary>
   [Item("KnapsackMoveEvaluator", "A base class for operators which evaluate Knapsack moves.")]
   [StorableClass]
-  public abstract class KnapsackMoveEvaluator : SingleSuccessorOperator, IKnapsackMoveEvaluator, IMoveOperator, IBinaryVectorMoveOperator {
+  public abstract class KnapsackMoveEvaluator : SingleSuccessorOperator, IKnapsackMoveEvaluator, IBinaryVectorMoveOperator {
     public ILookupParameter<DoubleValue> QualityParameter {
       get { return (ILookupParameter<DoubleValue>)Parameters["Quality"]; }
     }

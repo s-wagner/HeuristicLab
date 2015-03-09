@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2014 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2015 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -22,41 +22,42 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
-using ICSharpCode.SharpZipLib.Zip;
+using HeuristicLab.Common;
 
 namespace HeuristicLab.Problems.Instances.VehicleRouting {
-  public abstract class VRPInstanceProvider : ProblemInstanceProvider<VRPData>, IVRPInstanceProvider {
+  public abstract class VRPInstanceProvider<TData> : ProblemInstanceProvider<TData>, IVRPInstanceProvider<TData> where TData : IVRPData {
     protected abstract string FileName { get; }
 
     public override IEnumerable<IDataDescriptor> GetDataDescriptors() {
-      Dictionary<string, string> solutions = new Dictionary<string, string>();
+      var solutions = new Dictionary<string, string>();
       var solutionsArchiveName = GetResourceName(FileName + @"\.opt\.zip");
       if (!String.IsNullOrEmpty(solutionsArchiveName)) {
-        using (var solutionsZipFile = new ZipInputStream(GetType().Assembly.GetManifestResourceStream(solutionsArchiveName))) {
-          foreach (var entry in GetZipContents(solutionsZipFile))
-            solutions.Add(entry.Substring(0, entry.Length - ".opt".Length) + "." + FileName, entry);
+        using (var solutionsZipFile = new ZipArchive(GetType().Assembly.GetManifestResourceStream(solutionsArchiveName), ZipArchiveMode.Read)) {
+          foreach (var entry in solutionsZipFile.Entries)
+            solutions.Add(Path.GetFileNameWithoutExtension(entry.Name) + "." + FileName, entry.Name);
         }
       }
       var instanceArchiveName = GetResourceName(FileName + @"\.zip");
       if (String.IsNullOrEmpty(instanceArchiveName)) yield break;
 
-      using (var instanceStream = new ZipInputStream(GetType().Assembly.GetManifestResourceStream(instanceArchiveName))) {
-        foreach (var entry in GetZipContents(instanceStream).OrderBy(x => x)) {
-          string solutionEntry = entry.Substring(0, entry.Length - ".opt".Length) + "." + FileName;
+      using (var instanceStream = new ZipArchive(GetType().Assembly.GetManifestResourceStream(instanceArchiveName), ZipArchiveMode.Read)) {
+        foreach (var entry in instanceStream.Entries.Select(x => x.Name).OrderBy(x => x, new NaturalStringComparer())) {
+          string solutionEntry = Path.GetFileNameWithoutExtension(entry) + "." + FileName;
           yield return new VRPDataDescriptor(Path.GetFileNameWithoutExtension(entry), GetInstanceDescription(), entry, solutions.ContainsKey(solutionEntry) ? solutions[solutionEntry] : String.Empty);
         }
       }
     }
 
-    public override VRPData LoadData(IDataDescriptor id) {
+    public override TData LoadData(IDataDescriptor id) {
       var descriptor = (VRPDataDescriptor)id;
       var instanceArchiveName = GetResourceName(FileName + @"\.zip");
-      using (var instancesZipFile = new ZipFile(GetType().Assembly.GetManifestResourceStream(instanceArchiveName))) {
+      using (var instancesZipFile = new ZipArchive(GetType().Assembly.GetManifestResourceStream(instanceArchiveName))) {
         var entry = instancesZipFile.GetEntry(descriptor.InstanceIdentifier);
-        var stream = instancesZipFile.GetInputStream(entry);
+        var stream = entry.Open();
         var instance = LoadData(stream);
         if (string.IsNullOrEmpty(instance.Name)) {
           instance.Name = Path.GetFileNameWithoutExtension(entry.ToString());
@@ -64,9 +65,9 @@ namespace HeuristicLab.Problems.Instances.VehicleRouting {
 
         if (!String.IsNullOrEmpty(descriptor.SolutionIdentifier)) {
           var solutionsArchiveName = GetResourceName(FileName + @"\.opt\.zip");
-          using (var solutionsZipFile = new ZipFile(GetType().Assembly.GetManifestResourceStream(solutionsArchiveName))) {
+          using (var solutionsZipFile = new ZipArchive(GetType().Assembly.GetManifestResourceStream(solutionsArchiveName))) {
             entry = solutionsZipFile.GetEntry(descriptor.SolutionIdentifier);
-            stream = solutionsZipFile.GetInputStream(entry);
+            stream = entry.Open();
             LoadSolution(stream, instance);
           }
         }
@@ -75,7 +76,25 @@ namespace HeuristicLab.Problems.Instances.VehicleRouting {
       }
     }
 
-    private static void LoadSolution(Stream stream, VRPData instance) {
+    #region IVRPInstanceProvider
+    public TData Import(string vrpFile, string tourFile) {
+      var data = ImportData(vrpFile);
+      if (!String.IsNullOrEmpty(tourFile)) {
+        LoadSolution(tourFile, data);
+      }
+      return data;
+    }
+
+    public void Export(TData instance, string path) {
+      ExportData(instance, path);
+    }
+    #endregion
+
+    protected virtual void LoadSolution(Stream stream, TData instance) {
+      LoadOptFile(stream, instance);
+    }
+
+    private void LoadOptFile(Stream stream, TData instance) {
       List<List<int>> routes = new List<List<int>>();
 
       using (StreamReader reader = new StreamReader(stream)) {
@@ -92,32 +111,36 @@ namespace HeuristicLab.Problems.Instances.VehicleRouting {
 
             routes.Add(route);
           }
+
+          if (line.StartsWith("Solution")) {
+            if (routes.Any()) {
+              // Skip remaining solutions since only one "best solution" is stored
+              break;
+            }
+          }
         }
       }
 
       instance.BestKnownTour = routes.Select(x => x.ToArray()).ToArray();
     }
 
-    public static void LoadSolution(string path, VRPData instance) {
-      using (FileStream stream = new FileStream(path, FileMode.Open)) {
-        LoadSolution(stream, instance);
+    public void LoadSolution(string path, TData instance) {
+      try {
+        using (var stream = new FileStream(path, FileMode.Open)) {
+          LoadSolution(stream, instance);
+        }
+      }
+      catch (Exception) {
+        // new stream necessary because first try already read from stream
+        using (var stream = new FileStream(path, FileMode.Open)) {
+          LoadOptFile(stream, instance); // Fallback to .opt-Format
+        }
       }
     }
 
-    protected abstract VRPData LoadData(Stream stream);
+    protected abstract TData LoadData(Stream stream);
 
-    public IVRPData Import(string vrpFile, string tourFile) {
-      var data = ImportData(vrpFile);
-      if (!String.IsNullOrEmpty(tourFile)) {
-        LoadSolution(tourFile, data);
-      }
-      return data;
-    }
-
-    public void Export(IVRPData instance, string path) {
-      ExportData((VRPData)instance, path);
-    }
-
+    #region Helpers
     protected virtual string GetResourceName(string fileName) {
       return Assembly.GetExecutingAssembly().GetManifestResourceNames()
               .Where(x => Regex.Match(x, @".*\.Data\." + fileName).Success).SingleOrDefault();
@@ -126,12 +149,6 @@ namespace HeuristicLab.Problems.Instances.VehicleRouting {
     protected virtual string GetInstanceDescription() {
       return "Embedded instance of plugin version " + Assembly.GetExecutingAssembly().GetCustomAttributes(typeof(AssemblyFileVersionAttribute), true).Cast<AssemblyFileVersionAttribute>().First().Version + ".";
     }
-
-    protected IEnumerable<string> GetZipContents(ZipInputStream zipFile) {
-      ZipEntry entry;
-      while ((entry = zipFile.GetNextEntry()) != null) {
-        yield return entry.Name;
-      }
-    }
+    #endregion
   }
 }

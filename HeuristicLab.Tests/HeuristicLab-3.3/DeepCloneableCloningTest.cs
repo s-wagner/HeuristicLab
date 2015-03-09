@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2014 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2015 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -24,23 +24,15 @@ using System.Collections.Generic;
 using System.Linq;
 using HeuristicLab.Common;
 using HeuristicLab.Core;
+using HeuristicLab.Encodings.SymbolicExpressionTreeEncoding;
 using HeuristicLab.Optimization;
 using HeuristicLab.Persistence.Default.Xml;
 using HeuristicLab.PluginInfrastructure;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace HeuristicLab.Tests {
-  /// <summary>
-  /// Summary description for DeepCloneableCloningTest
-  /// </summary>
   [TestClass]
   public class DeepCloneableCloningTest {
-
-    [ClassInitialize]
-    public static void MyClassInitialize(TestContext testContext) {
-      PluginLoader.Assemblies.Any();
-    }
-
     private TestContext testContextInstance;
     public TestContext TestContext {
       get { return testContextInstance; }
@@ -53,6 +45,7 @@ namespace HeuristicLab.Tests {
       excludedTypes.Add(typeof(HeuristicLab.Problems.TravelingSalesman.DistanceMatrix));
       excludedTypes.Add(typeof(HeuristicLab.Problems.DataAnalysis.ClassificationEnsembleSolution));
       excludedTypes.Add(typeof(HeuristicLab.Problems.DataAnalysis.RegressionEnsembleSolution));
+      excludedTypes.Add(typeof(SymbolicExpressionGrammar).Assembly.GetType("HeuristicLab.Encodings.SymbolicExpressionTreeEncoding.EmptySymbolicExpressionTreeGrammar"));
 
       foreach (var symbolType in ApplicationManager.Manager.GetTypes(typeof(HeuristicLab.Encodings.SymbolicExpressionTreeEncoding.Symbol)))
         excludedTypes.Add(symbolType);
@@ -125,17 +118,29 @@ All IDeepCloneable items with a default constructor should be cloneable when usi
 
     private bool ProcessEqualObjects(IDeepCloneable item, IEnumerable<object> intersections) {
       bool success = true;
-      TestContext.WriteLine(Environment.NewLine + item.GetType().FullName + ":");
+      bool headerWritten = false;
+
       foreach (object o in intersections) {
         string typeName = o.GetType().FullName;
         if (excludedTypes.Contains(o.GetType())) {
           //TestContext.WriteLine("Skipping excluded type " + typeName);
         } else if (o is IDeepCloneable) {
           string info = (o is IItem) ? ((IItem)o).ItemName + ((o is INamedItem) ? ", " + ((INamedItem)o).Name : String.Empty) : String.Empty;
+          if (!headerWritten) {
+            TestContext.WriteLine(Environment.NewLine + item.GetType().FullName + ":");
+            headerWritten = true;
+          }
           TestContext.WriteLine("POTENTIAL ERROR! A DEEPCLONEABLE WAS NOT DEEP CLONED (" + info + "): " + typeName);
           success = false;
-        } else
+        } else {
+          Array array = o as Array;
+          if (array != null && array.Length == 0) continue; //arrays of length 0 are used inside empty collections
+          if (!headerWritten) {
+            TestContext.WriteLine(Environment.NewLine + item.GetType().FullName + ":");
+            headerWritten = true;
+          }
           TestContext.WriteLine("WARNING: An object of type " + typeName + " is referenced in the original and in the clone.");
+        }
       }
       return success;
     }

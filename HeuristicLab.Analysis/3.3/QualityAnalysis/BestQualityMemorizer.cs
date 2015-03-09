@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2014 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2015 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -23,6 +23,7 @@ using HeuristicLab.Common;
 using HeuristicLab.Core;
 using HeuristicLab.Data;
 using HeuristicLab.Operators;
+using HeuristicLab.Optimization;
 using HeuristicLab.Parameters;
 using HeuristicLab.Persistence.Default.CompositeSerializers.Storable;
 
@@ -32,7 +33,7 @@ namespace HeuristicLab.Analysis {
   /// </summary>
   [Item("BestQualityMemorizer", "An operator that updates the best quality found so far with those qualities contained in the scope tree.")]
   [StorableClass]
-  public class BestQualityMemorizer : SingleSuccessorOperator {
+  public class BestQualityMemorizer : SingleSuccessorOperator, ISingleObjectiveOperator {
     public ValueLookupParameter<BoolValue> MaximizationParameter {
       get { return (ValueLookupParameter<BoolValue>)Parameters["Maximization"]; }
     }

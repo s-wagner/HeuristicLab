@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2014 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2015 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -90,12 +90,14 @@ namespace HeuristicLab.Problems.DataAnalysis.Symbolic.Views {
       base.OnSymbolicExpressionTreeNodeDoubleClicked(sender, e);
     }
 
+
+    private static readonly ISymbolicExpressionGrammar grammar = new TypeCoherentExpressionGrammar();
     private void insertNodeToolStripMenuItem_Click(object sender, EventArgs e) {
       if (currSelected == null || currSelected.Content is SymbolicExpressionTreeTerminalNode) return;
       var parent = currSelected.Content;
 
       using (var dialog = new InsertNodeDialog()) {
-        dialog.SetAllowedSymbols(parent.Grammar.Symbols.Where(s => !(s is ProgramRootSymbol || s is StartSymbol || s is Defun || s is GroupSymbol))); // allow everything
+        dialog.SetAllowedSymbols(grammar.Symbols.Where(s => !(s is ProgramRootSymbol || s is StartSymbol || s is Defun || s is GroupSymbol))); // allow everything
         dialog.ShowDialog(this);
         if (dialog.DialogResult != DialogResult.OK) return;
 

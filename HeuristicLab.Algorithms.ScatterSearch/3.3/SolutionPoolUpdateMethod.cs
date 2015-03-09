@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2014 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2015 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -35,7 +35,7 @@ namespace HeuristicLab.Algorithms.ScatterSearch {
   /// </summary>
   [Item("SolutionPoolUpdateMethod", "An operator that updates the solution pool.")]
   [StorableClass]
-  public sealed class SolutionPoolUpdateMethod : SingleSuccessorOperator, ISimilarityBasedOperator {
+  public sealed class SolutionPoolUpdateMethod : SingleSuccessorOperator, ISimilarityBasedOperator, ISingleObjectiveOperator {
     #region ISimilarityBasedOperator Members
     [Storable]
     public ISolutionSimilarityCalculator SimilarityCalculator { get; set; }

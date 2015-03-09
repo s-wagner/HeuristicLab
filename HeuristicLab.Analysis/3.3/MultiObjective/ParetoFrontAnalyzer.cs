@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2014 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2015 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -30,7 +30,7 @@ using HeuristicLab.Persistence.Default.CompositeSerializers.Storable;
 namespace HeuristicLab.Analysis {
   [Item("ParetoFrontAnalyzer", "Analyzer for multiobjective problems that collects and presents the current Pareto front as double matrix as well as the solution scopes that lie on the current front.")]
   [StorableClass]
-  public abstract class ParetoFrontAnalyzer : SingleSuccessorOperator, IAnalyzer {
+  public abstract class ParetoFrontAnalyzer : SingleSuccessorOperator, IAnalyzer, IMultiObjectiveOperator {
     public virtual bool EnabledByDefault {
       get { return true; }
     }

@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2014 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2015 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -35,17 +35,7 @@ using HeuristicLab.Problems.VehicleRouting.Interfaces;
 namespace HeuristicLab.Problems.VehicleRouting.Encodings.Alba {
   [Item("AlbaLambdaInterchangeLocalImprovementOperator", "Takes a solution and finds the local optimum with respect to the lambda interchange neighborhood by decending along the steepest gradient.")]
   [StorableClass]
-  public class AlbaLambdaInterchangeLocalImprovementOperator : VRPOperator, IStochasticOperator, ILocalImprovementOperator {
-    public Type ProblemType {
-      get { return typeof(VehicleRoutingProblem); }
-    }
-
-    [Storable]
-    private VehicleRoutingProblem problem;
-    public IProblem Problem {
-      get { return problem; }
-      set { problem = (VehicleRoutingProblem)value; }
-    }
+  public class AlbaLambdaInterchangeLocalImprovementOperator : VRPOperator, IStochasticOperator, ILocalImprovementOperator, ISingleObjectiveOperator {
 
     public IValueLookupParameter<IntValue> MaximumIterationsParameter {
       get { return (IValueLookupParameter<IntValue>)Parameters["MaximumIterations"]; }
@@ -83,7 +73,6 @@ namespace HeuristicLab.Problems.VehicleRouting.Encodings.Alba {
     protected AlbaLambdaInterchangeLocalImprovementOperator(bool deserializing) : base(deserializing) { }
     protected AlbaLambdaInterchangeLocalImprovementOperator(AlbaLambdaInterchangeLocalImprovementOperator original, Cloner cloner)
       : base(original, cloner) {
-        this.problem = cloner.Clone(original.problem);
     }
     public AlbaLambdaInterchangeLocalImprovementOperator()
       : base() {
@@ -101,7 +90,7 @@ namespace HeuristicLab.Problems.VehicleRouting.Encodings.Alba {
       return new AlbaLambdaInterchangeLocalImprovementOperator(this, cloner);
     }
 
-    public static void Apply(AlbaEncoding solution, int maxIterations, 
+    public static void Apply(AlbaEncoding solution, int maxIterations,
       int lambda, int samples, IRandom random, IVRPProblemInstance problemInstance, ref double quality, out int evaluatedSolutions) {
       evaluatedSolutions = 0;
 
@@ -119,7 +108,7 @@ namespace HeuristicLab.Problems.VehicleRouting.Encodings.Alba {
             bestMove = move;
           }
         }
-        if (bestMove != null) 
+        if (bestMove != null)
           AlbaLambdaInterchangeMoveMaker.Apply(solution, bestMove);
       }
     }

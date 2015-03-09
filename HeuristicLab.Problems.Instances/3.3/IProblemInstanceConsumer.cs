@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2014 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2015 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -24,7 +24,7 @@ using HeuristicLab.Common;
 namespace HeuristicLab.Problems.Instances {
   public interface IProblemInstanceConsumer : IContent { }
 
-  public interface IProblemInstanceConsumer<TData> : IProblemInstanceConsumer {
+  public interface IProblemInstanceConsumer<in TData> : IProblemInstanceConsumer {
     /// <summary>
     /// Loads the given instance data.
     /// </summary>

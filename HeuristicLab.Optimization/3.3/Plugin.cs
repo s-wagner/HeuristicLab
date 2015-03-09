@@ -1,6 +1,6 @@
 #region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2014 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2015 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -25,13 +25,14 @@ namespace HeuristicLab.Optimization {
   /// <summary>
   /// Plugin class for HeuristicLab.Optimization plugin.
   /// </summary>
-  [Plugin("HeuristicLab.Optimization", "3.3.10.11173")]
+  [Plugin("HeuristicLab.Optimization", "3.3.11.12009")]
   [PluginFile("HeuristicLab.Optimization-3.3.dll", PluginFileType.Assembly)]
   [PluginDependency("HeuristicLab.Collections", "3.3")]
   [PluginDependency("HeuristicLab.Common", "3.3")]
   [PluginDependency("HeuristicLab.Common.Resources", "3.3")]
   [PluginDependency("HeuristicLab.Core", "3.3")]
   [PluginDependency("HeuristicLab.Data", "3.3")]
+  [PluginDependency("HeuristicLab.Operators", "3.3")]
   [PluginDependency("HeuristicLab.Parameters", "3.3")]
   [PluginDependency("HeuristicLab.Persistence", "3.3")]
   public class HeuristicLabOptimizationPlugin : PluginBase {

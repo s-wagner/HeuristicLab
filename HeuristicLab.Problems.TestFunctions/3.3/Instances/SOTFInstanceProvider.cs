@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2014 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2015 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -36,7 +36,7 @@ namespace HeuristicLab.Problems.TestFunctions {
     }
 
     public override Uri WebLink {
-      get { return new Uri("http://dev.heuristiclab.com/trac/hl/core/wiki/TestFunctions"); }
+      get { return new Uri("http://dev.heuristiclab.com/trac.fcgi/wiki/Documentation/Reference/Test%20Functions"); }
     }
 
     public override string ReferencePublication {

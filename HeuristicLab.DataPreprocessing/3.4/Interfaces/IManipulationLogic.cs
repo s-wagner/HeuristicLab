@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2014 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2015 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -37,8 +37,7 @@ namespace HeuristicLab.DataPreprocessing {
     void ReplaceIndicesBySmoothing(IDictionary<int, IList<int>> cells);
     void ReplaceIndicesByValue(IDictionary<int, IList<int>> cells, string value);
     void ReplaceIndicesByValue<T>(int columnIndex, IEnumerable<int> rowIndices, T value);
-    void ShuffleWithRanges();
-    void ShuffleWithRanges(IEnumerable<HeuristicLab.Data.IntRange> ranges);
+    void Shuffle(bool shuffleRangesSeparately);
     List<int> RowsWithMissingValuesGreater(double percent);
     List<int> ColumnsWithMissingValuesGreater(double percent);
     List<int> ColumnsWithVarianceSmaller(double variance);

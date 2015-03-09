@@ -1,6 +1,6 @@
 #region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2014 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2015 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -25,6 +25,7 @@ using System.Linq;
 using HeuristicLab.Common;
 using HeuristicLab.Core;
 using HeuristicLab.Data;
+using HeuristicLab.Optimization;
 using HeuristicLab.Parameters;
 using HeuristicLab.Persistence.Default.CompositeSerializers.Storable;
 using HeuristicLab.Random;
@@ -35,7 +36,7 @@ namespace HeuristicLab.Problems.DataAnalysis.Symbolic {
   /// </summary>
   [StorableClass]
   public abstract class SymbolicDataAnalysisSingleObjectiveValidationAnalyzer<T, U> : SymbolicDataAnalysisSingleObjectiveAnalyzer,
-    ISymbolicDataAnalysisValidationAnalyzer<T, U>
+    ISymbolicDataAnalysisValidationAnalyzer<T, U>, IStochasticOperator
     where T : class, ISymbolicDataAnalysisSingleObjectiveEvaluator<U>
     where U : class, IDataAnalysisProblemData {
     private const string RandomParameterName = "Random";

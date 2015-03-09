@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2014 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2015 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -19,6 +19,7 @@
  */
 #endregion
 
+using System.IO.Compression;
 using HeuristicLab.Common;
 using HeuristicLab.Persistence.Default.Xml;
 
@@ -31,7 +32,7 @@ namespace HeuristicLab.Core {
     }
 
     protected override void SaveContent(IStorableContent content, string filename, bool compressed) {
-      XmlGenerator.Serialize(content, filename, compressed ? 9 : 0);
+      XmlGenerator.Serialize(content, filename, compressed ? CompressionLevel.Optimal : CompressionLevel.NoCompression);
     }
   }
 }

@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2014 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2015 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -20,11 +20,11 @@
 #endregion
 
 namespace HeuristicLab.Problems.Instances.VehicleRouting {
-  public interface IVRPInstanceProvider {
+  public interface IVRPInstanceProvider<TData> {
     bool CanImportData { get; }
-    IVRPData Import(string vrpFile, string tourFile);
+    TData Import(string instancePath, string solutionPath);
 
     bool CanExportData { get; }
-    void Export(IVRPData instance, string path);
+    void Export(TData instance, string path);
   }
 }

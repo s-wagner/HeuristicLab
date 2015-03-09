@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2014 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2015 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -52,7 +52,6 @@ namespace HeuristicLab.Operators.Views.GraphVisualization.Views {
       // graphVisualization
       // 
       this.graphVisualization.AllowDrop = false;
-      this.graphVisualization.AutoScroll = true;
       this.graphVisualization.BackColor = System.Drawing.Color.DarkGray;
       this.graphVisualization.BackgroundType = global::Netron.Diagramming.Core.CanvasBackgroundTypes.FlatColor;
       this.graphVisualization.Dock = System.Windows.Forms.DockStyle.Fill;
