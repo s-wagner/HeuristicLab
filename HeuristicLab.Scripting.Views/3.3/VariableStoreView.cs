@@ -31,6 +31,7 @@ using HeuristicLab.Core.Views;
 using HeuristicLab.MainForm;
 using HeuristicLab.MainForm.WindowsForms;
 using HeuristicLab.Persistence.Core;
+using HeuristicLab.Persistence.Default.CompositeSerializers.Storable;
 using HeuristicLab.Persistence.Default.Xml;
 using HeuristicLab.PluginInfrastructure;
 
@@ -159,8 +160,6 @@ namespace HeuristicLab.Scripting.Views {
       itemListViewItemMapping[variable.Key] = listViewItem;
       sortAscendingButton.Enabled = variableListView.Items.Count > 1;
       sortDescendingButton.Enabled = variableListView.Items.Count > 1;
-      var item = variable.Value as IItem;
-      if (item != null) item.ToStringChanged += item_ToStringChanged;
     }
 
     protected virtual void RemoveVariable(KeyValuePair<string, object> variable) {
@@ -173,8 +172,6 @@ namespace HeuristicLab.Scripting.Views {
       variableListView.Items.Remove(listViewItem);
       sortAscendingButton.Enabled = variableListView.Items.Count > 1;
       sortDescendingButton.Enabled = variableListView.Items.Count > 1;
-      var item = variable.Value as IItem;
-      if (item != null) item.ToStringChanged -= item_ToStringChanged;
     }
 
     protected virtual void UpdateVariable(KeyValuePair<string, object> variable) {
@@ -239,7 +236,7 @@ namespace HeuristicLab.Scripting.Views {
       var item = (KeyValuePair<string, object>)listViewItem.Tag;
       if (!(item.Value is IDeepCloneable)) return;
       var data = new DataObject(HeuristicLab.Common.Constants.DragDropDataFormat, item);
-      DoDragDrop(data, DragDropEffects.Copy);
+      DoDragDrop(data, DragDropEffects.Copy | DragDropEffects.Link);
     }
     protected virtual void variableListView_DragEnter(object sender, DragEventArgs e) {
       validDragOperation = !Locked && !ReadOnly;
@@ -255,12 +252,14 @@ namespace HeuristicLab.Scripting.Views {
     protected virtual void variableListView_DragOver(object sender, DragEventArgs e) {
       e.Effect = DragDropEffects.None;
       if (validDragOperation) {
-        if (e.AllowedEffect.HasFlag(DragDropEffects.Copy))
-          e.Effect = DragDropEffects.Copy;
+        if ((e.KeyState & 32) == 32) e.Effect = DragDropEffects.Link;  // ALT key
+        else if (e.AllowedEffect.HasFlag(DragDropEffects.Copy)) e.Effect = DragDropEffects.Copy;
+        else if (e.AllowedEffect.HasFlag(DragDropEffects.Link)) e.Effect = DragDropEffects.Link;
       }
     }
     protected virtual void variableListView_DragDrop(object sender, DragEventArgs e) {
-      if (e.Effect != DragDropEffects.Copy) return;
+      if (e.Effect == DragDropEffects.None) return;
+
       object item = e.Data.GetData(HeuristicLab.Common.Constants.DragDropDataFormat);
 
       string variableName;
@@ -281,8 +280,7 @@ namespace HeuristicLab.Scripting.Views {
       var cloneable = item as IDeepCloneable;
       if (cloneable == null) return;
 
-      var clonedItem = cloneable.Clone();
-      Content.Add(variableName, clonedItem);
+      Content.Add(variableName, e.Effect.HasFlag(DragDropEffects.Copy) ? cloneable.Clone() : cloneable);
 
       var listViewItem = variableListView.FindItemWithText(variableName);
       variableListView.SelectedItems.Clear();
@@ -337,37 +335,39 @@ namespace HeuristicLab.Scripting.Views {
 
     #region Content Events
     protected virtual void Content_ItemsAdded(object sender, CollectionItemsChangedEventArgs<KeyValuePair<string, object>> e) {
-      if (InvokeRequired)
-        Invoke(new CollectionItemsChangedEventHandler<KeyValuePair<string, object>>(Content_ItemsAdded), sender, e);
-      else {
-        foreach (var item in e.Items)
-          AddVariable(item);
-        AdjustListViewColumnSizes();
+      var variables = e.Items;
+      foreach (var variable in variables) {
+        var item = variable.Value as IItem;
+        if (item != null) item.ToStringChanged += item_ToStringChanged;
       }
+      InvokeVariableAction(AddVariable, variables);
     }
 
     protected virtual void Content_ItemsReplaced(object sender, CollectionItemsChangedEventArgs<KeyValuePair<string, object>> e) {
-      if (InvokeRequired)
-        Invoke(new CollectionItemsChangedEventHandler<KeyValuePair<string, object>>(Content_ItemsReplaced), sender, e);
-      else {
-        foreach (var item in e.Items)
-          UpdateVariable(item);
-        AdjustListViewColumnSizes();
+      var oldVariables = e.OldItems;
+      foreach (var variable in oldVariables) {
+        var item = variable.Value as IItem;
+        if (item != null) item.ToStringChanged -= item_ToStringChanged;
       }
+      var newVariables = e.Items;
+      foreach (var variable in newVariables) {
+        var item = variable.Value as IItem;
+        if (item != null) item.ToStringChanged += item_ToStringChanged;
+      }
+      InvokeVariableAction(UpdateVariable, e.Items);
     }
 
     protected virtual void Content_ItemsRemoved(object sender, CollectionItemsChangedEventArgs<KeyValuePair<string, object>> e) {
-      if (InvokeRequired)
-        Invoke(new CollectionItemsChangedEventHandler<KeyValuePair<string, object>>(Content_ItemsRemoved), sender, e);
-      else {
-        foreach (var item in e.Items)
-          RemoveVariable(item);
-        AdjustListViewColumnSizes();
+      var variables = e.Items;
+      foreach (var variable in variables) {
+        var item = variable.Value as IItem;
+        if (item != null) item.ToStringChanged -= item_ToStringChanged;
       }
+      InvokeVariableAction(RemoveVariable, variables);
     }
+
     protected virtual void Content_CollectionReset(object sender, CollectionItemsChangedEventArgs<KeyValuePair<string, object>> e) {
-      if (InvokeRequired)
-        Invoke(new CollectionItemsChangedEventHandler<KeyValuePair<string, object>>(Content_CollectionReset), sender, e);
+      if (InvokeRequired) Invoke((Action<object, CollectionItemsChangedEventArgs<KeyValuePair<string, object>>>)Content_CollectionReset, sender, e);
       else {
         foreach (var item in e.OldItems)
           RemoveVariable(item);
@@ -378,14 +378,17 @@ namespace HeuristicLab.Scripting.Views {
     }
 
     private void item_ToStringChanged(object sender, EventArgs e) {
-      foreach (ListViewItem item in variableListView.Items) {
-        var variable = item.Tag as KeyValuePair<string, object>?;
-        if (variable == null || variable.Value.Value != sender) continue;
+      if (InvokeRequired) Invoke((Action<object, EventArgs>)item_ToStringChanged, sender, e);
+      else {
+        foreach (ListViewItem item in variableListView.Items) {
+          var variable = item.Tag as KeyValuePair<string, object>?;
+          if (variable == null || variable.Value.Value != sender) continue;
 
-        string value = (variable.Value.Value ?? "null").ToString();
-        item.SubItems[1].Text = value;
-        item.SubItems[2].Text = variable.Value.Value.GetType().ToString();
-        SetToolTipText(item, item.ImageIndex != 0);
+          string value = (variable.Value.Value ?? "null").ToString();
+          item.SubItems[1].Text = value;
+          item.SubItems[2].Text = variable.Value.Value.GetType().ToString();
+          SetToolTipText(item, item.ImageIndex != 0);
+        }
       }
     }
     #endregion
@@ -474,8 +477,8 @@ namespace HeuristicLab.Scripting.Views {
 
       if (variable.Value != null) {
         type = variable.Value.GetType();
-        if (serializableLookup.TryGetValue(type, out serializable))
-          return serializable;
+        if (serializableLookup.TryGetValue(type, out serializable)) return serializable;
+        if (StorableClassAttribute.IsStorableClass(type)) return serializableLookup[type] = true;
       }
 
       var ser = new Serializer(variable, ConfigurationService.Instance.GetDefaultConfig(new XmlFormat()), "ROOT", true);
@@ -488,6 +491,16 @@ namespace HeuristicLab.Scripting.Views {
       if (type != null)
         serializableLookup[type] = serializable;
       return serializable;
+    }
+
+    private void InvokeVariableAction(Action<KeyValuePair<string, object>> action, IEnumerable<KeyValuePair<string, object>> variables) {
+      if (InvokeRequired)
+        Invoke((Action<Action<KeyValuePair<string, object>>, IEnumerable<KeyValuePair<string, object>>>)InvokeVariableAction, action, variables);
+      else {
+        foreach (var variable in variables)
+          action(variable);
+        AdjustListViewColumnSizes();
+      }
     }
     #endregion
   }

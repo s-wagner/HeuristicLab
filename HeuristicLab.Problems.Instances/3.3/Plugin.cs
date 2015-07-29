@@ -22,7 +22,7 @@
 using HeuristicLab.PluginInfrastructure;
 
 namespace HeuristicLab.Problems.Instances {
-  [Plugin("HeuristicLab.Problems.Instances", "3.3.11.12009")]
+  [Plugin("HeuristicLab.Problems.Instances", "3.3.12.12751")]
   [PluginFile("HeuristicLab.Problems.Instances-3.3.dll", PluginFileType.Assembly)]
   [PluginDependency("HeuristicLab.Common", "3.3")]
   public class HeuristicLabProblemsInstancesPlugin : PluginBase {

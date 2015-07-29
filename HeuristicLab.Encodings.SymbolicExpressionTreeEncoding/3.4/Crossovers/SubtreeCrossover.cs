@@ -27,6 +27,7 @@ using HeuristicLab.Core;
 using HeuristicLab.Data;
 using HeuristicLab.Parameters;
 using HeuristicLab.Persistence.Default.CompositeSerializers.Storable;
+using HeuristicLab.Random;
 
 namespace HeuristicLab.Encodings.SymbolicExpressionTreeEncoding {
   /// <summary>
@@ -133,7 +134,9 @@ namespace HeuristicLab.Encodings.SymbolicExpressionTreeEncoding {
       List<CutPoint> leafCrossoverPoints = new List<CutPoint>();
       parent0.Root.ForEachNodePostfix((n) => {
         if (n.SubtreeCount > 0 && n != parent0.Root) {
-          foreach (var child in n.Subtrees) {
+          //avoid linq to reduce memory pressure
+          for (int i = 0; i < n.SubtreeCount; i++) {
+            var child = n.GetSubtree(i);
             if (child.GetLength() <= maxBranchLength &&
                 child.GetDepth() <= maxBranchDepth) {
               if (child.SubtreeCount > 0)
@@ -180,13 +183,14 @@ namespace HeuristicLab.Encodings.SymbolicExpressionTreeEncoding {
                                    where branch != null && branch.SubtreeCount > 0
                                    select branch).ToList();
         if (allowedInternalBranches.Count > 0) {
-          return allowedInternalBranches.SelectRandom(random);
+          return allowedInternalBranches.SampleRandom(random);
+
         } else {
           // no internal nodes allowed => select leaf nodes
           allowedLeafBranches = (from branch in branches
                                  where branch == null || branch.SubtreeCount == 0
                                  select branch).ToList();
-          return allowedLeafBranches.SelectRandom(random);
+          return allowedLeafBranches.SampleRandom(random);
         }
       } else {
         // select leaf node if possible
@@ -194,12 +198,13 @@ namespace HeuristicLab.Encodings.SymbolicExpressionTreeEncoding {
                                where branch == null || branch.SubtreeCount == 0
                                select branch).ToList();
         if (allowedLeafBranches.Count > 0) {
-          return allowedLeafBranches.SelectRandom(random);
+          return allowedLeafBranches.SampleRandom(random);
         } else {
           allowedInternalBranches = (from branch in branches
                                      where branch != null && branch.SubtreeCount > 0
                                      select branch).ToList();
-          return allowedInternalBranches.SelectRandom(random);
+          return allowedInternalBranches.SampleRandom(random);
+
         }
       }
     }

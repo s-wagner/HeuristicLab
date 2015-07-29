@@ -25,7 +25,7 @@ using System.Text;
 using HeuristicLab.PluginInfrastructure;
 
 namespace HeuristicLab.Common.Resources {
-  [Plugin("HeuristicLab.Common.Resources", "3.3.11.12009")]
+  [Plugin("HeuristicLab.Common.Resources", "3.3.12.12751")]
   [PluginFile("HeuristicLab.Common.Resources-3.3.dll", PluginFileType.Assembly)]
   public class HeuristicLabCommonResourcesPlugin : PluginBase {
   }

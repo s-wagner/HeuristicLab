@@ -36,7 +36,7 @@ namespace HeuristicLab.Algorithms.DataAnalysis {
   /// Support vector machine classification data analysis algorithm.
   /// </summary>
   [Item("Support Vector Classification", "Support vector machine classification data analysis algorithm (wrapper for libSVM).")]
-  [Creatable("Data Analysis")]
+  [Creatable(CreatableAttribute.Categories.DataAnalysisClassification, Priority = 110)]
   [StorableClass]
   public sealed class SupportVectorClassification : FixedDataAnalysisAlgorithm<IClassificationProblem> {
     private const string SvmTypeParameterName = "SvmType";
@@ -148,7 +148,7 @@ namespace HeuristicLab.Algorithms.DataAnalysis {
 
     public static SupportVectorClassificationSolution CreateSupportVectorClassificationSolution(IClassificationProblemData problemData, IEnumerable<string> allowedInputVariables,
       int svmType, int kernelType, double cost, double nu, double gamma, int degree, out double trainingAccuracy, out double testAccuracy, out int nSv) {
-      Dataset dataset = problemData.Dataset;
+      var dataset = problemData.Dataset;
       string targetVariable = problemData.TargetVariable;
       IEnumerable<int> rows = problemData.TrainingIndices;
 

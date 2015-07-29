@@ -164,6 +164,7 @@
     </Compile>
     <Compile Include="Interfaces\Classification\IDiscriminantFunctionThresholdCalculator.cs" />
     <Compile Include="Interfaces\IDataAnalysisSolutionExporter.cs" />
+    <Compile Include="Interfaces\IDataset.cs" />
     <Compile Include="Interfaces\IDependencyCalculator.cs" />
     <Compile Include="Interfaces\ITransformation.cs" />
     <Compile Include="Interfaces\ITransformationMapper.cs" />
@@ -177,6 +178,7 @@
     <Compile Include="Interfaces\TimeSeriesPrognosis\ITimeSeriesPrognosisProblem.cs" />
     <Compile Include="Interfaces\TimeSeriesPrognosis\ITimeSeriesPrognosisProblemData.cs" />
     <Compile Include="Interfaces\TimeSeriesPrognosis\ITimeSeriesPrognosisSolution.cs" />
+    <Compile Include="ModifiableDataset.cs" />
     <Compile Include="OnlineCalculators\AutoCorrelationCalculator.cs" />
     <Compile Include="OnlineCalculators\ClassificationPerformanceMeasuresCalculator.cs" />
     <Compile Include="OnlineCalculators\DependencyCalculator\HoeffdingsDependenceCalculator.cs" />
@@ -221,6 +223,7 @@
     <Compile Include="OnlineCalculators\OnlineMeanAndVarianceCalculator.cs" />
     <Compile Include="OnlineCalculators\OnlineMeanSquaredErrorCalculator.cs" />
     <Compile Include="OnlineCalculators\OnlineNormalizedMeanSquaredErrorCalculator.cs" />
+    <Compile Include="OnlineCalculators\OnlinePearsonsRCalculator.cs" />
     <Compile Include="OnlineCalculators\OnlinePearsonsRSquaredCalculator.cs" />
     <Compile Include="Implementation\Regression\RegressionSolution.cs" />
     <Compile Include="OnlineCalculators\OnlineTheilsUStatisticCalculator.cs" />

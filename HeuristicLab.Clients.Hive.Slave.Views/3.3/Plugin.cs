@@ -26,7 +26,7 @@ using System.Text;
 using HeuristicLab.PluginInfrastructure;
 
 namespace HeuristicLab.Clients.Hive.Slave.Views {
-  [Plugin("HeuristicLab.Clients.Hive.Slave.Views", "3.3.11.12009")]
+  [Plugin("HeuristicLab.Clients.Hive.Slave.Views", "3.3.12.12751")]
   [PluginFile("HeuristicLab.Clients.Hive.Slave.Views-3.3.dll", PluginFileType.Assembly)]
   [PluginDependency("HeuristicLab.Clients.Hive.SlaveCore", "3.3")]
   [PluginDependency("HeuristicLab.Collections", "3.3")]

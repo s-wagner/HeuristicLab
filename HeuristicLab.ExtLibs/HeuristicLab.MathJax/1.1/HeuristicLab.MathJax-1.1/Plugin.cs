@@ -26,7 +26,7 @@ using System.Linq;
 using HeuristicLab.PluginInfrastructure;
 
 namespace HeuristicLab.MathJax {
-  [Plugin("HeuristicLab.MathJax", "HeuristicLab transport plugin for MathJax (www.mathjax.org) , an open source JavaScript display engine for mathematics that works in all browsers", "1.1.12009")]
+  [Plugin("HeuristicLab.MathJax", "HeuristicLab transport plugin for MathJax (www.mathjax.org) , an open source JavaScript display engine for mathematics that works in all browsers", "1.1.12729")]
   [PluginFile("HeuristicLab.MathJax-1.1.dll", PluginFileType.Assembly)]
   [PluginFile("MathJax license.txt", PluginFileType.License)]
   [PluginFile("mathjax.zip", PluginFileType.Data)]
@@ -34,8 +34,8 @@ namespace HeuristicLab.MathJax {
   public class HeuristicLabMathJaxPlugin : PluginBase {
     public override void OnLoad() {
       base.OnLoad();
-      if (!Directory.EnumerateFiles(AppDomain.CurrentDomain.BaseDirectory, "mathjax.js", SearchOption.TopDirectoryOnly).Any()) {
-        ZipFile.ExtractToDirectory("mathjax.zip", AppDomain.CurrentDomain.BaseDirectory);
+      if (!Directory.EnumerateFiles(AppDomain.CurrentDomain.BaseDirectory, "MathJax.js", SearchOption.TopDirectoryOnly).Any()) {
+        ZipFile.ExtractToDirectory(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "mathjax.zip"), AppDomain.CurrentDomain.BaseDirectory);
       }
     }
   }

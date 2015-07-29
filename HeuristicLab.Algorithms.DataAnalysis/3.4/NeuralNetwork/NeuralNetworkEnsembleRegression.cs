@@ -35,7 +35,7 @@ namespace HeuristicLab.Algorithms.DataAnalysis {
   /// Neural network ensemble regression data analysis algorithm.
   /// </summary>
   [Item("Neural Network Ensemble Regression", "Neural network ensemble regression data analysis algorithm (wrapper for ALGLIB). Further documentation: http://www.alglib.net/dataanalysis/mlpensembles.php")]
-  [Creatable("Data Analysis")]
+  [Creatable(CreatableAttribute.Categories.DataAnalysisRegression, Priority = 140)]
   [StorableClass]
   public sealed class NeuralNetworkEnsembleRegression : FixedDataAnalysisAlgorithm<IRegressionProblem> {
     private const string EnsembleSizeParameterName = "EnsembleSize";
@@ -123,7 +123,7 @@ namespace HeuristicLab.Algorithms.DataAnalysis {
     }
     public NeuralNetworkEnsembleRegression()
       : base() {
-        var validHiddenLayerValues = new ItemSet<IntValue>(new IntValue[] { 
+      var validHiddenLayerValues = new ItemSet<IntValue>(new IntValue[] { 
         (IntValue)new IntValue(0).AsReadOnly(), 
         (IntValue)new IntValue(1).AsReadOnly(), 
         (IntValue)new IntValue(2).AsReadOnly() });
@@ -163,7 +163,7 @@ namespace HeuristicLab.Algorithms.DataAnalysis {
 
     public static IRegressionSolution CreateNeuralNetworkEnsembleRegressionSolution(IRegressionProblemData problemData, int ensembleSize, int nLayers, int nHiddenNodes1, int nHiddenNodes2, double decay, int restarts,
       out double rmsError, out double avgRelError) {
-      Dataset dataset = problemData.Dataset;
+      var dataset = problemData.Dataset;
       string targetVariable = problemData.TargetVariable;
       IEnumerable<string> allowedInputVariables = problemData.AllowedInputVariables;
       IEnumerable<int> rows = problemData.TrainingIndices;

@@ -35,7 +35,7 @@ namespace HeuristicLab.Algorithms.DataAnalysis {
   /// k-Means clustering algorithm data analysis algorithm.
   /// </summary>
   [Item("k-Means", "The k-Means clustering algorithm (wrapper for ALGLIB).")]
-  [Creatable("Data Analysis")]
+  [Creatable(CreatableAttribute.Categories.DataAnalysis, Priority = 10)]
   [StorableClass]
   public sealed class KMeansClustering : FixedDataAnalysisAlgorithm<IClusteringProblem> {
     private const string KParameterName = "k";
@@ -82,7 +82,7 @@ namespace HeuristicLab.Algorithms.DataAnalysis {
     }
 
     public static KMeansClusteringSolution CreateKMeansSolution(IClusteringProblemData problemData, int k, int restarts) {
-      Dataset dataset = problemData.Dataset;
+      var dataset = problemData.Dataset;
       IEnumerable<string> allowedInputVariables = problemData.AllowedInputVariables;
       IEnumerable<int> rows = problemData.TrainingIndices;
       int info;

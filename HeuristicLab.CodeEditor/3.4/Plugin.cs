@@ -22,12 +22,14 @@
 using HeuristicLab.PluginInfrastructure;
 
 namespace HeuristicLab.CodeEditor {
-  [Plugin("HeuristicLab.CodeEditor", "3.4.0.12009")]
+  [Plugin("HeuristicLab.CodeEditor", "3.4.1.12751")]
   [PluginFile("HeuristicLab.CodeEditor-3.4.dll", PluginFileType.Assembly)]
   [PluginDependency("HeuristicLab.Common", "3.3")]
   [PluginDependency("HeuristicLab.Common.Resources", "3.3")]
-  [PluginDependency("HeuristicLab.AvalonEdit", "5.0.1")]
   [PluginDependency("HeuristicLab.NRefactory", "5.5.0")]
+#if !__MonoCS__
+  [PluginDependency("HeuristicLab.AvalonEdit", "5.0.1")]
+#endif
   public class HeuristicLabCodeEditorPlugin : PluginBase {
   }
 }

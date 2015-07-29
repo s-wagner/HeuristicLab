@@ -233,11 +233,24 @@ namespace HeuristicLab.Clients.Hive {
     private void UpdateOptimizerInBatchRun(BatchRun batchRun, OptimizerTask optimizerTask) {
       itemTaskLock.EnterWriteLock();
       try {
-        if (batchRun.Optimizer == null) {
-          batchRun.Optimizer = (IOptimizer)optimizerTask.Item; // only set the first optimizer as Optimizer. if every time the Optimizer would be set, the runs would be cleared each time
-        }
-        foreach (IRun run in optimizerTask.Item.Runs) {
-          if (!batchRun.Runs.Contains(run)) {
+        if (optimizerTask.Item is IAlgorithm) {
+          // only set the first optimizer as Optimizer. if every time the Optimizer would be set, the runs would be cleared each time
+          if (batchRun.Optimizer == null) {
+            batchRun.Optimizer = (IOptimizer)optimizerTask.Item.Clone();
+            batchRun.Optimizer.Runs.Clear();
+          }
+
+          foreach (IRun run in optimizerTask.Item.Runs) {
+            run.Name = GetNewRunName(run, batchRun.Runs);
+            batchRun.Optimizer.Runs.Add(run);
+          }
+        } else {
+          // only set the first optimizer as Optimizer. if every time the Optimizer would be set, the runs would be cleared each time
+          if (batchRun.Optimizer == null) {
+            batchRun.Optimizer = optimizerTask.Item;
+          }
+          foreach (IRun run in optimizerTask.Item.Runs) {
+            if (batchRun.Runs.Contains(run)) continue;
             run.Name = GetNewRunName(run, batchRun.Runs);
             batchRun.Runs.Add(run);
           }
@@ -333,29 +346,30 @@ namespace HeuristicLab.Clients.Hive {
     ///   if true the Child-Optimizers will not be serialized (if the task contains an Experiment)
     /// </param>
     public override TaskData GetAsTaskData(bool withoutChildOptimizers, out List<IPluginDescription> plugins) {
-      plugins = new List<IPluginDescription>();
-      if (this.itemTask == null) // || this.jobItem.Optimizer == null
+      if (ItemTask == null) {
+        plugins = new List<IPluginDescription>();
         return null;
+      }
 
       IEnumerable<Type> usedTypes;
       byte[] jobByteArray;
-      if (withoutChildOptimizers && this.ItemTask.Item is Optimization.Experiment) {
-        OptimizerTask clonedJob = (OptimizerTask)this.ItemTask.Clone(); // use a cloned task, so that the childHiveJob don't get confused
+      if (withoutChildOptimizers && ItemTask.Item is Optimization.Experiment) {
+        OptimizerTask clonedJob = (OptimizerTask)ItemTask.Clone(); // use a cloned task, so that the childHiveJob don't get confused
         clonedJob.OptimizerAsExperiment.Optimizers.Clear();
         jobByteArray = PersistenceUtil.Serialize(clonedJob, out usedTypes);
-      } else if (withoutChildOptimizers && this.ItemTask.Item is Optimization.BatchRun) {
-        OptimizerTask clonedJob = (OptimizerTask)this.ItemTask.Clone();
+      } else if (withoutChildOptimizers && ItemTask.Item is Optimization.BatchRun) {
+        OptimizerTask clonedJob = (OptimizerTask)ItemTask.Clone();
         clonedJob.OptimizerAsBatchRun.Optimizer = null;
         jobByteArray = PersistenceUtil.Serialize(clonedJob, out usedTypes);
-      } else if (this.ItemTask.Item is IAlgorithm) {
-        ((IAlgorithm)this.ItemTask.Item).StoreAlgorithmInEachRun = false; // avoid storing the algorithm in runs to reduce size
-        jobByteArray = PersistenceUtil.Serialize(this.ItemTask, out usedTypes);
+      } else if (ItemTask.Item is IAlgorithm) {
+        ((IAlgorithm)ItemTask.Item).StoreAlgorithmInEachRun = false; // avoid storing the algorithm in runs to reduce size
+        jobByteArray = PersistenceUtil.Serialize(ItemTask, out usedTypes);
       } else {
-        jobByteArray = PersistenceUtil.Serialize(this.ItemTask, out usedTypes);
+        jobByteArray = PersistenceUtil.Serialize(ItemTask, out usedTypes);
       }
 
       TaskData jobData = new TaskData() { TaskId = task.Id, Data = jobByteArray };
-      PluginUtil.CollectDeclaringPlugins(plugins, usedTypes);
+      plugins = PluginUtil.GetPluginsForTask(usedTypes, ItemTask);
       return jobData;
     }
 

@@ -34,7 +34,7 @@ using HeuristicLab.Problems.ArtificialAnt.Analyzers;
 
 namespace HeuristicLab.Problems.ArtificialAnt {
   [Item("Artificial Ant Problem", "Represents the Artificial Ant problem.")]
-  [Creatable("Problems")]
+  [Creatable(CreatableAttribute.Categories.GeneticProgrammingProblems, Priority = 170)]
   [StorableClass]
   public sealed class ArtificialAntProblem : SingleObjectiveHeuristicOptimizationProblem<Evaluator, ISymbolicExpressionTreeCreator>, IStorableContent {
     public string Filename { get; set; }
@@ -273,7 +273,7 @@ namespace HeuristicLab.Problems.ArtificialAnt {
       }
       foreach (ISymbolicExpressionTreeCrossover op in operators.OfType<ISymbolicExpressionTreeCrossover>()) {
         op.ParentsParameter.ActualName = SolutionCreator.SymbolicExpressionTreeParameter.ActualName;
-        op.ChildParameter.ActualName = SolutionCreator.SymbolicExpressionTreeParameter.ActualName;
+        op.SymbolicExpressionTreeParameter.ActualName = SolutionCreator.SymbolicExpressionTreeParameter.ActualName;
       }
       foreach (ISymbolicExpressionTreeManipulator op in operators.OfType<ISymbolicExpressionTreeManipulator>()) {
         op.SymbolicExpressionTreeParameter.ActualName = SolutionCreator.SymbolicExpressionTreeParameter.ActualName;

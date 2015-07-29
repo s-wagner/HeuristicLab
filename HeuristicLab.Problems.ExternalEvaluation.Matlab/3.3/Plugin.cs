@@ -27,7 +27,7 @@ namespace HeuristicLab.Problems.ExternalEvaluation.Matlab {
   /// <summary>
   /// Plugin class for HeuristicLab.Problems.ExternalEvaluation.Matlab plugin.
   /// </summary>
-  [Plugin("HeuristicLab.Problems.ExternalEvaluation.MATLAB", "3.3.11.12009")]
+  [Plugin("HeuristicLab.Problems.ExternalEvaluation.MATLAB", "3.3.12.12751")]
   [PluginFile("HeuristicLab.Problems.ExternalEvaluation.Matlab-3.3.dll", PluginFileType.Assembly)]
   [PluginDependency("HeuristicLab.Collections", "3.3")]
   [PluginDependency("HeuristicLab.Common", "3.3")]

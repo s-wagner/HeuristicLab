@@ -22,13 +22,14 @@
 using HeuristicLab.PluginInfrastructure;
 
 namespace HeuristicLab.NRefactory {
-  [Plugin("HeuristicLab.NRefactory", "HeuristicLab wrapper for NRefactory", "5.5.0.12009")]
+  [Plugin("HeuristicLab.NRefactory", "HeuristicLab wrapper for NRefactory", "5.5.0.12608")]
   [PluginFile("HeuristicLab.NRefactory-5.5.0.dll", PluginFileType.Assembly)]
   [PluginFile("ICSharpCode.NRefactory.dll", PluginFileType.Assembly)]
   [PluginFile("ICSharpCode.NRefactory.Cecil.dll", PluginFileType.Assembly)]
   [PluginFile("ICSharpCode.NRefactory.CSharp.dll", PluginFileType.Assembly)]
   [PluginFile("ICSharpCode.NRefactory.Xml.dll", PluginFileType.Assembly)]
   [PluginFile("ICSharpCode.NRefactory License-5.5.0.txt", PluginFileType.License)]
+  [PluginDependency("HeuristicLab.Cecil", "0.9.5")]
   public class HeuristicLabNRefactoryPlugin : PluginBase {
   }
 }

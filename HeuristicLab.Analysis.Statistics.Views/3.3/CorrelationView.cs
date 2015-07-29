@@ -22,6 +22,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using HeuristicLab.Collections;
 using HeuristicLab.Core.Views;
 using HeuristicLab.Data;
 using HeuristicLab.MainForm;
@@ -55,6 +56,7 @@ namespace HeuristicLab.Analysis.Statistics.Views {
       InitializeComponent();
       stringConvertibleMatrixView.Minimum = -1.0;
       stringConvertibleMatrixView.Maximum = 1.0;
+      stringConvertibleMatrixView.FormatPattern = "0.000";
 
       methodComboBox.Items.Add(PearsonName);
       methodComboBox.Items.Add(SpearmanName);
@@ -79,7 +81,7 @@ namespace HeuristicLab.Analysis.Statistics.Views {
       base.RegisterContentEvents();
       Content.ColumnsChanged += Content_ColumnsChanged;
       Content.RowsChanged += Content_RowsChanged;
-      Content.CollectionReset += new HeuristicLab.Collections.CollectionItemsChangedEventHandler<IRun>(Content_CollectionReset);
+      Content.CollectionReset += new CollectionItemsChangedEventHandler<IRun>(Content_CollectionReset);
       Content.UpdateOfRunsInProgressChanged += Content_UpdateOfRunsInProgressChanged;
     }
 
@@ -87,32 +89,45 @@ namespace HeuristicLab.Analysis.Statistics.Views {
       base.DeregisterContentEvents();
       Content.ColumnsChanged -= Content_ColumnsChanged;
       Content.RowsChanged -= Content_RowsChanged;
-      Content.CollectionReset -= new HeuristicLab.Collections.CollectionItemsChangedEventHandler<IRun>(Content_CollectionReset);
+      Content.CollectionReset -= new CollectionItemsChangedEventHandler<IRun>(Content_CollectionReset);
       Content.UpdateOfRunsInProgressChanged -= Content_UpdateOfRunsInProgressChanged;
     }
 
     void Content_RowsChanged(object sender, EventArgs e) {
-      UpdateUI();
+      if (suppressUpdates) return;
+      if (InvokeRequired) Invoke((Action<object, EventArgs>)Content_RowsChanged, sender, e);
+      else {
+        UpdateUI();
+      }
     }
 
     void Content_ColumnsChanged(object sender, EventArgs e) {
-      UpdateUI();
+      if (suppressUpdates) return;
+      if (InvokeRequired) Invoke((Action<object, EventArgs>)Content_ColumnsChanged, sender, e);
+      else {
+        UpdateUI();
+      }
     }
 
-    private void Content_CollectionReset(object sender, HeuristicLab.Collections.CollectionItemsChangedEventArgs<IRun> e) {
-      UpdateUI();
+    private void Content_CollectionReset(object sender, CollectionItemsChangedEventArgs<IRun> e) {
+      if (suppressUpdates) return;
+      if (InvokeRequired) Invoke((Action<object, CollectionItemsChangedEventArgs<IRun>>)Content_CollectionReset, sender, e);
+      else {
+        UpdateUI();
+      }
     }
 
     private void Content_UpdateOfRunsInProgressChanged(object sender, EventArgs e) {
-      suppressUpdates = Content.UpdateOfRunsInProgress;
-      UpdateUI();
+      if (InvokeRequired) Invoke((Action<object, EventArgs>)Content_UpdateOfRunsInProgressChanged, sender, e);
+      else {
+        suppressUpdates = Content.UpdateOfRunsInProgress;
+        UpdateUI();
+      }
     }
     #endregion
 
     private void UpdateUI() {
-      if (!suppressUpdates) {
-        RebuildCorrelationTable();
-      }
+      RebuildCorrelationTable();
     }
 
     private List<string> GetResultRowNames() {
@@ -211,8 +226,10 @@ namespace HeuristicLab.Analysis.Statistics.Views {
           var columnValues = GetValuesFromResultsParameters(runs, cres.Key, cres.Value)
                 .Where(x => !double.IsNaN(x) && !double.IsNegativeInfinity(x) && !double.IsPositiveInfinity(x));
 
-          if (!rowValues.Any() || !columnValues.Any() || i == j || rowValues.Count() != columnValues.Count()) {
+          if (!rowValues.Any() || !columnValues.Any() || rowValues.Count() != columnValues.Count()) {
             dt[i, j] = double.NaN;
+          } else if (i == j) {
+            dt[i, j] = 1.0;
           } else {
             if (methodName == PearsonName) {
               dt[i, j] = alglib.pearsoncorr2(rowValues.ToArray(), columnValues.ToArray());

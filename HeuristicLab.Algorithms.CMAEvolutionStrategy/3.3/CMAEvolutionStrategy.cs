@@ -36,7 +36,6 @@ using HeuristicLab.Random;
 
 namespace HeuristicLab.Algorithms.CMAEvolutionStrategy {
   [Item("CMA Evolution Strategy", "An evolution strategy based on covariance matrix adaptation.")]
-  [Creatable("Algorithms")]
   [StorableClass]
   public sealed class CMAEvolutionStrategy : HeuristicOptimizationEngineAlgorithm, IStorableContent {
     public string Filename { get; set; }

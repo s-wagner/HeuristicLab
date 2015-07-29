@@ -28,7 +28,7 @@ namespace HeuristicLab.Algorithms.ParameterlessPopulationPyramid {
   /// <summary>
   /// Plugin class for HeuristicLab.Algorithms.ParameterlessPopulationPyramid plugin.
   /// </summary>
-  [Plugin("HeuristicLab.Algorithms.ParameterlessPopulationPyramid", "3.3.11.12009")]
+  [Plugin("HeuristicLab.Algorithms.ParameterlessPopulationPyramid", "3.3.12.12751")]
   [PluginFile("HeuristicLab.Algorithms.ParameterlessPopulationPyramid-3.3.dll", PluginFileType.Assembly)]
   [PluginDependency("HeuristicLab.Analysis", "3.3")]
   [PluginDependency("HeuristicLab.Collections", "3.3")]

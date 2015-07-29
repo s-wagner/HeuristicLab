@@ -31,7 +31,7 @@ using HeuristicLab.Persistence.Default.CompositeSerializers.Storable;
 
 namespace HeuristicLab.Optimization {
   [Item("Run Collection", "Represents a collection of runs.")]
-  [Creatable("Testing & Analysis")]
+  [Creatable(CreatableAttribute.Categories.TestingAndAnalysis, Priority = 120)]
   [StorableClass]
   public class RunCollection : ItemCollection<IRun>, IStringConvertibleMatrix, IStorableContent {
     public string Filename { get; set; }
@@ -58,6 +58,11 @@ namespace HeuristicLab.Optimization {
         constraint.ConstrainedValue = this;
       RegisterConstraintsEvents();
       RegisterConstraintEvents(constraints);
+
+      foreach (var run in this) {
+        RegisterRunParametersEvents(run);
+        RegisterRunResultsEvents(run);
+      }
 
       UpdateFiltering(true);
     }
@@ -132,6 +137,11 @@ namespace HeuristicLab.Optimization {
       if (modifiers == null) modifiers = new CheckedItemList<IRunCollectionModifier>();
       RegisterConstraintsEvents();
       RegisterConstraintEvents(constraints);
+
+      foreach (var run in this) {
+        RegisterRunParametersEvents(run);
+        RegisterRunResultsEvents(run);
+      }
       UpdateFiltering(true);
     }
 
@@ -434,13 +444,11 @@ namespace HeuristicLab.Optimization {
     protected virtual void OnItemChanged(int rowIndex, int columnIndex) {
       EventHandler<EventArgs<int, int>> handler = ItemChanged;
       if (handler != null) handler(this, new EventArgs<int, int>(rowIndex, columnIndex));
-      OnToStringChanged();
     }
     public event EventHandler Reset;
     protected virtual void OnReset() {
       EventHandler handler = Reset;
       if (handler != null) handler(this, EventArgs.Empty);
-      OnToStringChanged();
     }
     public event EventHandler ColumnsChanged;
     protected virtual void OnColumnsChanged() {
@@ -474,12 +482,13 @@ namespace HeuristicLab.Optimization {
 
     #region Filtering
     private void UpdateFiltering(bool reset) {
+      var oldUpateRuns = UpdateOfRunsInProgress;
       UpdateOfRunsInProgress = true;
       if (reset)
         list.ForEach(r => r.Visible = true);
       foreach (IRunCollectionConstraint constraint in this.constraints)
         constraint.Check();
-      UpdateOfRunsInProgress = false;
+      UpdateOfRunsInProgress = oldUpateRuns;
     }
 
     private void RegisterConstraintsEvents() {
@@ -488,7 +497,7 @@ namespace HeuristicLab.Optimization {
       constraints.CollectionReset += new CollectionItemsChangedEventHandler<IRunCollectionConstraint>(Constraints_CollectionReset);
     }
 
-    protected virtual void RegisterConstraintEvents(IEnumerable<IRunCollectionConstraint> constraints) {
+    private void RegisterConstraintEvents(IEnumerable<IRunCollectionConstraint> constraints) {
       foreach (IRunCollectionConstraint constraint in constraints) {
         constraint.ActiveChanged += new EventHandler(Constraint_ActiveChanged);
         constraint.ConstrainedValueChanged += new EventHandler(Constraint_ConstrainedValueChanged);
@@ -496,7 +505,7 @@ namespace HeuristicLab.Optimization {
         constraint.ConstraintDataChanged += new EventHandler(Constraint_ConstraintDataChanged);
       }
     }
-    protected virtual void DeregisterConstraintEvents(IEnumerable<IRunCollectionConstraint> constraints) {
+    private void DeregisterConstraintEvents(IEnumerable<IRunCollectionConstraint> constraints) {
       foreach (IRunCollectionConstraint constraint in constraints) {
         constraint.ActiveChanged -= new EventHandler(Constraint_ActiveChanged);
         constraint.ConstrainedValueChanged -= new EventHandler(Constraint_ConstrainedValueChanged);
@@ -541,6 +550,7 @@ namespace HeuristicLab.Optimization {
 
     #region Modification
     public void Modify() {
+      var oldUpateRuns = UpdateOfRunsInProgress;
       UpdateOfRunsInProgress = true;
       var runs = this.ToList();
       var selectedRuns = runs.Where(r => r.Visible).ToList();
@@ -555,7 +565,7 @@ namespace HeuristicLab.Optimization {
           OnCollectionReset(this, runs);
         }
       }
-      UpdateOfRunsInProgress = false;
+      UpdateOfRunsInProgress = oldUpateRuns;
     }
 
     private static IEnumerable<IRun> ReplaceVisibleRuns(IEnumerable<IRun> runs, IEnumerable<IRun> visibleRuns) {

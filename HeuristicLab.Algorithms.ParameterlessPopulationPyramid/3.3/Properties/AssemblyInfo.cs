@@ -26,12 +26,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("HeuristicLab.Core")]
-[assembly: AssemblyDescription("HeuristicLab core classes")]
+[assembly: AssemblyTitle("HeuristicLab.Algorithms.ParameterlessPopulationPyramid")]
+[assembly: AssemblyDescription("Binary value optimization algorithm which requires no configuration.")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("HEAL")]
 [assembly: AssemblyProduct("HeuristicLab")]
-[assembly: AssemblyCopyright("(c) 2002-2015 HEAL")]
+[assembly: AssemblyCopyright("(c) 2002-2015 HEAL and BEACON Center for the Study of Evolution in Action")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -53,4 +53,4 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Revision and Build Numbers 
 // by using the '*' as shown below:
 [assembly: AssemblyVersion("3.3.0.0")]
-[assembly: AssemblyFileVersion("3.3.11.12009")]
+[assembly: AssemblyFileVersion("3.3.12.12751")]

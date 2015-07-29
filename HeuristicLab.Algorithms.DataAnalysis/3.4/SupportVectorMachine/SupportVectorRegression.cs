@@ -36,7 +36,7 @@ namespace HeuristicLab.Algorithms.DataAnalysis {
   /// Support vector machine regression data analysis algorithm.
   /// </summary>
   [Item("Support Vector Regression", "Support vector machine regression data analysis algorithm (wrapper for libSVM).")]
-  [Creatable("Data Analysis")]
+  [Creatable(CreatableAttribute.Categories.DataAnalysisRegression, Priority = 110)]
   [StorableClass]
   public sealed class SupportVectorRegression : FixedDataAnalysisAlgorithm<IRegressionProblem> {
     private const string SvmTypeParameterName = "SvmType";
@@ -151,7 +151,7 @@ namespace HeuristicLab.Algorithms.DataAnalysis {
     public static SupportVectorRegressionSolution CreateSupportVectorRegressionSolution(IRegressionProblemData problemData, IEnumerable<string> allowedInputVariables,
       string svmType, string kernelType, double cost, double nu, double gamma, double epsilon, int degree,
       out double trainingR2, out double testR2, out int nSv) {
-      Dataset dataset = problemData.Dataset;
+      var dataset = problemData.Dataset;
       string targetVariable = problemData.TargetVariable;
       IEnumerable<int> rows = problemData.TrainingIndices;
 

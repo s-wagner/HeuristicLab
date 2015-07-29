@@ -37,7 +37,7 @@ namespace HeuristicLab.Algorithms.DataAnalysis {
   /// Linear regression data analysis algorithm.
   /// </summary>
   [Item("Linear Regression", "Linear regression data analysis algorithm (wrapper for ALGLIB).")]
-  [Creatable("Data Analysis")]
+  [Creatable(CreatableAttribute.Categories.DataAnalysisRegression, Priority = 100)]
   [StorableClass]
   public sealed class LinearRegression : FixedDataAnalysisAlgorithm<IRegressionProblem> {
     private const string LinearRegressionModelResultName = "Linear regression solution";
@@ -68,7 +68,7 @@ namespace HeuristicLab.Algorithms.DataAnalysis {
     }
 
     public static ISymbolicRegressionSolution CreateLinearRegressionSolution(IRegressionProblemData problemData, out double rmsError, out double cvRmsError) {
-      Dataset dataset = problemData.Dataset;
+      var dataset = problemData.Dataset;
       string targetVariable = problemData.TargetVariable;
       IEnumerable<string> allowedInputVariables = problemData.AllowedInputVariables;
       IEnumerable<int> rows = problemData.TrainingIndices;

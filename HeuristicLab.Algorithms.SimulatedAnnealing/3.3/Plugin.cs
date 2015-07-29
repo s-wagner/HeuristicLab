@@ -25,7 +25,7 @@ namespace HeuristicLab.Algorithms.SimulatedAnnealing {
   /// <summary>
   /// Plugin class for HeuristicLab.Algorithms.SimulatedAnnealing plugin.
   /// </summary>
-  [Plugin("HeuristicLab.Algorithms.SimulatedAnnealing", "3.3.11.12009")]
+  [Plugin("HeuristicLab.Algorithms.SimulatedAnnealing", "3.3.12.12751")]
   [PluginFile("HeuristicLab.Algorithms.SimulatedAnnealing-3.3.dll", PluginFileType.Assembly)]
   [PluginDependency("HeuristicLab.Analysis", "3.3")]
   [PluginDependency("HeuristicLab.Collections", "3.3")]

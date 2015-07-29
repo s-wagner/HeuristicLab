@@ -36,11 +36,11 @@ namespace HeuristicLab.Problems.DataAnalysis.Symbolic {
     [StorableConstructor]
     protected SymbolicDataAnalysisSolutionImpactValuesCalculator(bool deserializing) : base(deserializing) { }
     public abstract double CalculateReplacementValue(ISymbolicDataAnalysisModel model, ISymbolicExpressionTreeNode node, IDataAnalysisProblemData problemData, IEnumerable<int> rows);
-    public abstract double CalculateImpactValue(ISymbolicDataAnalysisModel model, ISymbolicExpressionTreeNode node, IDataAnalysisProblemData problemData, IEnumerable<int> rows, double originalQuality = double.NaN);
-    public abstract void CalculateImpactAndReplacementValues(ISymbolicDataAnalysisModel model, ISymbolicExpressionTreeNode node, IDataAnalysisProblemData problemData, IEnumerable<int> rows, out double impactValue, out double replacementValue, double originalQuality = double.NaN);
+    public abstract double CalculateImpactValue(ISymbolicDataAnalysisModel model, ISymbolicExpressionTreeNode node, IDataAnalysisProblemData problemData, IEnumerable<int> rows, double qualityForImpactsCalculation = double.NaN);
+    public abstract void CalculateImpactAndReplacementValues(ISymbolicDataAnalysisModel model, ISymbolicExpressionTreeNode node, IDataAnalysisProblemData problemData, IEnumerable<int> rows, out double impactValue, out double replacementValue, out double newQualityForImpactsCalculation, double qualityForImpactsCalculation = double.NaN);
 
     protected static double CalculateReplacementValue(ISymbolicExpressionTreeNode node, ISymbolicExpressionTree sourceTree, ISymbolicDataAnalysisExpressionTreeInterpreter interpreter,
-      Dataset dataset, IEnumerable<int> rows) {
+      IDataset dataset, IEnumerable<int> rows) {
       //optimization: constant nodes return always the same value
       ConstantTreeNode constantNode = node as ConstantTreeNode;
       if (constantNode != null) return constantNode.Value;

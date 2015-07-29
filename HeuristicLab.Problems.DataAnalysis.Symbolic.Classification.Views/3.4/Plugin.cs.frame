@@ -25,7 +25,7 @@ using System.Text;
 using HeuristicLab.PluginInfrastructure;
 
 namespace HeuristicLab.Problems.DataAnalysis.Symbolic.Classification.Views {
-  [Plugin("HeuristicLab.Problems.DataAnalysis.Symbolic.Classification.Views","Provides views for symbolic classification problem classes.", "3.4.7.$WCREV$")]
+  [Plugin("HeuristicLab.Problems.DataAnalysis.Symbolic.Classification.Views","Provides views for symbolic classification problem classes.", "3.4.8.$WCREV$")]
   [PluginFile("HeuristicLab.Problems.DataAnalysis.Symbolic.Classification.Views-3.4.dll", PluginFileType.Assembly)]
   [PluginDependency("HeuristicLab.Common", "3.3")]
   [PluginDependency("HeuristicLab.Common.Resources", "3.3")]
@@ -33,7 +33,7 @@ namespace HeuristicLab.Problems.DataAnalysis.Symbolic.Classification.Views {
   [PluginDependency("HeuristicLab.Core.Views", "3.3")]
   [PluginDependency("HeuristicLab.Data", "3.3")]
   [PluginDependency("HeuristicLab.Encodings.SymbolicExpressionTreeEncoding", "3.4")]
-  [PluginDependency("HeuristicLab.EPPlus", "3.1")]
+  [PluginDependency("HeuristicLab.EPPlus", "4.0.1")]
   [PluginDependency("HeuristicLab.MainForm", "3.3")]
   [PluginDependency("HeuristicLab.MainForm.WindowsForms", "3.3")]
   [PluginDependency("HeuristicLab.Optimization","3.3")]

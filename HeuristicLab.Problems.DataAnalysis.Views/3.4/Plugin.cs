@@ -25,7 +25,7 @@ using System.Text;
 using HeuristicLab.PluginInfrastructure;
 
 namespace HeuristicLab.Problems.DataAnalysis.Views {
-  [Plugin("HeuristicLab.Problems.DataAnalysis.Views", "Provides views for base classes for data analysis tasks.", "3.4.7.12009")]
+  [Plugin("HeuristicLab.Problems.DataAnalysis.Views", "Provides views for base classes for data analysis tasks.", "3.4.8.12751")]
   [PluginFile("HeuristicLab.Problems.DataAnalysis.Views-3.4.dll", PluginFileType.Assembly)]
   [PluginDependency("HeuristicLab.ALGLIB", "3.7.0")]
   [PluginDependency("HeuristicLab.Analysis", "3.3")]

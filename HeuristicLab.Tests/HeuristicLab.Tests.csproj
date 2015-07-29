@@ -189,6 +189,10 @@
       <Private>False</Private>
       <HintPath>..\bin\HeuristicLab.Encodings.IntegerVectorEncoding-3.3.dll</HintPath>
     </Reference>
+    <Reference Include="HeuristicLab.Encodings.LinearLinkageEncoding-3.3, Version=3.3.0.0, Culture=neutral, PublicKeyToken=ba48961d6f65dcec, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\bin\HeuristicLab.Encodings.LinearLinkageEncoding-3.3.dll</HintPath>
+    </Reference>
     <Reference Include="HeuristicLab.Encodings.PermutationEncoding-3.3">
       <HintPath>..\bin\HeuristicLab.Encodings.PermutationEncoding-3.3.dll</HintPath>
       <Private>False</Private>
@@ -347,6 +351,10 @@
       <HintPath>..\bin\HeuristicLab.Problems.Programmable.Views-3.3.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="HeuristicLab.Problems.Orienteering-3.3, Version=3.3.0.0, Culture=neutral, PublicKeyToken=ba48961d6f65dcec, processorArchitecture=MSIL">
+      <HintPath>..\bin\HeuristicLab.Problems.Orienteering-3.3.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="HeuristicLab.Problems.QuadraticAssignment-3.3">
       <HintPath>..\bin\HeuristicLab.Problems.QuadraticAssignment-3.3.dll</HintPath>
       <Private>False</Private>
@@ -417,6 +425,8 @@
     <Compile Include="HeuristicLab-3.3\ParameterVisibilityTest.cs" />
     <Compile Include="HeuristicLab-3.3\PluginDependenciesTest.cs" />
     <Compile Include="HeuristicLab-3.3\PluginLoader.cs" />
+    <Compile Include="HeuristicLab-3.3\Samples\GAGroupingProblemSampleTest.cs" />
+    <Compile Include="HeuristicLab-3.3\Samples\VnsOpSampleTest.cs" />
     <Compile Include="HeuristicLab-3.3\Samples\EsGriewankSampleTest.cs" />
     <Compile Include="HeuristicLab-3.3\Samples\GaussianProcessRegressionSampleTest.cs" />
     <Compile Include="HeuristicLab-3.3\Samples\GAVrpSampleTest.cs" />
@@ -441,6 +451,7 @@
     <Compile Include="HeuristicLab-3.3\StorableConstructorTest.cs" />
     <Compile Include="HeuristicLab-3.3\ThreadSafeLogTest.cs" />
     <Compile Include="HeuristicLab-3.3\ToStringTest.cs" />
+    <Compile Include="HeuristicLab.Algorithms.DataAnalysis-3.4\GradientBoostingTest.cs" />
     <Compile Include="HeuristicLab.Algorithms.DataAnalysis-3.4\SupportVectorMachineTest.cs" />
     <Compile Include="HeuristicLab.Algorithms.DataAnalysis-3.4\GaussianProcessModelTest.cs" />
     <Compile Include="HeuristicLab.Algorithms.DataAnalysis-3.4\GaussianProcessFunctionsTest.cs" />

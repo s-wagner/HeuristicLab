@@ -25,6 +25,6 @@ namespace HeuristicLab.Problems.DataAnalysis {
   public interface IClassificationEnsembleSolution : IClassificationSolution {
     new IClassificationEnsembleModel Model { get; }
     IItemCollection<IClassificationSolution> ClassificationSolutions { get; }
-    IEnumerable<IEnumerable<double>> GetEstimatedClassValueVectors(Dataset dataset, IEnumerable<int> rows);
+    IEnumerable<IEnumerable<double>> GetEstimatedClassValueVectors(IDataset dataset, IEnumerable<int> rows);
   }
 }

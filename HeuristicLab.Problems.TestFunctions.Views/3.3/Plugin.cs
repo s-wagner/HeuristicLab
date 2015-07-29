@@ -25,7 +25,7 @@ namespace HeuristicLab.Problems.TestFunctions.Views {
   /// <summary>
   /// Plugin class for HeuristicLab.Problems.TestFunctions.Views plugin
   /// </summary>
-  [Plugin("HeuristicLab.Problems.TestFunctions.Views", "3.3.11.12009")]
+  [Plugin("HeuristicLab.Problems.TestFunctions.Views", "3.3.12.12751")]
   [PluginFile("HeuristicLab.Problems.TestFunctions.Views-3.3.dll", PluginFileType.Assembly)]
   [PluginDependency("HeuristicLab.Collections", "3.3")]
   [PluginDependency("HeuristicLab.Common", "3.3")]

@@ -22,10 +22,11 @@
 using HeuristicLab.PluginInfrastructure;
 
 namespace HeuristicLab.AvalonEdit {
-  [Plugin("HeuristicLab.AvalonEdit", "HeuristicLab wrapper for AvalonEdit", "5.0.1.12009")]
+  [Plugin("HeuristicLab.AvalonEdit", "HeuristicLab wrapper for AvalonEdit", "5.0.1.12608")]
   [PluginFile("HeuristicLab.AvalonEdit-5.0.1.dll", PluginFileType.Assembly)]
   [PluginFile("ICSharpCode.AvalonEdit.dll", PluginFileType.Assembly)]
   [PluginFile("ICSharpCode.AvalonEdit License-5.0.1.txt", PluginFileType.License)]
+  [PluginDependency("HeuristicLab.NRefactory", "5.5")]
   public class HeuristicLabAvalonEditPlugin : PluginBase {
   }
 }

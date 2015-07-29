@@ -32,7 +32,7 @@ using HeuristicLab.PluginInfrastructure;
 
 namespace HeuristicLab.Problems.LawnMower {
   [StorableClass]
-  [Creatable("Problems")]
+  [Creatable(CreatableAttribute.Categories.GeneticProgrammingProblems, Priority = 160)]
   [Item("Lawn Mower Problem", "The lawn mower demo problem for genetic programming.")]
   public class Problem : SingleObjectiveHeuristicOptimizationProblem<Evaluator, ISymbolicExpressionTreeCreator> {
     private const string LawnWidthParameterName = "LawnWidth";
@@ -89,7 +89,7 @@ namespace HeuristicLab.Problems.LawnMower {
       GrammarParameter.Value.MaximumFunctionDefinitions = MaxFunctionDefinitionsParameter.Value.Value;
       GrammarParameter.Value.MaximumFunctionArguments = MaxArgumentDefinitionsParameter.Value.Value;
 
-      InitializeOperators();      
+      InitializeOperators();
       RegisterEventHandlers();
     }
 
@@ -184,7 +184,7 @@ namespace HeuristicLab.Problems.LawnMower {
       }
       foreach (var op in operators.OfType<ISymbolicExpressionTreeCrossover>()) {
         op.ParentsParameter.ActualName = SolutionCreator.SymbolicExpressionTreeParameter.ActualName;
-        op.ChildParameter.ActualName = SolutionCreator.SymbolicExpressionTreeParameter.ActualName;
+        op.SymbolicExpressionTreeParameter.ActualName = SolutionCreator.SymbolicExpressionTreeParameter.ActualName;
       }
       foreach (var op in operators.OfType<ISymbolicExpressionTreeManipulator>()) {
         op.SymbolicExpressionTreeParameter.ActualName = SolutionCreator.SymbolicExpressionTreeParameter.ActualName;

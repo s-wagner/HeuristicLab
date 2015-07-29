@@ -28,7 +28,7 @@ namespace HeuristicLab.Operators.Views.GraphVisualization {
   /// <summary>
   /// Plugin class for HeuristicLab.Operators.Views plugin.
   /// </summary>
-  [Plugin("HeuristicLab.Operators.Views.GraphVisualization", "3.3.11.12009")]
+  [Plugin("HeuristicLab.Operators.Views.GraphVisualization", "3.3.12.12751")]
   [PluginFile("HeuristicLab.Operators.Views.GraphVisualization-3.3.dll", PluginFileType.Assembly)]
   [PluginDependency("HeuristicLab.Collections", "3.3")]
   [PluginDependency("HeuristicLab.Common", "3.3")]

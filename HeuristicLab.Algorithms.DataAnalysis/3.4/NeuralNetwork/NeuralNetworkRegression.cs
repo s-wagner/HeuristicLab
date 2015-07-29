@@ -35,7 +35,7 @@ namespace HeuristicLab.Algorithms.DataAnalysis {
   /// Neural network regression data analysis algorithm.
   /// </summary>
   [Item("Neural Network Regression", "Neural network regression data analysis algorithm (wrapper for ALGLIB). Further documentation: http://www.alglib.net/dataanalysis/neuralnetworks.php")]
-  [Creatable("Data Analysis")]
+  [Creatable(CreatableAttribute.Categories.DataAnalysisRegression, Priority = 130)]
   [StorableClass]
   public sealed class NeuralNetworkRegression : FixedDataAnalysisAlgorithm<IRegressionProblem> {
     private const string DecayParameterName = "Decay";
@@ -179,7 +179,7 @@ namespace HeuristicLab.Algorithms.DataAnalysis {
 
     public static IRegressionSolution CreateNeuralNetworkRegressionSolution(IRegressionProblemData problemData, int nLayers, int nHiddenNodes1, int nHiddenNodes2, double decay, int restarts,
       out double rmsError, out double avgRelError) {
-      Dataset dataset = problemData.Dataset;
+      var dataset = problemData.Dataset;
       string targetVariable = problemData.TargetVariable;
       IEnumerable<string> allowedInputVariables = problemData.AllowedInputVariables;
       IEnumerable<int> rows = problemData.TrainingIndices;

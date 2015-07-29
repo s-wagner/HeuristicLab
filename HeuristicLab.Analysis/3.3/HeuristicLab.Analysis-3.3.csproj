@@ -147,8 +147,9 @@
     <Compile Include="MultiObjective\RankBasedParetoFrontAnalyzer.cs" />
     <Compile Include="MultiObjective\ParetoFrontAnalyzer.cs" />
     <Compile Include="Plugin.cs" />
-    <Compile Include="PopulationDiversityAnalysis\PopulationDiversityAnalyzer.cs" />
-    <Compile Include="PopulationDiversityAnalysis\SingleObjectivePopulationDiversityAnalyzer.cs" />
+    <Compile Include="PopulationSimilarityAnalysis\PopulationDiversityAnalyzer.cs" />
+    <Compile Include="PopulationSimilarityAnalysis\PopulationSimilarityAnalyzer.cs" />
+    <Compile Include="PopulationSimilarityAnalysis\SingleObjectivePopulationDiversityAnalyzer.cs" />
     <Compile Include="QualityAnalysis\BestAverageWorstQualityAnalyzer.cs" />
     <Compile Include="QualityAnalysis\BestAverageWorstQualityCalculator.cs" />
     <Compile Include="QualityAnalysis\BestQualityMemorizer.cs" />
@@ -165,7 +166,7 @@
     <Compile Include="Statistics\KruskalWallisTest.cs" />
     <Compile Include="Statistics\Fitting\LinearLeastSquaresFitting.cs" />
     <Compile Include="Statistics\Fitting\LogFitting.cs" />
-    <Compile Include="Statistics\NormalDistribution.cs" />
+    <Compile Include="Statistics\KernelDensityEstimator.cs" />
     <Compile Include="Statistics\PairwiseTest.cs" />
     <Compile Include="Statistics\SampleSizeDetermination.cs" />
     <Compile Include="ValueAnalysis\SingleValueAnalyzer.cs" />

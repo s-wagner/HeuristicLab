@@ -22,7 +22,7 @@
 using HeuristicLab.PluginInfrastructure;
 
 namespace HeuristicLab.Problems.Instances.VehicleRouting.Views {
-  [Plugin("HeuristicLab.Problems.Instances.VehicleRouting.Views", "3.4.4.12009")]
+  [Plugin("HeuristicLab.Problems.Instances.VehicleRouting.Views", "3.4.5.12751")]
   [PluginFile("HeuristicLab.Problems.Instances.VehicleRouting.Views-3.4.dll", PluginFileType.Assembly)]
   [PluginDependency("HeuristicLab.Common.Resources", "3.3")]
   [PluginDependency("HeuristicLab.MainForm", "3.3")]

@@ -22,14 +22,12 @@
 using System;
 using System.Drawing;
 using System.Linq;
-using HeuristicLab.Analysis;
 using HeuristicLab.Common;
 using HeuristicLab.Common.Resources;
 using HeuristicLab.Core;
 using HeuristicLab.Data;
 using HeuristicLab.Encodings.SymbolicExpressionTreeEncoding;
 using HeuristicLab.Optimization;
-using HeuristicLab.Optimization.Operators;
 using HeuristicLab.Parameters;
 using HeuristicLab.Persistence.Default.CompositeSerializers.Storable;
 using HeuristicLab.PluginInfrastructure;
@@ -232,7 +230,8 @@ namespace HeuristicLab.Problems.DataAnalysis.Symbolic {
       Operators.Add(new SymbolicDataAnalysisVariableFrequencyAnalyzer());
       Operators.Add(new MinAverageMaxSymbolicExpressionTreeLengthAnalyzer());
       Operators.Add(new SymbolicExpressionTreeLengthAnalyzer());
-      Operators.Add(new SingleObjectivePopulationDiversityAnalyzer());
+      Operators.Add(new SymbolicExpressionTreeBottomUpSimilarityCalculator());
+      Operators.Add(new SymbolicDataAnalysisBottomUpDiversityAnalyzer(Operators.OfType<SymbolicExpressionTreeBottomUpSimilarityCalculator>().First()));
       ParameterizeOperators();
     }
 
@@ -321,7 +320,7 @@ namespace HeuristicLab.Problems.DataAnalysis.Symbolic {
       }
       foreach (var op in operators.OfType<ISymbolicExpressionTreeCrossover>()) {
         op.ParentsParameter.ActualName = SolutionCreator.SymbolicExpressionTreeParameter.ActualName;
-        op.ChildParameter.ActualName = SolutionCreator.SymbolicExpressionTreeParameter.ActualName;
+        op.SymbolicExpressionTreeParameter.ActualName = SolutionCreator.SymbolicExpressionTreeParameter.ActualName;
       }
       foreach (var op in operators.OfType<ISymbolicExpressionTreeManipulator>()) {
         op.SymbolicExpressionTreeParameter.ActualName = SolutionCreator.SymbolicExpressionTreeParameter.ActualName;
@@ -351,13 +350,6 @@ namespace HeuristicLab.Problems.DataAnalysis.Symbolic {
         op.EvaluationPartitionParameter.ActualName = FitnessCalculationPartitionParameter.Name;
         op.RelativeNumberOfEvaluatedSamplesParameter.ActualName = RelativeNumberOfEvaluatedSamplesParameter.Name;
         op.EvaluatorParameter.ActualName = EvaluatorParameter.Name;
-      }
-      foreach (var op in operators.OfType<SingleObjectiveSolutionSimilarityCalculator>()) {
-        op.QualityVariableName = "Quality";
-        op.SolutionVariableName = SolutionCreator.SymbolicExpressionTreeParameter.ActualName;
-      }
-      foreach (var op in operators.OfType<SingleObjectivePopulationDiversityAnalyzer>()) {
-        op.SimilarityCalculator = new SymbolicExpressionTreeBottomUpSimilarityCalculator();
       }
     }
 

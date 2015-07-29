@@ -23,17 +23,18 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Windows.Forms;
 using HeuristicLab.Collections;
 using HeuristicLab.Common;
 using HeuristicLab.MainForm;
-using HeuristicLab.MainForm.WindowsForms;
 using HeuristicLab.PluginInfrastructure;
 
 namespace HeuristicLab.Core.Views {
   [View("ItemCollection View")]
   [Content(typeof(ItemCollection<>), true)]
   [Content(typeof(IItemCollection<>), false)]
+  [Content(typeof(ReadOnlyItemCollection<>), true)]
   public partial class ItemCollectionView<T> : ItemView where T : class, IItem {
     protected Dictionary<T, List<ListViewItem>> itemListViewItemMapping;
     protected TypeSelectorDialog typeSelectorDialog;
@@ -139,8 +140,7 @@ namespace HeuristicLab.Core.Views {
       if (typeSelectorDialog.ShowDialog(this) == DialogResult.OK) {
         try {
           return (T)typeSelectorDialog.TypeSelector.CreateInstanceOfSelectedType();
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
           ErrorHandling.ShowErrorDialog(this, ex);
         }
       }
@@ -240,6 +240,14 @@ namespace HeuristicLab.Core.Views {
             foreach (ListViewItem item in itemsListView.SelectedItems)
               Content.Remove((T)item.Tag);
           }
+        }
+      } else if (e.KeyData == (Keys.Control | Keys.C)) {
+        if (itemsListView.SelectedItems.Count > 0) {
+          var builder = new StringBuilder();
+          foreach (ListViewItem selected in itemsListView.SelectedItems) {
+            builder.AppendLine(selected.Text);
+          }
+          Clipboard.SetText(builder.ToString());
         }
       }
     }

@@ -80,15 +80,18 @@ namespace HeuristicLab.Problems.DataAnalysis.Views {
       var reduced = PCAReduce(Content.ProblemData.Dataset, range, Content.ProblemData.AllowedInputVariables);
 
       int idx = 0;
+      var oneDim = reduced.GetLength(1) == 1;
       foreach (var r in range) {
-        rows[classes[r].Item2].Points.Add(new Point2D<double>(reduced[idx, 0], reduced[idx, 1]));
+        Point2D<double> point;
+        point = oneDim ? new Point2D<double>(reduced[idx, 0], 0.0) : new Point2D<double>(reduced[idx, 0], reduced[idx, 1]);
+        rows[classes[r].Item2].Points.Add(point);
         idx++;
       }
 
       scatterPlot.Rows.AddRange(rows.Values);
     }
 
-    private static double[,] PCAReduce(Dataset dataset, IEnumerable<int> rows, IEnumerable<string> variables) {
+    private static double[,] PCAReduce(IDataset dataset, IEnumerable<int> rows, IEnumerable<string> variables) {
       var instances = rows.ToArray();
       var attributes = variables.ToArray();
       var data = new double[instances.Length, attributes.Length + 1];
@@ -105,7 +108,7 @@ namespace HeuristicLab.Problems.DataAnalysis.Views {
       var matrix = new double[0, 0];
       alglib.pcabuildbasis(data, instances.Length, attributes.Length, out info, out variances, out matrix);
 
-      var result = new double[instances.Length, 2];
+      var result = new double[instances.Length, matrix.GetLength(1)];
       int r = 0;
       foreach (var inst in instances) {
         int i = 0;

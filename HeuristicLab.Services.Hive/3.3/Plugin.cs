@@ -26,7 +26,7 @@ using System.Text;
 using HeuristicLab.PluginInfrastructure;
 
 namespace HeuristicLab.Services.Hive.Server {
-  [Plugin("HeuristicLab.Services.Hive", "3.3.11.12009")]
+  [Plugin("HeuristicLab.Services.Hive", "3.3.12.12751")]
   [PluginFile("HeuristicLab.Services.Hive-3.3.dll", PluginFileType.Assembly)]
   [PluginDependency("HeuristicLab.Common", "3.3")]
   [PluginDependency("HeuristicLab.Core", "3.3")]

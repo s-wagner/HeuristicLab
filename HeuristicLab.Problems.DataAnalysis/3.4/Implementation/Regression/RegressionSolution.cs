@@ -29,7 +29,7 @@ namespace HeuristicLab.Problems.DataAnalysis {
   /// Represents a regression data analysis solution
   /// </summary>
   [StorableClass]
-  public abstract class RegressionSolution : RegressionSolutionBase {
+  public class RegressionSolution : RegressionSolutionBase {
     protected readonly Dictionary<int, double> evaluationCache;
 
     [StorableConstructor]
@@ -41,12 +41,15 @@ namespace HeuristicLab.Problems.DataAnalysis {
       : base(original, cloner) {
       evaluationCache = new Dictionary<int, double>(original.evaluationCache);
     }
-    protected RegressionSolution(IRegressionModel model, IRegressionProblemData problemData)
+    public RegressionSolution(IRegressionModel model, IRegressionProblemData problemData)
       : base(model, problemData) {
       evaluationCache = new Dictionary<int, double>(problemData.Dataset.Rows);
       CalculateRegressionResults();
     }
 
+    public override IDeepCloneable Clone(Cloner cloner) {
+      return new RegressionSolution(this, cloner);
+    }
 
     public override IEnumerable<double> EstimatedValues {
       get { return GetEstimatedValues(Enumerable.Range(0, ProblemData.Dataset.Rows)); }
@@ -59,7 +62,7 @@ namespace HeuristicLab.Problems.DataAnalysis {
     }
 
     public override IEnumerable<double> GetEstimatedValues(IEnumerable<int> rows) {
-      var rowsToEvaluate = rows.Except(evaluationCache.Keys);
+      var rowsToEvaluate = rows.Where(row => !evaluationCache.ContainsKey(row));
       var rowsEnumerator = rowsToEvaluate.GetEnumerator();
       var valuesEnumerator = Model.GetEstimatedValues(ProblemData.Dataset, rowsToEvaluate).GetEnumerator();
 
