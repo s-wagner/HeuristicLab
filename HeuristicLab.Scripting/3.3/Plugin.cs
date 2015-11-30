@@ -22,7 +22,7 @@
 using HeuristicLab.PluginInfrastructure;
 
 namespace HeuristicLab.Scripting {
-  [Plugin("HeuristicLab.Scripting", "3.3.12.12751")]
+  [Plugin("HeuristicLab.Scripting", "3.3.13.13316")]
   [PluginFile("HeuristicLab.Scripting-3.3.dll", PluginFileType.Assembly)]
   [PluginDependency("HeuristicLab.Collections", "3.3")] 
   [PluginDependency("HeuristicLab.Common", "3.3")]

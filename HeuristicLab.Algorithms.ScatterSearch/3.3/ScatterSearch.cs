@@ -37,7 +37,7 @@ namespace HeuristicLab.Algorithms.ScatterSearch {
   /// <summary>
   /// A scatter search algorithm.
   /// </summary>
-  [Item("Scatter Search", "A scatter search algorithm.")]
+  [Item("Scatter Search (SS)", "A scatter search algorithm.")]
   [Creatable(CreatableAttribute.Categories.PopulationBasedAlgorithms, Priority = 500)]
   [StorableClass]
   public sealed class ScatterSearch : HeuristicOptimizationEngineAlgorithm, IStorableContent {
@@ -161,7 +161,7 @@ namespace HeuristicLab.Algorithms.ScatterSearch {
     private void AfterDeserialization() {
       // BackwardsCompatibility3.3
       #region Backwards compatible code, remove with 3.4
-      if (Parameters.ContainsKey("SimilarityCalculator")) {
+      if (Parameters.ContainsKey("SimilarityCalculator") && Parameters["SimilarityCalculator"] is IConstrainedValueParameter<ISingleObjectiveSolutionSimilarityCalculator>) {
 #pragma warning disable 0618
         var oldParameter = (IConstrainedValueParameter<ISingleObjectiveSolutionSimilarityCalculator>)Parameters["SimilarityCalculator"];
 #pragma warning restore 0618

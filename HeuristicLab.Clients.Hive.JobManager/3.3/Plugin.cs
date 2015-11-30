@@ -22,7 +22,7 @@
 using HeuristicLab.PluginInfrastructure;
 
 namespace HeuristicLab.Clients.Hive.JobManager {
-  [Plugin("HeuristicLab.Clients.Hive.JobManager", "3.3.12.12751")]
+  [Plugin("HeuristicLab.Clients.Hive.JobManager", "3.3.13.13316")]
   [PluginFile("HeuristicLab.Clients.Hive.JobManager-3.3.dll", PluginFileType.Assembly)]
   [PluginDependency("HeuristicLab.Clients.Hive", "3.3")]
   [PluginDependency("HeuristicLab.Clients.Hive.Views", "3.3")]

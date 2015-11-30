@@ -34,10 +34,12 @@ using HeuristicLab.Parameters;
 using HeuristicLab.Persistence.Default.CompositeSerializers.Storable;
 
 namespace HeuristicLab.Problems.ExternalEvaluation {
-  [Item("External Evaluation Problem", "A problem that is evaluated in a different process.")]
+  [Item("External Evaluation Problem (single-objective)", "A problem that is evaluated in a different process.")]
   [Creatable(CreatableAttribute.Categories.ExternalEvaluationProblems, Priority = 100)]
   [StorableClass]
-  public sealed class ExternalEvaluationProblem : SingleObjectiveBasicProblem<IEncoding> {
+  // BackwardsCompatibility3.3
+  // Rename class to SingleObjectiveExternalEvaluationProblem
+  public class ExternalEvaluationProblem : SingleObjectiveBasicProblem<IEncoding>, IExternalEvaluationProblem {
 
     public static new Image StaticItemImage {
       get { return HeuristicLab.Common.Resources.VSImageLibrary.Type; }
@@ -77,8 +79,8 @@ namespace HeuristicLab.Problems.ExternalEvaluation {
     #endregion
 
     [StorableConstructor]
-    private ExternalEvaluationProblem(bool deserializing) : base(deserializing) { }
-    private ExternalEvaluationProblem(ExternalEvaluationProblem original, Cloner cloner) : base(original, cloner) { }
+    protected ExternalEvaluationProblem(bool deserializing) : base(deserializing) { }
+    protected ExternalEvaluationProblem(ExternalEvaluationProblem original, Cloner cloner) : base(original, cloner) { }
     public override IDeepCloneable Clone(Cloner cloner) {
       return new ExternalEvaluationProblem(this, cloner);
     }
@@ -88,7 +90,7 @@ namespace HeuristicLab.Problems.ExternalEvaluation {
       Parameters.Add(new FixedValueParameter<BoolValue>("Maximization", "Set to false if the problem should be minimized.", new BoolValue()));
       Parameters.Add(new OptionalValueParameter<EvaluationCache>("Cache", "Cache of previously evaluated solutions."));
       Parameters.Add(new ValueParameter<CheckedItemCollection<IEvaluationServiceClient>>("Clients", "The clients that are used to communicate with the external application.", new CheckedItemCollection<IEvaluationServiceClient>() { new EvaluationServiceClient() }));
-      Parameters.Add(new ValueParameter<SolutionMessageBuilder>("MessageBuilder", "The message builder that converts from HeuristicLab objects to SolutionMessage representation.", new SolutionMessageBuilder()));
+      Parameters.Add(new ValueParameter<SolutionMessageBuilder>("MessageBuilder", "The message builder that converts from HeuristicLab objects to SolutionMessage representation.", new SolutionMessageBuilder()) { Hidden = true });
       Parameters.Add(new FixedValueParameter<SingleObjectiveOptimizationSupportScript>("SupportScript", "A script that can provide neighborhood and analyze the results of the optimization.", new SingleObjectiveOptimizationSupportScript()));
 
       Operators.Add(new BestScopeSolutionAnalyzer());
@@ -100,8 +102,15 @@ namespace HeuristicLab.Problems.ExternalEvaluation {
     }
 
     public override double Evaluate(Individual individual, IRandom random) {
-      return Cache == null ? EvaluateOnNextAvailableClient(BuildSolutionMessage(individual)).Quality
-        : Cache.GetValue(BuildSolutionMessage(individual), m => EvaluateOnNextAvailableClient(m).Quality);
+      var qualityMessage = Evaluate(BuildSolutionMessage(individual));
+      if (!qualityMessage.HasExtension(SingleObjectiveQualityMessage.QualityMessage_))
+        throw new InvalidOperationException("The received message is not a SingleObjectiveQualityMessage.");
+      return qualityMessage.GetExtension(SingleObjectiveQualityMessage.QualityMessage_).Quality;
+    }
+    public virtual QualityMessage Evaluate(SolutionMessage solutionMessage) {
+      return Cache == null
+        ? EvaluateOnNextAvailableClient(solutionMessage)
+        : Cache.GetValue(solutionMessage, EvaluateOnNextAvailableClient, GetQualityMessageExtensions());
     }
 
     public override void Analyze(Individual[] individuals, double[] qualities, ResultCollection results, IRandom random) {
@@ -113,9 +122,16 @@ namespace HeuristicLab.Problems.ExternalEvaluation {
     }
     #endregion
 
-    #region Evaluation Helpers
+    public virtual ExtensionRegistry GetQualityMessageExtensions() {
+      var extensions = ExtensionRegistry.CreateInstance();
+      extensions.Add(SingleObjectiveQualityMessage.QualityMessage_);
+      return extensions;
+    }
+
+    #region Evaluation
     private HashSet<IEvaluationServiceClient> activeClients = new HashSet<IEvaluationServiceClient>();
     private object clientLock = new object();
+
     private QualityMessage EvaluateOnNextAvailableClient(SolutionMessage message) {
       IEvaluationServiceClient client = null;
       lock (clientLock) {
@@ -129,8 +145,7 @@ namespace HeuristicLab.Problems.ExternalEvaluation {
       }
       try {
         return client.Evaluate(message, GetQualityMessageExtensions());
-      }
-      finally {
+      } finally {
         lock (clientLock) {
           activeClients.Remove(client);
           Monitor.PulseAll(clientLock);
@@ -138,22 +153,17 @@ namespace HeuristicLab.Problems.ExternalEvaluation {
       }
     }
 
-    private ExtensionRegistry GetQualityMessageExtensions() {
-      return ExtensionRegistry.CreateInstance();
-    }
-
-    private SolutionMessage BuildSolutionMessage(Individual individual) {
+    private SolutionMessage BuildSolutionMessage(Individual individual, int solutionId = 0) {
       lock (clientLock) {
         SolutionMessage.Builder protobufBuilder = SolutionMessage.CreateBuilder();
-        protobufBuilder.SolutionId = 0;
+        protobufBuilder.SolutionId = solutionId;
         var scope = new Scope();
         individual.CopyToScope(scope);
         foreach (var variable in scope.Variables) {
           try {
             MessageBuilder.AddToMessage(variable.Value, variable.Name, protobufBuilder);
-          }
-          catch (ArgumentException ex) {
-            throw new InvalidOperationException(string.Format("ERROR while building solution message: Parameter {0} cannot be added to the message", name), ex);
+          } catch (ArgumentException ex) {
+            throw new InvalidOperationException(string.Format("ERROR while building solution message: Parameter {0} cannot be added to the message", Name), ex);
           }
         }
         return protobufBuilder.Build();

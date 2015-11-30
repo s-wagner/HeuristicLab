@@ -23,7 +23,7 @@ using HeuristicLab.PluginInfrastructure;
 
 namespace HeuristicLab.DebugEngine {
 
-  [Plugin("HeuristicLab.DebugEngine", "3.3.12.12751")]
+  [Plugin("HeuristicLab.DebugEngine", "3.3.13.13316")]
   [PluginFile("HeuristicLab.DebugEngine-3.3.dll", PluginFileType.Assembly)]
   [PluginDependency("HeuristicLab.Collections", "3.3")]
   [PluginDependency("HeuristicLab.Common", "3.3")]

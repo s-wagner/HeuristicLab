@@ -25,7 +25,7 @@ namespace HeuristicLab.Algorithms.LocalSearch {
   /// <summary>
   /// Plugin class for HeuristicLab.Algorithms.LocalSearch plugin.
   /// </summary>
-  [Plugin("HeuristicLab.Algorithms.LocalSearch", "3.3.12.12751")]
+  [Plugin("HeuristicLab.Algorithms.LocalSearch", "3.3.13.13316")]
   [PluginFile("HeuristicLab.Algorithms.LocalSearch-3.3.dll", PluginFileType.Assembly)]
   [PluginDependency("HeuristicLab.Analysis", "3.3")]
   [PluginDependency("HeuristicLab.Collections", "3.3")]

@@ -27,25 +27,17 @@ using HeuristicLab.Persistence.Default.CompositeSerializers.Storable;
 namespace HeuristicLab.Problems.Programmable {
   [Item("Multi-objective Problem Definition Script", "Script that defines the parameter vector and evaluates the solution for a programmable problem.")]
   [StorableClass]
-  public class MultiObjectiveProblemDefinitionScript : ProblemDefinitionScript, IMultiObjectiveProblemDefinition, IStorableContent {
+  public sealed class MultiObjectiveProblemDefinitionScript : ProblemDefinitionScript, IMultiObjectiveProblemDefinition, IStorableContent {
     public string Filename { get; set; }
-
-    protected override string CodeTemplate {
-      get { return ScriptTemplates.CompiledMultiObjectiveProblemDefinition; }
-    }
 
     private new IMultiObjectiveProblemDefinition CompiledProblemDefinition {
       get { return (IMultiObjectiveProblemDefinition)base.CompiledProblemDefinition; }
     }
 
     [StorableConstructor]
-    protected MultiObjectiveProblemDefinitionScript(bool deserializing) : base(deserializing) { }
-    protected MultiObjectiveProblemDefinitionScript(MultiObjectiveProblemDefinitionScript original, Cloner cloner)
-      : base(original, cloner) { }
-
-    public MultiObjectiveProblemDefinitionScript() {
-      Code = CodeTemplate;
-    }
+    private MultiObjectiveProblemDefinitionScript(bool deserializing) : base(deserializing) { }
+    private MultiObjectiveProblemDefinitionScript(MultiObjectiveProblemDefinitionScript original, Cloner cloner) : base(original, cloner) { }
+    public MultiObjectiveProblemDefinitionScript() : base(ScriptTemplates.CompiledMultiObjectiveProblemDefinition) { }
 
     public override IDeepCloneable Clone(Cloner cloner) {
       return new MultiObjectiveProblemDefinitionScript(this, cloner);

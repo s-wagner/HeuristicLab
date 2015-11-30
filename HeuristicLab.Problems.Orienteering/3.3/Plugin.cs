@@ -25,7 +25,7 @@ namespace HeuristicLab.Problems.Orienteering {
   /// <summary>
   /// Plugin class for HeuristicLab.Problems.Orienteering.
   /// </summary>
-  [Plugin("HeuristicLab.Problems.Orienteering", "3.3.12.12751")]
+  [Plugin("HeuristicLab.Problems.Orienteering", "3.3.13.13316")]
   [PluginFile("HeuristicLab.Problems.Orienteering-3.3.dll", PluginFileType.Assembly)]
   [PluginDependency("HeuristicLab.Collections", "3.3")]
   [PluginDependency("HeuristicLab.Common", "3.3")]

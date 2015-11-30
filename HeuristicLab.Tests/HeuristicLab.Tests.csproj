@@ -112,6 +112,10 @@
       <HintPath>..\bin\ALGLIB-3.7.0.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="HeuristicLab.Algorithms.ALPS-3.3">
+      <HintPath>..\bin\HeuristicLab.Algorithms.ALPS-3.3.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="HeuristicLab.Algorithms.DataAnalysis-3.4">
       <HintPath>..\bin\HeuristicLab.Algorithms.DataAnalysis-3.4.dll</HintPath>
       <Private>False</Private>
@@ -126,6 +130,10 @@
     </Reference>
     <Reference Include="HeuristicLab.Algorithms.LocalSearch-3.3">
       <HintPath>..\bin\HeuristicLab.Algorithms.LocalSearch-3.3.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="HeuristicLab.Algorithms.OffspringSelectionEvolutionStrategy-3.3, Version=3.3.0.0, Culture=neutral, PublicKeyToken=ba48961d6f65dcec, processorArchitecture=MSIL">
+      <HintPath>..\bin\HeuristicLab.Algorithms.OffspringSelectionEvolutionStrategy-3.3.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="HeuristicLab.Algorithms.OffspringSelectionGeneticAlgorithm-3.3">
@@ -297,6 +305,11 @@
       <HintPath>..\bin\HeuristicLab.Problems.ExternalEvaluation.Views-3.4.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="HeuristicLab.Problems.GeneticProgramming-3.3, Version=3.3.0.0, Culture=neutral, PublicKeyToken=ba48961d6f65dcec, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\bin\HeuristicLab.Problems.GeneticProgramming-3.3.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="HeuristicLab.Problems.GrammaticalEvolution-3.3">
       <HintPath>..\bin\HeuristicLab.Problems.GrammaticalEvolution-3.3.dll</HintPath>
       <Private>False</Private>
@@ -425,6 +438,9 @@
     <Compile Include="HeuristicLab-3.3\ParameterVisibilityTest.cs" />
     <Compile Include="HeuristicLab-3.3\PluginDependenciesTest.cs" />
     <Compile Include="HeuristicLab-3.3\PluginLoader.cs" />
+    <Compile Include="HeuristicLab-3.3\Samples\AlpsSampleTest.cs" />
+    <Compile Include="HeuristicLab-3.3\Samples\GPRobocodeSampleTest.cs" />
+    <Compile Include="HeuristicLab-3.3\Samples\OSESGriewankSampleTest.cs" />
     <Compile Include="HeuristicLab-3.3\Samples\GAGroupingProblemSampleTest.cs" />
     <Compile Include="HeuristicLab-3.3\Samples\VnsOpSampleTest.cs" />
     <Compile Include="HeuristicLab-3.3\Samples\EsGriewankSampleTest.cs" />
@@ -467,9 +483,9 @@
     <Compile Include="HeuristicLab.Collections-3.3\BidirectionalDictionaryTest.cs" />
     <Compile Include="HeuristicLab.Collections-3.3\BidirectionalLookupTest.cs" />
     <Compile Include="HeuristicLab.Collections-3.3\ObservableKeyedListTest.cs" />
+    <Compile Include="HeuristicLab.Common-3.3\EnumerableStatisticExtensions.cs" />
     <Compile Include="HeuristicLab.Encodings.BinaryVectorEncoding-3.3\Auxiliary.cs" />
     <Compile Include="HeuristicLab.Encodings.BinaryVectorEncoding-3.3\NPointCrossoverTest.cs" />
-    <Compile Include="HeuristicLab.Encodings.BinaryVectorEncoding-3.3\SinglePointCrossoverTest.cs" />
     <Compile Include="HeuristicLab.Encodings.BinaryVectorEncoding-3.3\SinglePositionBitflipManipulatorTest.cs" />
     <Compile Include="HeuristicLab.Encodings.BinaryVectorEncoding-3.3\SomePositionsBitflipManipulatorTest.cs" />
     <Compile Include="HeuristicLab.Encodings.BinaryVectorEncoding-3.3\UniformCrossoverTest.cs" />
@@ -526,7 +542,7 @@
     <Compile Include="HeuristicLab.Encodings.SymbolicExpressionTreeEncoding-3.4\FullTreeCreatorTest.cs" />
     <Compile Include="HeuristicLab.Encodings.SymbolicExpressionTreeEncoding-3.4\Grammars.cs" />
     <Compile Include="HeuristicLab.Encodings.SymbolicExpressionTreeEncoding-3.4\GrowTreeCreatorTest.cs" />
-    <Compile Include="HeuristicLab.Encodings.SymbolicExpressionTreeEncoding-3.4\ProbabilisticTreeCreaterTest.cs" />
+    <Compile Include="HeuristicLab.Encodings.SymbolicExpressionTreeEncoding-3.4\ProbabilisticTreeCreatorTest.cs" />
     <Compile Include="HeuristicLab.Encodings.SymbolicExpressionTreeEncoding-3.4\ReplaceBranchManipulationTest.cs" />
     <Compile Include="HeuristicLab.Encodings.SymbolicExpressionTreeEncoding-3.4\SubroutineCreaterTest.cs" />
     <Compile Include="HeuristicLab.Encodings.SymbolicExpressionTreeEncoding-3.4\SubroutineDeleterTest.cs" />
@@ -621,20 +637,9 @@
     <None Include="Test Resources\GA_TSP.hl">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Test Resources\Multiplexer11.csv">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Include="Test Resources\SamplesExperimentFinished.hl">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <Shadow Include="Test References\HeuristicLab.Encodings.SymbolicExpressionTreeEncoding-3.4.accessor" />
-    <Shadow Include="Test References\HeuristicLab.PluginInfrastructure-3.3.accessor" />
-    <Shadow Include="Test References\HeuristicLab.MainForm.WindowsForms-3.3.accessor" />
-    <Shadow Include="Test References\HeuristicLab.Encodings.IntegerVectorEncoding-3.3.accessor" />
-    <Shadow Include="Test References\HeuristicLab.Encodings.RealVectorEncoding-3.3.accessor" />
-    <Shadow Include="Test References\HeuristicLab.Encodings.BinaryVectorEncoding-3.3.accessor" />
-    <Shadow Include="Test References\HeuristicLab.Encodings.PermutationEncoding-3.3.accessor" />
-    <Shadow Include="Test References\HeuristicLab.Problems.TestFunctions-3.3.accessor" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Test Resources\C101.opt.txt">

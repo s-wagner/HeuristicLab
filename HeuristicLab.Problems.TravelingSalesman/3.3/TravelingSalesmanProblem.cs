@@ -36,7 +36,7 @@ using HeuristicLab.PluginInfrastructure;
 using HeuristicLab.Problems.Instances;
 
 namespace HeuristicLab.Problems.TravelingSalesman {
-  [Item("Traveling Salesman Problem", "Represents a symmetric Traveling Salesman Problem.")]
+  [Item("Traveling Salesman Problem (TSP)", "Represents a symmetric Traveling Salesman Problem.")]
   [Creatable(CreatableAttribute.Categories.CombinatorialProblems, Priority = 100)]
   [StorableClass]
   public sealed class TravelingSalesmanProblem : SingleObjectiveHeuristicOptimizationProblem<ITSPEvaluator, IPermutationCreator>, IStorableContent,
@@ -253,7 +253,7 @@ namespace HeuristicLab.Problems.TravelingSalesman {
     }
     private void UpdateMoveEvaluators() {
       Operators.RemoveAll(x => x is ISingleObjectiveMoveEvaluator);
-      foreach (ITSPPathMoveEvaluator op in ApplicationManager.Manager.GetInstances<ITSPPathMoveEvaluator>())
+      foreach (var op in ApplicationManager.Manager.GetInstances<ITSPMoveEvaluator>())
         if (op.EvaluatorType == Evaluator.GetType()) {
           Operators.Add(op);
         }
@@ -431,8 +431,7 @@ namespace HeuristicLab.Problems.TravelingSalesman {
       if (data.BestKnownTour != null) {
         try {
           EvaluateAndLoadTour(data.BestKnownTour);
-        }
-        catch (InvalidOperationException) {
+        } catch (InvalidOperationException) {
           if (data.BestKnownQuality.HasValue)
             BestKnownQuality = new DoubleValue(data.BestKnownQuality.Value);
         }

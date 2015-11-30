@@ -22,7 +22,7 @@
 using HeuristicLab.PluginInfrastructure;
 
 namespace HeuristicLab.Problems.Instances.DataAnalysis.Views {
-  [Plugin("HeuristicLab.Problems.Instances.DataAnalysis.Views", "3.3.12.12751")]
+  [Plugin("HeuristicLab.Problems.Instances.DataAnalysis.Views", "3.3.13.13316")]
   [PluginFile("HeuristicLab.Problems.Instances.DataAnalysis.Views-3.3.dll", PluginFileType.Assembly)]
   [PluginDependency("HeuristicLab.Common.Resources", "3.3")]
   [PluginDependency("HeuristicLab.Core.Views", "3.3")]

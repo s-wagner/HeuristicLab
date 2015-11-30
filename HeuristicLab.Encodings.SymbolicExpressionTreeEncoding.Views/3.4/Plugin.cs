@@ -25,7 +25,7 @@ using System.Text;
 using HeuristicLab.PluginInfrastructure;
 
 namespace HeuristicLab.Encodings.SymbolicExpressionTreeEncoding.Views {
-  [Plugin("HeuristicLab.Encodings.SymbolicExpressionTreeEncoding.Views","Provides views for the symbolic expression tree encoding.", "3.4.8.12751")]
+  [Plugin("HeuristicLab.Encodings.SymbolicExpressionTreeEncoding.Views","Provides views for the symbolic expression tree encoding.", "3.4.9.13316")]
   [PluginFile("HeuristicLab.Encodings.SymbolicExpressionTreeEncoding.Views-3.4.dll", PluginFileType.Assembly)]
   [PluginDependency("HeuristicLab.Collections", "3.3")]
   [PluginDependency("HeuristicLab.Common", "3.3")]

@@ -84,11 +84,35 @@ namespace HeuristicLab.Algorithms.DataAnalysis {
     [Storable]
     private double[] covarianceParameter;
 
-    [Storable]
-    private double[,] l;
+    private double[,] l; // used to be storable in previous versions (is calculated lazily now)
+    private double[,] x; // scaled training dataset, used to be storable in previous versions (is calculated lazily now)
+
+    // BackwardsCompatibility3.4
+    #region Backwards compatible code, remove with 3.5
+    [Storable(Name = "l")] // restore if available but don't store anymore
+    private double[,] l_storable {
+      set { this.l = value; }
+      get {
+        if (trainingDataset == null) return l; // this model has been created with an old version 
+        else return null; // if the training dataset is available l should not be serialized
+      }
+    }
+    [Storable(Name = "x")] // restore if available but don't store anymore
+    private double[,] x_storable {
+      set { this.x = value; }
+      get {
+        if (trainingDataset == null) return x; // this model has been created with an old version 
+        else return null; // if the training dataset is available x should not be serialized
+      }
+    }
+    #endregion
+
 
     [Storable]
-    private double[,] x;
+    private IDataset trainingDataset; // it is better to store the original training dataset completely because this is more efficient in persistence
+    [Storable]
+    private int[] trainingRows;
+
     [Storable]
     private Scaling inputScaling;
 
@@ -99,7 +123,9 @@ namespace HeuristicLab.Algorithms.DataAnalysis {
       : base(original, cloner) {
       this.meanFunction = cloner.Clone(original.meanFunction);
       this.covarianceFunction = cloner.Clone(original.covarianceFunction);
-      this.inputScaling = cloner.Clone(original.inputScaling);
+      if (original.inputScaling != null)
+        this.inputScaling = cloner.Clone(original.inputScaling);
+      this.trainingDataset = cloner.Clone(original.trainingDataset);
       this.negativeLogLikelihood = original.negativeLogLikelihood;
       this.targetVariable = original.targetVariable;
       this.sqrSigmaNoise = original.sqrSigmaNoise;
@@ -111,13 +137,15 @@ namespace HeuristicLab.Algorithms.DataAnalysis {
       }
 
       // shallow copies of arrays because they cannot be modified
+      this.trainingRows = original.trainingRows;
       this.allowedInputVariables = original.allowedInputVariables;
       this.alpha = original.alpha;
       this.l = original.l;
       this.x = original.x;
     }
     public GaussianProcessModel(IDataset ds, string targetVariable, IEnumerable<string> allowedInputVariables, IEnumerable<int> rows,
-      IEnumerable<double> hyp, IMeanFunction meanFunction, ICovarianceFunction covarianceFunction)
+      IEnumerable<double> hyp, IMeanFunction meanFunction, ICovarianceFunction covarianceFunction,
+      bool scaleInputs = true)
       : base() {
       this.name = ItemName;
       this.description = ItemDescription;
@@ -136,45 +164,44 @@ namespace HeuristicLab.Algorithms.DataAnalysis {
                                              .Take(this.covarianceFunction.GetNumberOfParameters(nVariables))
                                              .ToArray();
       sqrSigmaNoise = Math.Exp(2.0 * hyp.Last());
-
-      CalculateModel(ds, rows);
+      try {
+        CalculateModel(ds, rows, scaleInputs);
+      } catch (alglib.alglibexception ae) {
+        // wrap exception so that calling code doesn't have to know about alglib implementation
+        throw new ArgumentException("There was a problem in the calculation of the Gaussian process model", ae);
+      }
     }
 
-    private void CalculateModel(IDataset ds, IEnumerable<int> rows) {
-      inputScaling = new Scaling(ds, allowedInputVariables, rows);
-      x = AlglibUtil.PrepareAndScaleInputMatrix(ds, allowedInputVariables, rows, inputScaling);
-      var y = ds.GetDoubleValues(targetVariable, rows);
+    private void CalculateModel(IDataset ds, IEnumerable<int> rows, bool scaleInputs = true) {
+      this.trainingDataset = (IDataset)ds.Clone();
+      this.trainingRows = rows.ToArray();
+      this.inputScaling = scaleInputs ? new Scaling(ds, allowedInputVariables, rows) : null;
+
+      x = GetData(ds, this.allowedInputVariables, this.trainingRows, this.inputScaling);
+
+      IEnumerable<double> y;
+      y = ds.GetDoubleValues(targetVariable, rows);
 
       int n = x.GetLength(0);
-      l = new double[n, n];
 
-      // calculate means and covariances
+      // calculate cholesky decomposed (lower triangular) covariance matrix
+      var cov = covarianceFunction.GetParameterizedCovarianceFunction(covarianceParameter, Enumerable.Range(0, x.GetLength(1)));
+      this.l = CalculateL(x, cov, sqrSigmaNoise);
+
+      // calculate mean
       var mean = meanFunction.GetParameterizedMeanFunction(meanParameter, Enumerable.Range(0, x.GetLength(1)));
       double[] m = Enumerable.Range(0, x.GetLength(0))
         .Select(r => mean.Mean(x, r))
         .ToArray();
-
-      var cov = covarianceFunction.GetParameterizedCovarianceFunction(covarianceParameter, Enumerable.Range(0, x.GetLength(1)));
-      for (int i = 0; i < n; i++) {
-        for (int j = i; j < n; j++) {
-          l[j, i] = cov.Covariance(x, i, j) / sqrSigmaNoise;
-          if (j == i) l[j, i] += 1.0;
-        }
-      }
-
-
-      // cholesky decomposition
-      int info;
-      alglib.densesolverreport denseSolveRep;
-
-      var res = alglib.trfac.spdmatrixcholesky(ref l, n, false);
-      if (!res) throw new ArgumentException("Matrix is not positive semidefinite");
 
       // calculate sum of diagonal elements for likelihood
       double diagSum = Enumerable.Range(0, n).Select(i => Math.Log(l[i, i])).Sum();
 
       // solve for alpha
       double[] ym = y.Zip(m, (a, b) => a - b).ToArray();
+
+      int info;
+      alglib.densesolverreport denseSolveRep;
 
       alglib.spdmatrixcholeskysolve(l, n, false, ym, out info, out denseSolveRep, out alpha);
       for (int i = 0; i < alpha.Length; i++)
@@ -229,6 +256,32 @@ namespace HeuristicLab.Algorithms.DataAnalysis {
 
     }
 
+    private static double[,] GetData(IDataset ds, IEnumerable<string> allowedInputs, IEnumerable<int> rows, Scaling scaling) {
+      if (scaling != null) {
+        return AlglibUtil.PrepareAndScaleInputMatrix(ds, allowedInputs, rows, scaling);
+      } else {
+        return AlglibUtil.PrepareInputMatrix(ds, allowedInputs, rows);
+      }
+    }
+
+    private static double[,] CalculateL(double[,] x, ParameterizedCovarianceFunction cov, double sqrSigmaNoise) {
+      int n = x.GetLength(0);
+      var l = new double[n, n];
+
+      // calculate covariances
+      for (int i = 0; i < n; i++) {
+        for (int j = i; j < n; j++) {
+          l[j, i] = cov.Covariance(x, i, j) / sqrSigmaNoise;
+          if (j == i) l[j, i] += 1.0;
+        }
+      }
+
+      // cholesky decomposition
+      var res = alglib.trfac.spdmatrixcholesky(ref l, n, false);
+      if (!res) throw new ArgumentException("Matrix is not positive semidefinite");
+      return l;
+    }
+
 
     public override IDeepCloneable Clone(Cloner cloner) {
       return new GaussianProcessModel(this, cloner);
@@ -257,53 +310,77 @@ namespace HeuristicLab.Algorithms.DataAnalysis {
 
 
     private IEnumerable<double> GetEstimatedValuesHelper(IDataset dataset, IEnumerable<int> rows) {
-      var newX = AlglibUtil.PrepareAndScaleInputMatrix(dataset, allowedInputVariables, rows, inputScaling);
-      int newN = newX.GetLength(0);
-      int n = x.GetLength(0);
-      var Ks = new double[newN, n];
-      var mean = meanFunction.GetParameterizedMeanFunction(meanParameter, Enumerable.Range(0, newX.GetLength(1)));
-      var ms = Enumerable.Range(0, newX.GetLength(0))
-      .Select(r => mean.Mean(newX, r))
-      .ToArray();
-      var cov = covarianceFunction.GetParameterizedCovarianceFunction(covarianceParameter, Enumerable.Range(0, newX.GetLength(1)));
-      for (int i = 0; i < newN; i++) {
-        for (int j = 0; j < n; j++) {
-          Ks[i, j] = cov.CrossCovariance(x, newX, j, i);
+      try {
+        if (x == null) {
+          x = GetData(trainingDataset, allowedInputVariables, trainingRows, inputScaling);
         }
-      }
+        int n = x.GetLength(0);
 
-      return Enumerable.Range(0, newN)
-        .Select(i => ms[i] + Util.ScalarProd(Util.GetRow(Ks, i), alpha));
+        double[,] newX = GetData(dataset, allowedInputVariables, rows, inputScaling);
+        int newN = newX.GetLength(0);
+
+        var Ks = new double[newN, n];
+        var mean = meanFunction.GetParameterizedMeanFunction(meanParameter, Enumerable.Range(0, newX.GetLength(1)));
+        var ms = Enumerable.Range(0, newX.GetLength(0))
+        .Select(r => mean.Mean(newX, r))
+        .ToArray();
+        var cov = covarianceFunction.GetParameterizedCovarianceFunction(covarianceParameter, Enumerable.Range(0, newX.GetLength(1)));
+        for (int i = 0; i < newN; i++) {
+          for (int j = 0; j < n; j++) {
+            Ks[i, j] = cov.CrossCovariance(x, newX, j, i);
+          }
+        }
+
+        return Enumerable.Range(0, newN)
+          .Select(i => ms[i] + Util.ScalarProd(Util.GetRow(Ks, i), alpha));
+      } catch (alglib.alglibexception ae) {
+        // wrap exception so that calling code doesn't have to know about alglib implementation
+        throw new ArgumentException("There was a problem in the calculation of the Gaussian process model", ae);
+      }
     }
 
     public IEnumerable<double> GetEstimatedVariance(IDataset dataset, IEnumerable<int> rows) {
-      var newX = AlglibUtil.PrepareAndScaleInputMatrix(dataset, allowedInputVariables, rows, inputScaling);
-      int newN = newX.GetLength(0);
-      int n = x.GetLength(0);
-
-      var kss = new double[newN];
-      double[,] sWKs = new double[n, newN];
-      var cov = covarianceFunction.GetParameterizedCovarianceFunction(covarianceParameter, Enumerable.Range(0, x.GetLength(1)));
-
-      // for stddev 
-      for (int i = 0; i < newN; i++)
-        kss[i] = cov.Covariance(newX, i, i);
-
-      for (int i = 0; i < newN; i++) {
-        for (int j = 0; j < n; j++) {
-          sWKs[j, i] = cov.CrossCovariance(x, newX, j, i) / Math.Sqrt(sqrSigmaNoise);
+      try {
+        if (x == null) {
+          x = GetData(trainingDataset, allowedInputVariables, trainingRows, inputScaling);
         }
-      }
+        int n = x.GetLength(0);
 
-      // for stddev 
-      alglib.ablas.rmatrixlefttrsm(n, newN, l, 0, 0, false, false, 0, ref sWKs, 0, 0);
+        var newX = GetData(dataset, allowedInputVariables, rows, inputScaling);
+        int newN = newX.GetLength(0);
 
-      for (int i = 0; i < newN; i++) {
-        var sumV = Util.ScalarProd(Util.GetCol(sWKs, i), Util.GetCol(sWKs, i));
-        kss[i] -= sumV;
-        if (kss[i] < 0) kss[i] = 0;
+        var kss = new double[newN];
+        double[,] sWKs = new double[n, newN];
+        var cov = covarianceFunction.GetParameterizedCovarianceFunction(covarianceParameter, Enumerable.Range(0, x.GetLength(1)));
+
+        if (l == null) {
+          l = CalculateL(x, cov, sqrSigmaNoise);
+        }
+
+        // for stddev 
+        for (int i = 0; i < newN; i++)
+          kss[i] = cov.Covariance(newX, i, i);
+
+        for (int i = 0; i < newN; i++) {
+          for (int j = 0; j < n; j++) {
+            sWKs[j, i] = cov.CrossCovariance(x, newX, j, i) / Math.Sqrt(sqrSigmaNoise);
+          }
+        }
+
+        // for stddev 
+        alglib.ablas.rmatrixlefttrsm(n, newN, l, 0, 0, false, false, 0, ref sWKs, 0, 0);
+
+        for (int i = 0; i < newN; i++) {
+          var sumV = Util.ScalarProd(Util.GetCol(sWKs, i), Util.GetCol(sWKs, i));
+          kss[i] += sqrSigmaNoise; // kss is V(f), add noise variance of predictive distibution to get V(y)
+          kss[i] -= sumV;
+          if (kss[i] < 0) kss[i] = 0;
+        }
+        return kss;
+      } catch (alglib.alglibexception ae) {
+        // wrap exception so that calling code doesn't have to know about alglib implementation
+        throw new ArgumentException("There was a problem in the calculation of the Gaussian process model", ae);
       }
-      return kss;
     }
   }
 }

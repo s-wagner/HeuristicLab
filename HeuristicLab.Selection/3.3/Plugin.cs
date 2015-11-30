@@ -25,7 +25,7 @@ namespace HeuristicLab.Selection {
   /// <summary>
   /// Plugin class for HeuristicLab.Selection plugin.
   /// </summary>
-  [Plugin("HeuristicLab.Selection", "3.3.12.12751")]
+  [Plugin("HeuristicLab.Selection", "3.3.13.13316")]
   [PluginFile("HeuristicLab.Selection-3.3.dll", PluginFileType.Assembly)]
   [PluginDependency("HeuristicLab.Collections", "3.3")]
   [PluginDependency("HeuristicLab.Common", "3.3")]

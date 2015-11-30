@@ -25,7 +25,7 @@ namespace HeuristicLab.Visualization.ChartControlsExtensions {
   /// <summary>
   /// Plugin class for HeuristicLab.Visualization.ChartControlsExtensions plugin
   /// </summary>  
-  [Plugin("HeuristicLab.Visualization.ChartControlsExtensions", "3.3.12.12751")]
+  [Plugin("HeuristicLab.Visualization.ChartControlsExtensions", "3.3.13.13316")]
   [PluginFile("HeuristicLab.Visualization.ChartControlsExtensions-3.3.dll", PluginFileType.Assembly)]
   public class HeuristicLabVisualizationChartControlsExtensionsPlugin : PluginBase { }
 }

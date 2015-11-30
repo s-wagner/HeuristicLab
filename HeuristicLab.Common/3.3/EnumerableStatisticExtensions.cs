@@ -21,6 +21,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Linq;
 
 namespace HeuristicLab.Common {
@@ -31,18 +32,114 @@ namespace HeuristicLab.Common {
     /// <param name="values"></param>
     /// <returns></returns>
     public static double Median(this IEnumerable<double> values) {
-      // iterate only once 
+      // See unit tests for comparison with naive implementation
+      return Quantile(values, 0.5);
+    }
+
+    /// <summary>
+    /// Calculates the alpha-quantile element of the enumeration.
+    /// </summary>
+    /// <param name="values"></param>
+    /// <returns></returns>
+    public static double Quantile(this IEnumerable<double> values, double alpha) {
+      // See unit tests for comparison with naive implementation
       double[] valuesArr = values.ToArray();
       int n = valuesArr.Length;
       if (n == 0) throw new InvalidOperationException("Enumeration contains no elements.");
 
-      Array.Sort(valuesArr);
+      // "When N is even, statistics books define the median as the arithmetic mean of the elements k = N/2 
+      // and k = N/2 + 1 (that is, N/2 from the bottom and N/2 from the top). 
+      // If you accept such pedantry, you must perform two separate selections to find these elements."
 
-      // return the middle element (if n is uneven) or the average of the two middle elements if n is even.
-      if (n % 2 == 1) {
-        return valuesArr[n / 2];
+      // return the element at Math.Ceiling (if n*alpha is fractional) or the average of two elements if n*alpha is integer.
+      var pos = n * alpha;
+      Contract.Assert(pos >= 0);
+      Contract.Assert(pos < n);
+      bool isInteger = Math.Round(pos).IsAlmost(pos);
+      if (isInteger) {
+        return 0.5 * (Select((int)pos - 1, valuesArr) + Select((int)pos, valuesArr));
       } else {
-        return (valuesArr[(n / 2) - 1] + valuesArr[n / 2]) / 2.0;
+        return Select((int)Math.Ceiling(pos) - 1, valuesArr);
+      }
+    }
+
+    // Numerical Recipes in C++, §8.5 Selecting the Mth Largest, O(n)
+    // Given k in [0..n-1] returns an array value from array arr[0..n-1] such that k array values are 
+    // less than or equal to the one returned. The input array will be rearranged to have this value in 
+    // location arr[k], with all smaller elements moved to arr[0..k-1] (in arbitrary order) and all 
+    // larger elements in arr[k+1..n-1] (also in arbitrary order).
+    // 
+    // Could be changed to Select<T> where T is IComparable but in this case is significantly slower for double values
+    private static double Select(int k, double[] arr) {
+      Contract.Assert(arr.GetLowerBound(0) == 0);
+      Contract.Assert(k >= 0 && k < arr.Length);
+      int i, ir, j, l, mid, n = arr.Length;
+      double a;
+      l = 0;
+      ir = n - 1;
+      for (; ; ) {
+        if (ir <= l + 1) {
+          // Active partition contains 1 or 2 elements.
+          if (ir == l + 1 && arr[ir] < arr[l]) {
+            // if (ir == l + 1 && arr[ir].CompareTo(arr[l]) < 0) {
+            // Case of 2 elements.
+            // SWAP(arr[l], arr[ir]);
+            double temp = arr[l];
+            arr[l] = arr[ir];
+            arr[ir] = temp;
+          }
+          return arr[k];
+        } else {
+          mid = (l + ir) >> 1; // Choose median of left, center, and right elements
+          {
+            // SWAP(arr[mid], arr[l + 1]); // as partitioning element a. Also
+            double temp = arr[mid];
+            arr[mid] = arr[l + 1];
+            arr[l + 1] = temp;
+          }
+
+          if (arr[l] > arr[ir]) {
+            // if (arr[l].CompareTo(arr[ir]) > 0) {  // rearrange so that arr[l] arr[ir] <= arr[l+1],
+            // SWAP(arr[l], arr[ir]); . arr[ir] >= arr[l+1]
+            double temp = arr[l];
+            arr[l] = arr[ir];
+            arr[ir] = temp;
+          }
+
+          if (arr[l + 1] > arr[ir]) {
+            // if (arr[l + 1].CompareTo(arr[ir]) > 0) {
+            // SWAP(arr[l + 1], arr[ir]);
+            double temp = arr[l + 1];
+            arr[l + 1] = arr[ir];
+            arr[ir] = temp;
+          }
+          if (arr[l] > arr[l + 1]) {
+            //if (arr[l].CompareTo(arr[l + 1]) > 0) {
+            // SWAP(arr[l], arr[l + 1]);
+            double temp = arr[l];
+            arr[l] = arr[l + 1];
+            arr[l + 1] = temp;
+
+          }
+          i = l + 1; // Initialize pointers for partitioning.
+          j = ir;
+          a = arr[l + 1]; // Partitioning element.
+          for (; ; ) { // Beginning of innermost loop.
+            do i++; while (arr[i] < a /* arr[i].CompareTo(a) < 0 */); // Scan up to find element > a.
+            do j--; while (arr[j] > a /* arr[j].CompareTo(a) > 0 */); // Scan down to find element < a.
+            if (j < i) break; // Pointers crossed. Partitioning complete.
+            {
+              // SWAP(arr[i], arr[j]);
+              double temp = arr[i];
+              arr[i] = arr[j];
+              arr[j] = temp;
+            }
+          } // End of innermost loop.
+          arr[l + 1] = arr[j]; // Insert partitioning element.
+          arr[j] = a;
+          if (j >= k) ir = j - 1; // Keep active the partition that contains the
+          if (j <= k) l = i; // kth element.
+        }
       }
     }
 
@@ -100,25 +197,6 @@ namespace HeuristicLab.Common {
         }
       }
       return ((m_n > 1) ? m_newS / (m_n - 1) : 0.0);
-    }
-
-    /// <summary>
-    /// Calculates the pth percentile of the values.
-    /// </summary
-    public static double Percentile(this IEnumerable<double> values, double p) {
-      // iterate only once 
-      double[] valuesArr = values.ToArray();
-      int n = valuesArr.Length;
-      if (n == 0) throw new InvalidOperationException("Enumeration contains no elements.");
-      if (n == 1) return values.ElementAt(0);
-
-      if (p.IsAlmost(0.0)) return valuesArr[0];
-      if (p.IsAlmost(1.0)) return valuesArr[n - 1];
-
-      double t = p * (n - 1);
-      int index = (int)Math.Floor(t);
-      double percentage = t - index;
-      return valuesArr[index] * (1 - percentage) + valuesArr[index + 1] * percentage;
     }
 
     public static IEnumerable<double> LimitToRange(this IEnumerable<double> values, double min, double max) {

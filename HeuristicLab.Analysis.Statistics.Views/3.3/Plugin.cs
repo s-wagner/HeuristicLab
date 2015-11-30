@@ -25,7 +25,7 @@ namespace HeuristicLab.Analysis.Statistics.Views {
   /// <summary>
   /// Plugin class for HeuristicLab.Analysis.Statistics.Views plugin.
   /// </summary>
-  [Plugin("HeuristicLab.Analysis.Statistics.Views", "3.3.12.12751")]
+  [Plugin("HeuristicLab.Analysis.Statistics.Views", "3.3.13.13316")]
   [PluginFile("HeuristicLab.Analysis.Statistics.Views-3.3.dll", PluginFileType.Assembly)]
   [PluginDependency("HeuristicLab.ALGLIB", "3.7.0")]
   [PluginDependency("HeuristicLab.Analysis", "3.3")]

@@ -33,7 +33,7 @@ using HeuristicLab.Persistence.Default.CompositeSerializers.Storable;
 using HeuristicLab.Random;
 
 namespace HeuristicLab.Problems.QuadraticAssignment.Algorithms {
-  [Item("Robust Taboo Search", "The algorithm is described in Taillard, E. 1991. Robust Taboo Search for the Quadratic Assignment Problem. Parallel Computing 17, pp. 443-455.")]
+  [Item("Robust Taboo Search (RTS)", "The algorithm is described in Taillard, E. 1991. Robust Taboo Search for the Quadratic Assignment Problem. Parallel Computing 17, pp. 443-455.")]
   [Creatable(CreatableAttribute.Categories.SingleSolutionAlgorithms, Priority = 130)]
   [StorableClass]
   public sealed class RobustTabooSearch : HeuristicOptimizationEngineAlgorithm, IStorableContent {
@@ -167,9 +167,12 @@ Please note that the MinimumTabuTenure parameter has no effect in the new versio
 
       VariableCreator variableCreator = new VariableCreator();
       variableCreator.CollectedValues.Add(new ValueParameter<IntValue>("Iterations", new IntValue(0)));
+      variableCreator.CollectedValues.Add(new ValueParameter<IntValue>("EvaluatedSolutions", new IntValue(1)));
+      variableCreator.CollectedValues.Add(new ValueParameter<DoubleValue>("EvaluatedSolutionEquivalents", new DoubleValue(1)));
 
       ResultsCollector resultsCollector = new ResultsCollector();
       resultsCollector.CollectedValues.Add(new LookupParameter<IntValue>("Iterations", "The actual iteration."));
+      resultsCollector.CollectedValues.Add(new LookupParameter<IntValue>("EvaluatedSolutions", "Number of evaluated solutions."));
 
       solutionsCreator = new SolutionsCreator();
       solutionsCreator.NumberOfSolutions = new IntValue(1);
@@ -193,6 +196,8 @@ Please note that the MinimumTabuTenure parameter has no effect in the new versio
       mainOperator.ResultsParameter.ActualName = "Results";
       mainOperator.ShortTermMemoryParameter.ActualName = "ShortTermMemory";
       mainOperator.UseAlternativeAspirationParameter.ActualName = UseAlternativeAspirationParameter.Name;
+      mainOperator.EvaluatedSolutionsParameter.ActualName = "EvaluatedSolutions";
+      mainOperator.EvaluatedSolutionEquivalentsParameter.ActualName = "EvaluatedSolutionEquivalents";
 
       ConditionalBranch qualityStopBranch = new ConditionalBranch();
       qualityStopBranch.Name = "Terminate on optimal quality?";

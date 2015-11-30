@@ -25,7 +25,7 @@ using System.Text;
 using HeuristicLab.PluginInfrastructure;
 
 namespace HeuristicLab.Problems.DataAnalysis.Symbolic.Classification {
-  [Plugin("HeuristicLab.Problems.DataAnalysis.Symbolic.Classification","Provides classes to perform symbolic classification (single- or multiobjective).", "3.4.8.12751")]
+  [Plugin("HeuristicLab.Problems.DataAnalysis.Symbolic.Classification","Provides classes to perform symbolic classification (single- or multiobjective).", "3.4.9.13316")]
   [PluginFile("HeuristicLab.Problems.DataAnalysis.Symbolic.Classification-3.4.dll", PluginFileType.Assembly)]
   [PluginDependency("HeuristicLab.ALGLIB", "3.7.0")]
   [PluginDependency("HeuristicLab.Analysis", "3.3")]

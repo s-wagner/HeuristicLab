@@ -25,7 +25,7 @@ using System.Text;
 using HeuristicLab.PluginInfrastructure;
 
 namespace HeuristicLab.Operators.Programmable {
-  [Plugin("HeuristicLab.Operators.Programmable", "3.3.12.12751")]
+  [Plugin("HeuristicLab.Operators.Programmable", "3.3.13.13316")]
   [PluginFile("HeuristicLab.Operators.Programmable-3.3.dll", PluginFileType.Assembly)]
   [PluginDependency("HeuristicLab.Collections", "3.3")]
   [PluginDependency("HeuristicLab.Common", "3.3")]

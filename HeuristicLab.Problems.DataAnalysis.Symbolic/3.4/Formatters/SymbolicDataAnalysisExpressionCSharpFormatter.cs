@@ -55,6 +55,7 @@ namespace HeuristicLab.Problems.DataAnalysis.Symbolic {
     }
 
     private void FormatRecursively(ISymbolicExpressionTreeNode node, StringBuilder strBuilder) {
+      // TODO: adapt to interpreter semantics. The HL interpreter also allows Boolean operations on reals
       if (node.Subtrees.Any()) {
         if (node.Symbol is Addition) {
           FormatOperator(node, "+", strBuilder);
@@ -82,10 +83,12 @@ namespace HeuristicLab.Problems.DataAnalysis.Symbolic {
           FormatOperator(node, "!", strBuilder);
         } else if (node.Symbol is Or) {
           FormatOperator(node, "||", strBuilder);
+        } else if (node.Symbol is Xor) {
+          FormatOperator(node, "^", strBuilder);
         } else if (node.Symbol is Sine) {
           FormatFunction(node, "Math.Sin", strBuilder);
         } else if (node.Symbol is Subtraction) {
-          FormatOperator(node, "-", strBuilder);
+          FormatSubtraction(node, strBuilder);
         } else if (node.Symbol is Tangent) {
           FormatFunction(node, "Math.Tan", strBuilder);
         } else if (node.Symbol is Square) {
@@ -141,6 +144,16 @@ namespace HeuristicLab.Problems.DataAnalysis.Symbolic {
       }
     }
 
+    private void FormatSubtraction(ISymbolicExpressionTreeNode node, StringBuilder strBuilder) {
+      if (node.SubtreeCount == 1) {
+        strBuilder.Append("-");
+        FormatRecursively(node.GetSubtree(0), strBuilder);
+        return;
+      }
+      //Default case: more than 1 child
+      FormatOperator(node, "-", strBuilder);
+    }
+
     private void FormatOperator(ISymbolicExpressionTreeNode node, string symbol, StringBuilder strBuilder) {
       strBuilder.Append("(");
       foreach (var child in node.Subtrees) {
@@ -175,7 +188,7 @@ namespace HeuristicLab.Problems.DataAnalysis.Symbolic {
         varNames.Add(((VariableTreeNode)node).VariableName);
       }
 
-      var orderedNames = varNames.OrderBy(n => n, new NaturalStringComparer()).Select(n=> "double " + n);
+      var orderedNames = varNames.OrderBy(n => n, new NaturalStringComparer()).Select(n => "double " + n);
       strBuilder.Append(string.Join(", ", orderedNames));
 
       strBuilder.AppendLine(") {");

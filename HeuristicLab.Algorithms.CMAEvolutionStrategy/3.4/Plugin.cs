@@ -25,7 +25,7 @@ namespace HeuristicLab.Algorithms.CMAEvolutionStrategy {
   /// <summary>
   /// Plugin class for HeuristicLab.Algorithms.EvolutionStrategy plugin.
   /// </summary>
-  [Plugin("HeuristicLab.Algorithms.CMAEvolutionStrategy", "3.4.22.12751")]
+  [Plugin("HeuristicLab.Algorithms.CMAEvolutionStrategy", "3.4.23.13316")]
   [PluginFile("HeuristicLab.Algorithms.CMAEvolutionStrategy-3.4.dll", PluginFileType.Assembly)]
   [PluginDependency("HeuristicLab.ALGLIB", "3.7")]
   [PluginDependency("HeuristicLab.Analysis", "3.3")]

@@ -25,7 +25,7 @@ namespace HeuristicLab.Problems.VehicleRouting.Views {
   /// <summary>
   /// Plugin class for HeuristicLab.Problems.VehicleRouting.Views plugin
   /// </summary>
-  [Plugin("HeuristicLab.Problems.VehicleRouting.Views", "3.4.5.12751")]
+  [Plugin("HeuristicLab.Problems.VehicleRouting.Views", "3.4.6.13316")]
   [PluginFile("HeuristicLab.Problems.VehicleRouting.Views-3.4.dll", PluginFileType.Assembly)]
   [PluginDependency("HeuristicLab.Common", "3.3")]
   [PluginDependency("HeuristicLab.Common.Resources", "3.3")]

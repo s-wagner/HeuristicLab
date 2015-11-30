@@ -37,7 +37,7 @@ namespace HeuristicLab.Algorithms.OffspringSelectionGeneticAlgorithm {
   /// <summary>
   /// An offspring selection island genetic algorithm.
   /// </summary>
-  [Item("Island Offspring Selection Genetic Algorithm", "An island offspring selection genetic algorithm.")]
+  [Item("Island Offspring Selection Genetic Algorithm (Island-OSGA)", "An island offspring selection genetic algorithm.")]
   [Creatable(CreatableAttribute.Categories.PopulationBasedAlgorithms, Priority = 130)]
   [StorableClass]
   public sealed class IslandOffspringSelectionGeneticAlgorithm : HeuristicOptimizationEngineAlgorithm, IStorableContent {
@@ -404,8 +404,13 @@ namespace HeuristicLab.Algorithms.OffspringSelectionGeneticAlgorithm {
 
       ParameterizeSelectors();
 
-      foreach (IMigrator migrator in ApplicationManager.Manager.GetInstances<IMigrator>().OrderBy(x => x.Name))
+      foreach (IMigrator migrator in ApplicationManager.Manager.GetInstances<IMigrator>().OrderBy(x => x.Name)) {
+        // BackwardsCompatibility3.3
+        // Set the migration direction to counterclockwise
+        var unidirectionalRing = migrator as UnidirectionalRingMigrator;
+        if (unidirectionalRing != null) unidirectionalRing.ClockwiseMigrationParameter.Value = new BoolValue(false);
         MigratorParameter.ValidValues.Add(migrator);
+      }
 
       foreach (IDiscreteDoubleValueModifier modifier in ApplicationManager.Manager.GetInstances<IDiscreteDoubleValueModifier>().OrderBy(x => x.Name))
         ComparisonFactorModifierParameter.ValidValues.Add(modifier);

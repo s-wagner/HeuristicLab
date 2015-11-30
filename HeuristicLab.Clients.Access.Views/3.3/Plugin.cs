@@ -25,7 +25,7 @@ namespace HeuristicLab.Clients.Access.Views {
   /// <summary>
   /// Plugin class for HeuristicLab.Clients.Access.Views plugin.
   /// </summary>
-  [Plugin("HeuristicLab.Clients.Access.Views", "3.3.12.12751")]
+  [Plugin("HeuristicLab.Clients.Access.Views", "3.3.13.13316")]
   [PluginFile("HeuristicLab.Clients.Access.Views-3.3.dll", PluginFileType.Assembly)]  
   [PluginDependency("HeuristicLab.Clients.Common", "3.3")]  
   [PluginDependency("HeuristicLab.Collections", "3.3")]

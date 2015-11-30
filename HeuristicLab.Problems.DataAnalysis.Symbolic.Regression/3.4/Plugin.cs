@@ -25,7 +25,7 @@ using System.Text;
 using HeuristicLab.PluginInfrastructure;
 
 namespace HeuristicLab.Problems.DataAnalysis.Symbolic.Regression {
-  [Plugin("HeuristicLab.Problems.DataAnalysis.Symbolic.Regression","Provides classes to perform symbolic regression (single- or multiobjective).", "3.4.8.12751")]
+  [Plugin("HeuristicLab.Problems.DataAnalysis.Symbolic.Regression","Provides classes to perform symbolic regression (single- or multiobjective).", "3.4.9.13316")]
   [PluginFile("HeuristicLab.Problems.DataAnalysis.Symbolic.Regression-3.4.dll", PluginFileType.Assembly)]
   [PluginDependency("HeuristicLab.ALGLIB", "3.7.0")]
   [PluginDependency("HeuristicLab.AutoDiff", "1.0")]

@@ -25,7 +25,7 @@ using System.Text;
 using HeuristicLab.PluginInfrastructure;
 
 namespace HeuristicLab.Problems.ArtificialAnt.Views {
-  [Plugin("HeuristicLab.Problems.ArtificialAnt.Views","Provides views for the artificial ant problem.", "3.4.8.12751")]
+  [Plugin("HeuristicLab.Problems.ArtificialAnt.Views","Provides views for the artificial ant problem.", "3.4.9.13316")]
   [PluginFile("HeuristicLab.Problems.ArtificialAnt.Views-3.4.dll", PluginFileType.Assembly)]
   [PluginDependency("HeuristicLab.Core", "3.3")]
   [PluginDependency("HeuristicLab.Core.Views", "3.3")]

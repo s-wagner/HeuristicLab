@@ -26,7 +26,7 @@ OutFile "HeuristicLab Hive Janitor Service Installer.exe"
 ; Build configuration is either Debug or Release
 !define BUILDCONFIGURATION "Debug"
 !define JANITORBUILDPATH "..\HeuristicLab.Services.Hive.JanitorService\3.3\bin\${BUILDCONFIGURATION}"
-!define VERSION "3.3.12"
+!define VERSION "3.3.13"
 
 InstallDir $PROGRAMFILES\HeuristicLabHiveJanitorService
 RequestExecutionLevel admin
@@ -50,6 +50,7 @@ Section "HeuristicLabHiveJanitorService (required)"
 	File "${JANITORBUILDPATH}\HeuristicLab.Persistence-3.3.dll"
 	File "${JANITORBUILDPATH}\HeuristicLab.PluginInfrastructure-3.3.dll"
 	File "${JANITORBUILDPATH}\HeuristicLab.Services.Access.dll"
+	File "${JANITORBUILDPATH}\HeuristicLab.Services.Access.DataAccess.dll"
 	File "${JANITORBUILDPATH}\HeuristicLab.Services.Hive.DataAccess-3.3.dll"
 	File "${JANITORBUILDPATH}\HeuristicLab.Services.Hive.JanitorService-3.3.exe"
 	File "${JANITORBUILDPATH}\HeuristicLab.Services.Hive.JanitorService-3.3.exe.config"

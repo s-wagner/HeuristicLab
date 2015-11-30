@@ -104,11 +104,7 @@ namespace HeuristicLab.Clients.Hive.SlaveCore {
     }
 
     private AppDomain CreateAppDomain(Task task, String pluginDir, string configFileName) {
-      if (task.IsPrivileged) {
-        appDomain = SandboxManager.CreateAndInitPrivilegedSandbox(task.Id.ToString(), pluginDir, Path.Combine(pluginDir, configFileName));
-      } else {
-        appDomain = SandboxManager.CreateAndInitSandbox(task.Id.ToString(), pluginDir, Path.Combine(pluginDir, configFileName));
-      }
+      appDomain = SandboxManager.CreateAndInitSandbox(task.Id.ToString(), pluginDir, Path.Combine(pluginDir, configFileName));
       appDomain.UnhandledException += new UnhandledExceptionEventHandler(AppDomain_UnhandledException);
 
       log.LogMessage("Creating AppDomain");
@@ -166,6 +162,18 @@ namespace HeuristicLab.Clients.Hive.SlaveCore {
     private void AppDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e) {
       DisposeAppDomain();
       OnTaskFailed(new Exception("Unhandled exception: " + e.ExceptionObject.ToString()));
+    }
+
+    public Tuple<TaskData, DateTime> GetTaskDataSnapshot() {
+      Tuple<TaskData, DateTime> snapshot = null;
+      try {
+        snapshot = executor.GetTaskDataSnapshot();
+        if (snapshot == null) return Tuple.Create(originalTaskData, DateTime.Now);
+      }
+      catch (Exception ex) {
+        EventLogManager.LogException(ex);
+      }
+      return snapshot;
     }
 
     public TaskData GetTaskData() {

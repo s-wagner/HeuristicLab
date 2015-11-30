@@ -22,7 +22,7 @@
 using HeuristicLab.PluginInfrastructure;
 
 namespace HeuristicLab.Problems.ExternalEvaluation.Views {
-  [Plugin("HeuristicLab.Problems.ExternalEvaluation.Views", "3.4.22.12751")]
+  [Plugin("HeuristicLab.Problems.ExternalEvaluation.Views", "3.4.23.13316")]
   [PluginFile("HeuristicLab.Problems.ExternalEvaluation.Views-3.4.dll", PluginFileType.Assembly)]
   [PluginDependency("HeuristicLab.Common.Resources", "3.3")]
   [PluginDependency("HeuristicLab.Core", "3.3")]

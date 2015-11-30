@@ -26,7 +26,7 @@ namespace HeuristicLab.Persistence {
   /// <summary>
   /// The plugin for HeuriticLab.Persistence
   /// </summary>
-  [Plugin("HeuristicLab.Persistence", "3.3.12.12751")]
+  [Plugin("HeuristicLab.Persistence", "3.3.13.13316")]
   [PluginFile("HeuristicLab.Persistence-3.3.dll", PluginFileType.Assembly)]
   [PluginDependency("HeuristicLab.Tracing", "3.3")]
   public class HeuristicLabPersistencePlugin : PluginBase { }

@@ -15,6 +15,8 @@ namespace HeuristicLab.Problems.ExternalEvaluation {
   
     #region Extension registration
     public static void RegisterAllExtensions(pb::ExtensionRegistry registry) {
+      registry.Add(global::HeuristicLab.Problems.ExternalEvaluation.SingleObjectiveQualityMessage.QualityMessage_);
+      registry.Add(global::HeuristicLab.Problems.ExternalEvaluation.MultiObjectiveQualityMessage.QualityMessage_);
     }
     #endregion
     #region Static variables
@@ -40,6 +42,10 @@ namespace HeuristicLab.Problems.ExternalEvaluation {
     internal static pb::FieldAccess.FieldAccessorTable<global::HeuristicLab.Problems.ExternalEvaluation.SolutionMessage.Types.RawVariable, global::HeuristicLab.Problems.ExternalEvaluation.SolutionMessage.Types.RawVariable.Builder> internal__static_HeuristicLab_Problems_ExternalEvaluation_SolutionMessage_RawVariable__FieldAccessorTable;
     internal static pbd::MessageDescriptor internal__static_HeuristicLab_Problems_ExternalEvaluation_QualityMessage__Descriptor;
     internal static pb::FieldAccess.FieldAccessorTable<global::HeuristicLab.Problems.ExternalEvaluation.QualityMessage, global::HeuristicLab.Problems.ExternalEvaluation.QualityMessage.Builder> internal__static_HeuristicLab_Problems_ExternalEvaluation_QualityMessage__FieldAccessorTable;
+    internal static pbd::MessageDescriptor internal__static_HeuristicLab_Problems_ExternalEvaluation_SingleObjectiveQualityMessage__Descriptor;
+    internal static pb::FieldAccess.FieldAccessorTable<global::HeuristicLab.Problems.ExternalEvaluation.SingleObjectiveQualityMessage, global::HeuristicLab.Problems.ExternalEvaluation.SingleObjectiveQualityMessage.Builder> internal__static_HeuristicLab_Problems_ExternalEvaluation_SingleObjectiveQualityMessage__FieldAccessorTable;
+    internal static pbd::MessageDescriptor internal__static_HeuristicLab_Problems_ExternalEvaluation_MultiObjectiveQualityMessage__Descriptor;
+    internal static pb::FieldAccess.FieldAccessorTable<global::HeuristicLab.Problems.ExternalEvaluation.MultiObjectiveQualityMessage, global::HeuristicLab.Problems.ExternalEvaluation.MultiObjectiveQualityMessage.Builder> internal__static_HeuristicLab_Problems_ExternalEvaluation_MultiObjectiveQualityMessage__FieldAccessorTable;
     #endregion
     #region Descriptor
     public static pbd::FileDescriptor Descriptor {
@@ -82,12 +88,29 @@ namespace HeuristicLab.Problems.ExternalEvaluation {
           "BG5hbWUYASACKAkSDAoEZGF0YRgCIAEoCRpBChNTdHJpbmdBcnJheVZhcmlh" + 
           "YmxlEgwKBG5hbWUYASACKAkSDAoEZGF0YRgCIAMoCRIOCgZsZW5ndGgYAyAB" + 
           "KAUaKQoLUmF3VmFyaWFibGUSDAoEbmFtZRgBIAIoCRIMCgRkYXRhGAIgASgM" + 
-          "IkAKDlF1YWxpdHlNZXNzYWdlEhIKCnNvbHV0aW9uSWQYASACKAUSDwoHcXVh" + 
-          "bGl0eRgCIAIoASoJCOgHEICAgIACMpQBChFFdmFsdWF0aW9uU2VydmljZRJ/" + 
-          "CghFdmFsdWF0ZRI5LkhldXJpc3RpY0xhYi5Qcm9ibGVtcy5FeHRlcm5hbEV2" + 
-          "YWx1YXRpb24uU29sdXRpb25NZXNzYWdlGjguSGV1cmlzdGljTGFiLlByb2Js" + 
-          "ZW1zLkV4dGVybmFsRXZhbHVhdGlvbi5RdWFsaXR5TWVzc2FnZUIuCixjb20u" + 
-          "aGV1cmlzdGljbGFiLnByb2JsZW1zLmV4dGVybmFsZXZhbHVhdGlvbg==");
+          "IskBCg5RdWFsaXR5TWVzc2FnZRISCgpzb2x1dGlvbklkGAEgAigFEksKBHR5" + 
+          "cGUYAiACKA4yPS5IZXVyaXN0aWNMYWIuUHJvYmxlbXMuRXh0ZXJuYWxFdmFs" + 
+          "dWF0aW9uLlF1YWxpdHlNZXNzYWdlLlR5cGUiSwoEVHlwZRIhCh1TaW5nbGVP" + 
+          "YmplY3RpdmVRdWFsaXR5TWVzc2FnZRABEiAKHE11bHRpT2JqZWN0aXZlUXVh" + 
+          "bGl0eU1lc3NhZ2UQAioJCOgHEICAgIACIs0BCh1TaW5nbGVPYmplY3RpdmVR" + 
+          "dWFsaXR5TWVzc2FnZRIPCgdxdWFsaXR5GAEgAigBMpoBCg5xdWFsaXR5TWVz" + 
+          "c2FnZRI4LkhldXJpc3RpY0xhYi5Qcm9ibGVtcy5FeHRlcm5hbEV2YWx1YXRp" + 
+          "b24uUXVhbGl0eU1lc3NhZ2UY6AcgAigLMkcuSGV1cmlzdGljTGFiLlByb2Js" + 
+          "ZW1zLkV4dGVybmFsRXZhbHVhdGlvbi5TaW5nbGVPYmplY3RpdmVRdWFsaXR5" + 
+          "TWVzc2FnZSLNAQocTXVsdGlPYmplY3RpdmVRdWFsaXR5TWVzc2FnZRIRCglx" + 
+          "dWFsaXRpZXMYASADKAEymQEKDnF1YWxpdHlNZXNzYWdlEjguSGV1cmlzdGlj" + 
+          "TGFiLlByb2JsZW1zLkV4dGVybmFsRXZhbHVhdGlvbi5RdWFsaXR5TWVzc2Fn" + 
+          "ZRjpByACKAsyRi5IZXVyaXN0aWNMYWIuUHJvYmxlbXMuRXh0ZXJuYWxFdmFs" + 
+          "dWF0aW9uLk11bHRpT2JqZWN0aXZlUXVhbGl0eU1lc3NhZ2Uy0gIKEUV2YWx1" + 
+          "YXRpb25TZXJ2aWNlEp0BChdFdmFsdWF0ZVNpbmdsZU9iamVjdGl2ZRI5Lkhl" + 
+          "dXJpc3RpY0xhYi5Qcm9ibGVtcy5FeHRlcm5hbEV2YWx1YXRpb24uU29sdXRp" + 
+          "b25NZXNzYWdlGkcuSGV1cmlzdGljTGFiLlByb2JsZW1zLkV4dGVybmFsRXZh" + 
+          "bHVhdGlvbi5TaW5nbGVPYmplY3RpdmVRdWFsaXR5TWVzc2FnZRKcAQoXRXZh" + 
+          "bHVhdGVNdWx0aU9iamVjdGl2ZXMSOS5IZXVyaXN0aWNMYWIuUHJvYmxlbXMu" + 
+          "RXh0ZXJuYWxFdmFsdWF0aW9uLlNvbHV0aW9uTWVzc2FnZRpGLkhldXJpc3Rp" + 
+          "Y0xhYi5Qcm9ibGVtcy5FeHRlcm5hbEV2YWx1YXRpb24uTXVsdGlPYmplY3Rp" + 
+          "dmVRdWFsaXR5TWVzc2FnZUIuCixjb20uaGV1cmlzdGljbGFiLnByb2JsZW1z" + 
+          "LmV4dGVybmFsZXZhbHVhdGlvbg==");
       pbd::FileDescriptor.InternalDescriptorAssigner assigner = delegate(pbd::FileDescriptor root) {
         descriptor = root;
         internal__static_HeuristicLab_Problems_ExternalEvaluation_SolutionMessage__Descriptor = Descriptor.MessageTypes[0];
@@ -133,7 +156,17 @@ namespace HeuristicLab.Problems.ExternalEvaluation {
         internal__static_HeuristicLab_Problems_ExternalEvaluation_QualityMessage__Descriptor = Descriptor.MessageTypes[1];
         internal__static_HeuristicLab_Problems_ExternalEvaluation_QualityMessage__FieldAccessorTable = 
             new pb::FieldAccess.FieldAccessorTable<global::HeuristicLab.Problems.ExternalEvaluation.QualityMessage, global::HeuristicLab.Problems.ExternalEvaluation.QualityMessage.Builder>(internal__static_HeuristicLab_Problems_ExternalEvaluation_QualityMessage__Descriptor,
-                new string[] { "SolutionId", "Quality", });
+                new string[] { "SolutionId", "Type", });
+        internal__static_HeuristicLab_Problems_ExternalEvaluation_SingleObjectiveQualityMessage__Descriptor = Descriptor.MessageTypes[2];
+        internal__static_HeuristicLab_Problems_ExternalEvaluation_SingleObjectiveQualityMessage__FieldAccessorTable = 
+            new pb::FieldAccess.FieldAccessorTable<global::HeuristicLab.Problems.ExternalEvaluation.SingleObjectiveQualityMessage, global::HeuristicLab.Problems.ExternalEvaluation.SingleObjectiveQualityMessage.Builder>(internal__static_HeuristicLab_Problems_ExternalEvaluation_SingleObjectiveQualityMessage__Descriptor,
+                new string[] { "Quality", });
+        global::HeuristicLab.Problems.ExternalEvaluation.SingleObjectiveQualityMessage.QualityMessage_ = pb::GeneratedSingleExtension<global::HeuristicLab.Problems.ExternalEvaluation.SingleObjectiveQualityMessage>.CreateInstance(global::HeuristicLab.Problems.ExternalEvaluation.SingleObjectiveQualityMessage.Descriptor.Extensions[0]);
+        internal__static_HeuristicLab_Problems_ExternalEvaluation_MultiObjectiveQualityMessage__Descriptor = Descriptor.MessageTypes[3];
+        internal__static_HeuristicLab_Problems_ExternalEvaluation_MultiObjectiveQualityMessage__FieldAccessorTable = 
+            new pb::FieldAccess.FieldAccessorTable<global::HeuristicLab.Problems.ExternalEvaluation.MultiObjectiveQualityMessage, global::HeuristicLab.Problems.ExternalEvaluation.MultiObjectiveQualityMessage.Builder>(internal__static_HeuristicLab_Problems_ExternalEvaluation_MultiObjectiveQualityMessage__Descriptor,
+                new string[] { "Qualities", });
+        global::HeuristicLab.Problems.ExternalEvaluation.MultiObjectiveQualityMessage.QualityMessage_ = pb::GeneratedSingleExtension<global::HeuristicLab.Problems.ExternalEvaluation.MultiObjectiveQualityMessage>.CreateInstance(global::HeuristicLab.Problems.ExternalEvaluation.MultiObjectiveQualityMessage.Descriptor.Extensions[0]);
         return null;
       };
       pbd::FileDescriptor.InternalBuildGeneratedFileFrom(descriptorData,
@@ -4208,8 +4241,8 @@ namespace HeuristicLab.Problems.ExternalEvaluation {
   public sealed partial class QualityMessage : pb::ExtendableMessage<QualityMessage, QualityMessage.Builder> {
     private QualityMessage() { }
     private static readonly QualityMessage defaultInstance = new QualityMessage().MakeReadOnly();
-    private static readonly string[] _qualityMessageFieldNames = new string[] { "quality", "solutionId" };
-    private static readonly uint[] _qualityMessageFieldTags = new uint[] { 17, 8 };
+    private static readonly string[] _qualityMessageFieldNames = new string[] { "solutionId", "type" };
+    private static readonly uint[] _qualityMessageFieldTags = new uint[] { 8, 16 };
     public static QualityMessage DefaultInstance {
       get { return defaultInstance; }
     }
@@ -4230,6 +4263,21 @@ namespace HeuristicLab.Problems.ExternalEvaluation {
       get { return global::HeuristicLab.Problems.ExternalEvaluation.ExternalEvaluationMessages.internal__static_HeuristicLab_Problems_ExternalEvaluation_QualityMessage__FieldAccessorTable; }
     }
     
+    #region Nested types
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+    [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("ProtoGen", "2.4.1.473")]
+    public static class Types {
+      [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
+      [global::System.CodeDom.Compiler.GeneratedCodeAttribute("ProtoGen", "2.4.1.473")]
+      public enum Type {
+        SingleObjectiveQualityMessage = 1,
+        MultiObjectiveQualityMessage = 2,
+      }
+      
+    }
+    #endregion
+    
     public const int SolutionIdFieldNumber = 1;
     private bool hasSolutionId;
     private int solutionId_;
@@ -4240,20 +4288,20 @@ namespace HeuristicLab.Problems.ExternalEvaluation {
       get { return solutionId_; }
     }
     
-    public const int QualityFieldNumber = 2;
-    private bool hasQuality;
-    private double quality_;
-    public bool HasQuality {
-      get { return hasQuality; }
+    public const int TypeFieldNumber = 2;
+    private bool hasType;
+    private global::HeuristicLab.Problems.ExternalEvaluation.QualityMessage.Types.Type type_ = global::HeuristicLab.Problems.ExternalEvaluation.QualityMessage.Types.Type.SingleObjectiveQualityMessage;
+    public bool HasType {
+      get { return hasType; }
     }
-    public double Quality {
-      get { return quality_; }
+    public global::HeuristicLab.Problems.ExternalEvaluation.QualityMessage.Types.Type Type {
+      get { return type_; }
     }
     
     public override bool IsInitialized {
       get {
         if (!hasSolutionId) return false;
-        if (!hasQuality) return false;
+        if (!hasType) return false;
         if (!ExtensionsAreInitialized) return false;
         return true;
       }
@@ -4264,10 +4312,10 @@ namespace HeuristicLab.Problems.ExternalEvaluation {
       string[] field_names = _qualityMessageFieldNames;
       pb::ExtendableMessage<QualityMessage, QualityMessage.Builder>.ExtensionWriter extensionWriter = CreateExtensionWriter(this);
       if (hasSolutionId) {
-        output.WriteInt32(1, field_names[1], SolutionId);
+        output.WriteInt32(1, field_names[0], SolutionId);
       }
-      if (hasQuality) {
-        output.WriteDouble(2, field_names[0], Quality);
+      if (hasType) {
+        output.WriteEnum(2, field_names[1], (int) Type, Type);
       }
       extensionWriter.WriteUntil(536870912, output);
       UnknownFields.WriteTo(output);
@@ -4283,8 +4331,8 @@ namespace HeuristicLab.Problems.ExternalEvaluation {
         if (hasSolutionId) {
           size += pb::CodedOutputStream.ComputeInt32Size(1, SolutionId);
         }
-        if (hasQuality) {
-          size += pb::CodedOutputStream.ComputeDoubleSize(2, Quality);
+        if (hasType) {
+          size += pb::CodedOutputStream.ComputeEnumSize(2, (int) Type);
         }
         size += ExtensionsSerializedSize;
         size += UnknownFields.SerializedSize;
@@ -4416,8 +4464,8 @@ namespace HeuristicLab.Problems.ExternalEvaluation {
         if (other.HasSolutionId) {
           SolutionId = other.SolutionId;
         }
-        if (other.HasQuality) {
-          Quality = other.Quality;
+        if (other.HasType) {
+          Type = other.Type;
         }
           this.MergeExtensionFields(other);
         this.MergeUnknownFields(other.UnknownFields);
@@ -4467,8 +4515,16 @@ namespace HeuristicLab.Problems.ExternalEvaluation {
               result.hasSolutionId = input.ReadInt32(ref result.solutionId_);
               break;
             }
-            case 17: {
-              result.hasQuality = input.ReadDouble(ref result.quality_);
+            case 16: {
+              object unknown;
+              if(input.ReadEnum(ref result.type_, out unknown)) {
+                result.hasType = true;
+              } else if(unknown is int) {
+                if (unknownFields == null) {
+                  unknownFields = pb::UnknownFieldSet.CreateBuilder(this.UnknownFields);
+                }
+                unknownFields.MergeVarintField(2, (ulong)(int)unknown);
+              }
               break;
             }
           }
@@ -4501,6 +4557,283 @@ namespace HeuristicLab.Problems.ExternalEvaluation {
         return this;
       }
       
+      public bool HasType {
+       get { return result.hasType; }
+      }
+      public global::HeuristicLab.Problems.ExternalEvaluation.QualityMessage.Types.Type Type {
+        get { return result.Type; }
+        set { SetType(value); }
+      }
+      public Builder SetType(global::HeuristicLab.Problems.ExternalEvaluation.QualityMessage.Types.Type value) {
+        PrepareBuilder();
+        result.hasType = true;
+        result.type_ = value;
+        return this;
+      }
+      public Builder ClearType() {
+        PrepareBuilder();
+        result.hasType = false;
+        result.type_ = global::HeuristicLab.Problems.ExternalEvaluation.QualityMessage.Types.Type.SingleObjectiveQualityMessage;
+        return this;
+      }
+    }
+    static QualityMessage() {
+      object.ReferenceEquals(global::HeuristicLab.Problems.ExternalEvaluation.ExternalEvaluationMessages.Descriptor, null);
+    }
+  }
+  
+  [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+  [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
+  [global::System.CodeDom.Compiler.GeneratedCodeAttribute("ProtoGen", "2.4.1.473")]
+  public sealed partial class SingleObjectiveQualityMessage : pb::GeneratedMessage<SingleObjectiveQualityMessage, SingleObjectiveQualityMessage.Builder> {
+    private SingleObjectiveQualityMessage() { }
+    private static readonly SingleObjectiveQualityMessage defaultInstance = new SingleObjectiveQualityMessage().MakeReadOnly();
+    private static readonly string[] _singleObjectiveQualityMessageFieldNames = new string[] { "quality" };
+    private static readonly uint[] _singleObjectiveQualityMessageFieldTags = new uint[] { 9 };
+    public static SingleObjectiveQualityMessage DefaultInstance {
+      get { return defaultInstance; }
+    }
+    
+    public override SingleObjectiveQualityMessage DefaultInstanceForType {
+      get { return DefaultInstance; }
+    }
+    
+    protected override SingleObjectiveQualityMessage ThisMessage {
+      get { return this; }
+    }
+    
+    public static pbd::MessageDescriptor Descriptor {
+      get { return global::HeuristicLab.Problems.ExternalEvaluation.ExternalEvaluationMessages.internal__static_HeuristicLab_Problems_ExternalEvaluation_SingleObjectiveQualityMessage__Descriptor; }
+    }
+    
+    protected override pb::FieldAccess.FieldAccessorTable<SingleObjectiveQualityMessage, SingleObjectiveQualityMessage.Builder> InternalFieldAccessors {
+      get { return global::HeuristicLab.Problems.ExternalEvaluation.ExternalEvaluationMessages.internal__static_HeuristicLab_Problems_ExternalEvaluation_SingleObjectiveQualityMessage__FieldAccessorTable; }
+    }
+    
+    public const int QualityMessage_FieldNumber = 1000;
+    public static pb::GeneratedExtensionBase<global::HeuristicLab.Problems.ExternalEvaluation.SingleObjectiveQualityMessage> QualityMessage_;
+    public const int QualityFieldNumber = 1;
+    private bool hasQuality;
+    private double quality_;
+    public bool HasQuality {
+      get { return hasQuality; }
+    }
+    public double Quality {
+      get { return quality_; }
+    }
+    
+    public override bool IsInitialized {
+      get {
+        if (!hasQuality) return false;
+        return true;
+      }
+    }
+    
+    public override void WriteTo(pb::ICodedOutputStream output) {
+      int size = SerializedSize;
+      string[] field_names = _singleObjectiveQualityMessageFieldNames;
+      if (hasQuality) {
+        output.WriteDouble(1, field_names[0], Quality);
+      }
+      UnknownFields.WriteTo(output);
+    }
+    
+    private int memoizedSerializedSize = -1;
+    public override int SerializedSize {
+      get {
+        int size = memoizedSerializedSize;
+        if (size != -1) return size;
+        
+        size = 0;
+        if (hasQuality) {
+          size += pb::CodedOutputStream.ComputeDoubleSize(1, Quality);
+        }
+        size += UnknownFields.SerializedSize;
+        memoizedSerializedSize = size;
+        return size;
+      }
+    }
+    
+    public static SingleObjectiveQualityMessage ParseFrom(pb::ByteString data) {
+      return ((Builder) CreateBuilder().MergeFrom(data)).BuildParsed();
+    }
+    public static SingleObjectiveQualityMessage ParseFrom(pb::ByteString data, pb::ExtensionRegistry extensionRegistry) {
+      return ((Builder) CreateBuilder().MergeFrom(data, extensionRegistry)).BuildParsed();
+    }
+    public static SingleObjectiveQualityMessage ParseFrom(byte[] data) {
+      return ((Builder) CreateBuilder().MergeFrom(data)).BuildParsed();
+    }
+    public static SingleObjectiveQualityMessage ParseFrom(byte[] data, pb::ExtensionRegistry extensionRegistry) {
+      return ((Builder) CreateBuilder().MergeFrom(data, extensionRegistry)).BuildParsed();
+    }
+    public static SingleObjectiveQualityMessage ParseFrom(global::System.IO.Stream input) {
+      return ((Builder) CreateBuilder().MergeFrom(input)).BuildParsed();
+    }
+    public static SingleObjectiveQualityMessage ParseFrom(global::System.IO.Stream input, pb::ExtensionRegistry extensionRegistry) {
+      return ((Builder) CreateBuilder().MergeFrom(input, extensionRegistry)).BuildParsed();
+    }
+    public static SingleObjectiveQualityMessage ParseDelimitedFrom(global::System.IO.Stream input) {
+      return CreateBuilder().MergeDelimitedFrom(input).BuildParsed();
+    }
+    public static SingleObjectiveQualityMessage ParseDelimitedFrom(global::System.IO.Stream input, pb::ExtensionRegistry extensionRegistry) {
+      return CreateBuilder().MergeDelimitedFrom(input, extensionRegistry).BuildParsed();
+    }
+    public static SingleObjectiveQualityMessage ParseFrom(pb::ICodedInputStream input) {
+      return ((Builder) CreateBuilder().MergeFrom(input)).BuildParsed();
+    }
+    public static SingleObjectiveQualityMessage ParseFrom(pb::ICodedInputStream input, pb::ExtensionRegistry extensionRegistry) {
+      return ((Builder) CreateBuilder().MergeFrom(input, extensionRegistry)).BuildParsed();
+    }
+    private SingleObjectiveQualityMessage MakeReadOnly() {
+      return this;
+    }
+    
+    public static Builder CreateBuilder() { return new Builder(); }
+    public override Builder ToBuilder() { return CreateBuilder(this); }
+    public override Builder CreateBuilderForType() { return new Builder(); }
+    public static Builder CreateBuilder(SingleObjectiveQualityMessage prototype) {
+      return new Builder(prototype);
+    }
+    
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+    [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("ProtoGen", "2.4.1.473")]
+    public sealed partial class Builder : pb::GeneratedBuilder<SingleObjectiveQualityMessage, Builder> {
+      protected override Builder ThisBuilder {
+        get { return this; }
+      }
+      public Builder() {
+        result = DefaultInstance;
+        resultIsReadOnly = true;
+      }
+      internal Builder(SingleObjectiveQualityMessage cloneFrom) {
+        result = cloneFrom;
+        resultIsReadOnly = true;
+      }
+      
+      private bool resultIsReadOnly;
+      private SingleObjectiveQualityMessage result;
+      
+      private SingleObjectiveQualityMessage PrepareBuilder() {
+        if (resultIsReadOnly) {
+          SingleObjectiveQualityMessage original = result;
+          result = new SingleObjectiveQualityMessage();
+          resultIsReadOnly = false;
+          MergeFrom(original);
+        }
+        return result;
+      }
+      
+      public override bool IsInitialized {
+        get { return result.IsInitialized; }
+      }
+      
+      protected override SingleObjectiveQualityMessage MessageBeingBuilt {
+        get { return PrepareBuilder(); }
+      }
+      
+      public override Builder Clear() {
+        result = DefaultInstance;
+        resultIsReadOnly = true;
+        return this;
+      }
+      
+      public override Builder Clone() {
+        if (resultIsReadOnly) {
+          return new Builder(result);
+        } else {
+          return new Builder().MergeFrom(result);
+        }
+      }
+      
+      public override pbd::MessageDescriptor DescriptorForType {
+        get { return global::HeuristicLab.Problems.ExternalEvaluation.SingleObjectiveQualityMessage.Descriptor; }
+      }
+      
+      public override SingleObjectiveQualityMessage DefaultInstanceForType {
+        get { return global::HeuristicLab.Problems.ExternalEvaluation.SingleObjectiveQualityMessage.DefaultInstance; }
+      }
+      
+      public override SingleObjectiveQualityMessage BuildPartial() {
+        if (resultIsReadOnly) {
+          return result;
+        }
+        resultIsReadOnly = true;
+        return result.MakeReadOnly();
+      }
+      
+      public override Builder MergeFrom(pb::IMessage other) {
+        if (other is SingleObjectiveQualityMessage) {
+          return MergeFrom((SingleObjectiveQualityMessage) other);
+        } else {
+          base.MergeFrom(other);
+          return this;
+        }
+      }
+      
+      public override Builder MergeFrom(SingleObjectiveQualityMessage other) {
+        if (other == global::HeuristicLab.Problems.ExternalEvaluation.SingleObjectiveQualityMessage.DefaultInstance) return this;
+        PrepareBuilder();
+        if (other.HasQuality) {
+          Quality = other.Quality;
+        }
+        this.MergeUnknownFields(other.UnknownFields);
+        return this;
+      }
+      
+      public override Builder MergeFrom(pb::ICodedInputStream input) {
+        return MergeFrom(input, pb::ExtensionRegistry.Empty);
+      }
+      
+      public override Builder MergeFrom(pb::ICodedInputStream input, pb::ExtensionRegistry extensionRegistry) {
+        PrepareBuilder();
+        pb::UnknownFieldSet.Builder unknownFields = null;
+        uint tag;
+        string field_name;
+        while (input.ReadTag(out tag, out field_name)) {
+          if(tag == 0 && field_name != null) {
+            int field_ordinal = global::System.Array.BinarySearch(_singleObjectiveQualityMessageFieldNames, field_name, global::System.StringComparer.Ordinal);
+            if(field_ordinal >= 0)
+              tag = _singleObjectiveQualityMessageFieldTags[field_ordinal];
+            else {
+              if (unknownFields == null) {
+                unknownFields = pb::UnknownFieldSet.CreateBuilder(this.UnknownFields);
+              }
+              ParseUnknownField(input, unknownFields, extensionRegistry, tag, field_name);
+              continue;
+            }
+          }
+          switch (tag) {
+            case 0: {
+              throw pb::InvalidProtocolBufferException.InvalidTag();
+            }
+            default: {
+              if (pb::WireFormat.IsEndGroupTag(tag)) {
+                if (unknownFields != null) {
+                  this.UnknownFields = unknownFields.Build();
+                }
+                return this;
+              }
+              if (unknownFields == null) {
+                unknownFields = pb::UnknownFieldSet.CreateBuilder(this.UnknownFields);
+              }
+              ParseUnknownField(input, unknownFields, extensionRegistry, tag, field_name);
+              break;
+            }
+            case 9: {
+              result.hasQuality = input.ReadDouble(ref result.quality_);
+              break;
+            }
+          }
+        }
+        
+        if (unknownFields != null) {
+          this.UnknownFields = unknownFields.Build();
+        }
+        return this;
+      }
+      
+      
       public bool HasQuality {
         get { return result.hasQuality; }
       }
@@ -4521,7 +4854,300 @@ namespace HeuristicLab.Problems.ExternalEvaluation {
         return this;
       }
     }
-    static QualityMessage() {
+    static SingleObjectiveQualityMessage() {
+      object.ReferenceEquals(global::HeuristicLab.Problems.ExternalEvaluation.ExternalEvaluationMessages.Descriptor, null);
+    }
+  }
+  
+  [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+  [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
+  [global::System.CodeDom.Compiler.GeneratedCodeAttribute("ProtoGen", "2.4.1.473")]
+  public sealed partial class MultiObjectiveQualityMessage : pb::GeneratedMessage<MultiObjectiveQualityMessage, MultiObjectiveQualityMessage.Builder> {
+    private MultiObjectiveQualityMessage() { }
+    private static readonly MultiObjectiveQualityMessage defaultInstance = new MultiObjectiveQualityMessage().MakeReadOnly();
+    private static readonly string[] _multiObjectiveQualityMessageFieldNames = new string[] { "qualities" };
+    private static readonly uint[] _multiObjectiveQualityMessageFieldTags = new uint[] { 9 };
+    public static MultiObjectiveQualityMessage DefaultInstance {
+      get { return defaultInstance; }
+    }
+    
+    public override MultiObjectiveQualityMessage DefaultInstanceForType {
+      get { return DefaultInstance; }
+    }
+    
+    protected override MultiObjectiveQualityMessage ThisMessage {
+      get { return this; }
+    }
+    
+    public static pbd::MessageDescriptor Descriptor {
+      get { return global::HeuristicLab.Problems.ExternalEvaluation.ExternalEvaluationMessages.internal__static_HeuristicLab_Problems_ExternalEvaluation_MultiObjectiveQualityMessage__Descriptor; }
+    }
+    
+    protected override pb::FieldAccess.FieldAccessorTable<MultiObjectiveQualityMessage, MultiObjectiveQualityMessage.Builder> InternalFieldAccessors {
+      get { return global::HeuristicLab.Problems.ExternalEvaluation.ExternalEvaluationMessages.internal__static_HeuristicLab_Problems_ExternalEvaluation_MultiObjectiveQualityMessage__FieldAccessorTable; }
+    }
+    
+    public const int QualityMessage_FieldNumber = 1001;
+    public static pb::GeneratedExtensionBase<global::HeuristicLab.Problems.ExternalEvaluation.MultiObjectiveQualityMessage> QualityMessage_;
+    public const int QualitiesFieldNumber = 1;
+    private pbc::PopsicleList<double> qualities_ = new pbc::PopsicleList<double>();
+    public scg::IList<double> QualitiesList {
+      get { return pbc::Lists.AsReadOnly(qualities_); }
+    }
+    public int QualitiesCount {
+      get { return qualities_.Count; }
+    }
+    public double GetQualities(int index) {
+      return qualities_[index];
+    }
+    
+    public override bool IsInitialized {
+      get {
+        return true;
+      }
+    }
+    
+    public override void WriteTo(pb::ICodedOutputStream output) {
+      int size = SerializedSize;
+      string[] field_names = _multiObjectiveQualityMessageFieldNames;
+      if (qualities_.Count > 0) {
+        output.WriteDoubleArray(1, field_names[0], qualities_);
+      }
+      UnknownFields.WriteTo(output);
+    }
+    
+    private int memoizedSerializedSize = -1;
+    public override int SerializedSize {
+      get {
+        int size = memoizedSerializedSize;
+        if (size != -1) return size;
+        
+        size = 0;
+        {
+          int dataSize = 0;
+          dataSize = 8 * qualities_.Count;
+          size += dataSize;
+          size += 1 * qualities_.Count;
+        }
+        size += UnknownFields.SerializedSize;
+        memoizedSerializedSize = size;
+        return size;
+      }
+    }
+    
+    public static MultiObjectiveQualityMessage ParseFrom(pb::ByteString data) {
+      return ((Builder) CreateBuilder().MergeFrom(data)).BuildParsed();
+    }
+    public static MultiObjectiveQualityMessage ParseFrom(pb::ByteString data, pb::ExtensionRegistry extensionRegistry) {
+      return ((Builder) CreateBuilder().MergeFrom(data, extensionRegistry)).BuildParsed();
+    }
+    public static MultiObjectiveQualityMessage ParseFrom(byte[] data) {
+      return ((Builder) CreateBuilder().MergeFrom(data)).BuildParsed();
+    }
+    public static MultiObjectiveQualityMessage ParseFrom(byte[] data, pb::ExtensionRegistry extensionRegistry) {
+      return ((Builder) CreateBuilder().MergeFrom(data, extensionRegistry)).BuildParsed();
+    }
+    public static MultiObjectiveQualityMessage ParseFrom(global::System.IO.Stream input) {
+      return ((Builder) CreateBuilder().MergeFrom(input)).BuildParsed();
+    }
+    public static MultiObjectiveQualityMessage ParseFrom(global::System.IO.Stream input, pb::ExtensionRegistry extensionRegistry) {
+      return ((Builder) CreateBuilder().MergeFrom(input, extensionRegistry)).BuildParsed();
+    }
+    public static MultiObjectiveQualityMessage ParseDelimitedFrom(global::System.IO.Stream input) {
+      return CreateBuilder().MergeDelimitedFrom(input).BuildParsed();
+    }
+    public static MultiObjectiveQualityMessage ParseDelimitedFrom(global::System.IO.Stream input, pb::ExtensionRegistry extensionRegistry) {
+      return CreateBuilder().MergeDelimitedFrom(input, extensionRegistry).BuildParsed();
+    }
+    public static MultiObjectiveQualityMessage ParseFrom(pb::ICodedInputStream input) {
+      return ((Builder) CreateBuilder().MergeFrom(input)).BuildParsed();
+    }
+    public static MultiObjectiveQualityMessage ParseFrom(pb::ICodedInputStream input, pb::ExtensionRegistry extensionRegistry) {
+      return ((Builder) CreateBuilder().MergeFrom(input, extensionRegistry)).BuildParsed();
+    }
+    private MultiObjectiveQualityMessage MakeReadOnly() {
+      qualities_.MakeReadOnly();
+      return this;
+    }
+    
+    public static Builder CreateBuilder() { return new Builder(); }
+    public override Builder ToBuilder() { return CreateBuilder(this); }
+    public override Builder CreateBuilderForType() { return new Builder(); }
+    public static Builder CreateBuilder(MultiObjectiveQualityMessage prototype) {
+      return new Builder(prototype);
+    }
+    
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+    [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("ProtoGen", "2.4.1.473")]
+    public sealed partial class Builder : pb::GeneratedBuilder<MultiObjectiveQualityMessage, Builder> {
+      protected override Builder ThisBuilder {
+        get { return this; }
+      }
+      public Builder() {
+        result = DefaultInstance;
+        resultIsReadOnly = true;
+      }
+      internal Builder(MultiObjectiveQualityMessage cloneFrom) {
+        result = cloneFrom;
+        resultIsReadOnly = true;
+      }
+      
+      private bool resultIsReadOnly;
+      private MultiObjectiveQualityMessage result;
+      
+      private MultiObjectiveQualityMessage PrepareBuilder() {
+        if (resultIsReadOnly) {
+          MultiObjectiveQualityMessage original = result;
+          result = new MultiObjectiveQualityMessage();
+          resultIsReadOnly = false;
+          MergeFrom(original);
+        }
+        return result;
+      }
+      
+      public override bool IsInitialized {
+        get { return result.IsInitialized; }
+      }
+      
+      protected override MultiObjectiveQualityMessage MessageBeingBuilt {
+        get { return PrepareBuilder(); }
+      }
+      
+      public override Builder Clear() {
+        result = DefaultInstance;
+        resultIsReadOnly = true;
+        return this;
+      }
+      
+      public override Builder Clone() {
+        if (resultIsReadOnly) {
+          return new Builder(result);
+        } else {
+          return new Builder().MergeFrom(result);
+        }
+      }
+      
+      public override pbd::MessageDescriptor DescriptorForType {
+        get { return global::HeuristicLab.Problems.ExternalEvaluation.MultiObjectiveQualityMessage.Descriptor; }
+      }
+      
+      public override MultiObjectiveQualityMessage DefaultInstanceForType {
+        get { return global::HeuristicLab.Problems.ExternalEvaluation.MultiObjectiveQualityMessage.DefaultInstance; }
+      }
+      
+      public override MultiObjectiveQualityMessage BuildPartial() {
+        if (resultIsReadOnly) {
+          return result;
+        }
+        resultIsReadOnly = true;
+        return result.MakeReadOnly();
+      }
+      
+      public override Builder MergeFrom(pb::IMessage other) {
+        if (other is MultiObjectiveQualityMessage) {
+          return MergeFrom((MultiObjectiveQualityMessage) other);
+        } else {
+          base.MergeFrom(other);
+          return this;
+        }
+      }
+      
+      public override Builder MergeFrom(MultiObjectiveQualityMessage other) {
+        if (other == global::HeuristicLab.Problems.ExternalEvaluation.MultiObjectiveQualityMessage.DefaultInstance) return this;
+        PrepareBuilder();
+        if (other.qualities_.Count != 0) {
+          result.qualities_.Add(other.qualities_);
+        }
+        this.MergeUnknownFields(other.UnknownFields);
+        return this;
+      }
+      
+      public override Builder MergeFrom(pb::ICodedInputStream input) {
+        return MergeFrom(input, pb::ExtensionRegistry.Empty);
+      }
+      
+      public override Builder MergeFrom(pb::ICodedInputStream input, pb::ExtensionRegistry extensionRegistry) {
+        PrepareBuilder();
+        pb::UnknownFieldSet.Builder unknownFields = null;
+        uint tag;
+        string field_name;
+        while (input.ReadTag(out tag, out field_name)) {
+          if(tag == 0 && field_name != null) {
+            int field_ordinal = global::System.Array.BinarySearch(_multiObjectiveQualityMessageFieldNames, field_name, global::System.StringComparer.Ordinal);
+            if(field_ordinal >= 0)
+              tag = _multiObjectiveQualityMessageFieldTags[field_ordinal];
+            else {
+              if (unknownFields == null) {
+                unknownFields = pb::UnknownFieldSet.CreateBuilder(this.UnknownFields);
+              }
+              ParseUnknownField(input, unknownFields, extensionRegistry, tag, field_name);
+              continue;
+            }
+          }
+          switch (tag) {
+            case 0: {
+              throw pb::InvalidProtocolBufferException.InvalidTag();
+            }
+            default: {
+              if (pb::WireFormat.IsEndGroupTag(tag)) {
+                if (unknownFields != null) {
+                  this.UnknownFields = unknownFields.Build();
+                }
+                return this;
+              }
+              if (unknownFields == null) {
+                unknownFields = pb::UnknownFieldSet.CreateBuilder(this.UnknownFields);
+              }
+              ParseUnknownField(input, unknownFields, extensionRegistry, tag, field_name);
+              break;
+            }
+            case 10:
+            case 9: {
+              input.ReadDoubleArray(tag, field_name, result.qualities_);
+              break;
+            }
+          }
+        }
+        
+        if (unknownFields != null) {
+          this.UnknownFields = unknownFields.Build();
+        }
+        return this;
+      }
+      
+      
+      public pbc::IPopsicleList<double> QualitiesList {
+        get { return PrepareBuilder().qualities_; }
+      }
+      public int QualitiesCount {
+        get { return result.QualitiesCount; }
+      }
+      public double GetQualities(int index) {
+        return result.GetQualities(index);
+      }
+      public Builder SetQualities(int index, double value) {
+        PrepareBuilder();
+        result.qualities_[index] = value;
+        return this;
+      }
+      public Builder AddQualities(double value) {
+        PrepareBuilder();
+        result.qualities_.Add(value);
+        return this;
+      }
+      public Builder AddRangeQualities(scg::IEnumerable<double> values) {
+        PrepareBuilder();
+        result.qualities_.Add(values);
+        return this;
+      }
+      public Builder ClearQualities() {
+        PrepareBuilder();
+        result.qualities_.Clear();
+        return this;
+      }
+    }
+    static MultiObjectiveQualityMessage() {
       object.ReferenceEquals(global::HeuristicLab.Problems.ExternalEvaluation.ExternalEvaluationMessages.Descriptor, null);
     }
   }

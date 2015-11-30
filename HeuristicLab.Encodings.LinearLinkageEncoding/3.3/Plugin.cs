@@ -22,7 +22,7 @@
 using HeuristicLab.PluginInfrastructure;
 
 namespace HeuristicLab.Encodings.LinearLinkageEncoding {
-  [Plugin("HeuristicLab.Encodings.LinearLinkageEncoding", "Provides data structures and operators for the linear linkage encoding (LLE).", "3.3.12.12751")]
+  [Plugin("HeuristicLab.Encodings.LinearLinkageEncoding", "Provides data structures and operators for the linear linkage encoding (LLE).", "3.3.13.13316")]
   [PluginFile("HeuristicLab.Encodings.LinearLinkageEncoding-3.3.dll", PluginFileType.Assembly)]
   [PluginDependency("HeuristicLab.Collections", "3.3")]
   [PluginDependency("HeuristicLab.Common", "3.3")]

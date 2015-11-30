@@ -22,12 +22,13 @@
 using HeuristicLab.PluginInfrastructure;
 
 namespace HeuristicLab.Operators.Views.GraphVisualization.Views {
-  [Plugin("HeuristicLab.Operators.Views.GraphVisualization.Views-3.3", "3.3.12.12751")]
+  [Plugin("HeuristicLab.Operators.Views.GraphVisualization.Views-3.3", "3.3.13.13316")]
   [PluginFile("HeuristicLab.Operators.Views.GraphVisualization.Views-3.3.dll", PluginFileType.Assembly)]
   [PluginDependency("HeuristicLab.Collections", "3.3")]
   [PluginDependency("HeuristicLab.Common", "3.3")]
   [PluginDependency("HeuristicLab.Common.Resources", "3.3")]
   [PluginDependency("HeuristicLab.Core", "3.3")]
+  [PluginDependency("HeuristicLab.Core.Views", "3.3")]
   [PluginDependency("HeuristicLab.MainForm", "3.3")]
   [PluginDependency("HeuristicLab.MainForm.WindowsForms", "3.3")]
   [PluginDependency("HeuristicLab.Netron", "3.0")]

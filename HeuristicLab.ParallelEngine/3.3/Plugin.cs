@@ -28,7 +28,7 @@ namespace HeuristicLab.ParallelEngine {
   /// <summary>
   /// Plugin class for HeuristicLab.ParallelEngine plugin.
   /// </summary>
-  [Plugin("HeuristicLab.ParallelEngine", "3.3.12.12751")]
+  [Plugin("HeuristicLab.ParallelEngine", "3.3.13.13316")]
   [PluginFile("HeuristicLab.ParallelEngine-3.3.dll", PluginFileType.Assembly)]
   [PluginDependency("HeuristicLab.Common", "3.3")]
   [PluginDependency("HeuristicLab.Core", "3.3")]

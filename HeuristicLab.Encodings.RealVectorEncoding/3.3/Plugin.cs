@@ -25,7 +25,7 @@ namespace HeuristicLab.Encodings.RealVectorEncoding {
   /// <summary>
   /// Plugin class for HeuristicLab.Encodings.RealVectorEncoding plugin.
   /// </summary>
-  [Plugin("HeuristicLab.Encodings.RealVectorEncoding", "3.3.12.12751")]
+  [Plugin("HeuristicLab.Encodings.RealVectorEncoding", "3.3.13.13316")]
   [PluginFile("HeuristicLab.Encodings.RealVectorEncoding-3.3.dll", PluginFileType.Assembly)]
   [PluginDependency("HeuristicLab.Collections", "3.3")]
   [PluginDependency("HeuristicLab.Common", "3.3")]

@@ -25,7 +25,7 @@ namespace HeuristicLab.Operators.Views {
   /// <summary>
   /// Plugin class for HeuristicLab.Operators.Views plugin.
   /// </summary>
-  [Plugin("HeuristicLab.Operators.Views", "3.3.12.12751")]
+  [Plugin("HeuristicLab.Operators.Views", "3.3.13.13316")]
   [PluginFile("HeuristicLab.Operators.Views-3.3.dll", PluginFileType.Assembly)]
   [PluginDependency("HeuristicLab.Common", "3.3")]
   [PluginDependency("HeuristicLab.Core", "3.3")]

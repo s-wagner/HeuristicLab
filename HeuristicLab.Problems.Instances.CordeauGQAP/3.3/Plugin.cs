@@ -22,7 +22,7 @@
 using HeuristicLab.PluginInfrastructure;
 
 namespace HeuristicLab.Problems.Instances.CordeauGQAP {
-  [Plugin("HeuristicLab.Problems.Instances.CordeauGQAP", "3.3.12.12751")]
+  [Plugin("HeuristicLab.Problems.Instances.CordeauGQAP", "3.3.13.13316")]
   [PluginFile("HeuristicLab.Problems.Instances.CordeauGQAP-3.3.dll", PluginFileType.Assembly)]
   [PluginDependency("HeuristicLab.Problems.Instances", "3.3")]
   public class HeuristicLabProblemsInstancesCordeauGQAPPlugin : PluginBase {

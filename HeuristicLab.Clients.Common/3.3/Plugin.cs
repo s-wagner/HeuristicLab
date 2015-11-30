@@ -25,7 +25,7 @@ namespace HeuristicLab.Clients.Common {
   /// <summary>
   /// Plugin class for HeuristicLab.Clients.Common plugin.
   /// </summary>
-  [Plugin("HeuristicLab.Clients.Common", "3.3.12.12751")]
+  [Plugin("HeuristicLab.Clients.Common", "3.3.13.13316")]
   [PluginFile("HeuristicLab.Clients.Common-3.3.dll", PluginFileType.Assembly)]
   public class HeuristicLabClientsCommonPlugin : PluginBase {
   }
