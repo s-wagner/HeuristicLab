@@ -1,6 +1,6 @@
 #region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2015 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2016 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -79,7 +79,7 @@ namespace HeuristicLab.Data.Views {
       base.SetEnabledStateOfControls();
       lengthTextBox.Enabled = Content != null;
       dataGridView.Enabled = Content != null;
-      lengthTextBox.ReadOnly = ReadOnly;
+      lengthTextBox.ReadOnly = ReadOnly || (Content != null && !Content.Resizable);
       dataGridView.ReadOnly = ReadOnly;
     }
 
@@ -102,7 +102,7 @@ namespace HeuristicLab.Data.Views {
       dataGridView.Enabled = true;
     }
 
-    protected virtual void UpdateRowHeaders() {
+    public virtual void UpdateRowHeaders() {
       int i = 0;
       foreach (string elementName in Content.ElementNames) {
         dataGridView.Rows[i].HeaderCell.Value = elementName;

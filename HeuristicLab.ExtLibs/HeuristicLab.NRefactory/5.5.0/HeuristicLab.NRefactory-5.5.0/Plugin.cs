@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2015 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2016 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -22,7 +22,7 @@
 using HeuristicLab.PluginInfrastructure;
 
 namespace HeuristicLab.NRefactory {
-  [Plugin("HeuristicLab.NRefactory", "HeuristicLab wrapper for NRefactory", "5.5.0.12608")]
+  [Plugin("HeuristicLab.NRefactory", "HeuristicLab wrapper for NRefactory", "5.5.0.14186")]
   [PluginFile("HeuristicLab.NRefactory-5.5.0.dll", PluginFileType.Assembly)]
   [PluginFile("ICSharpCode.NRefactory.dll", PluginFileType.Assembly)]
   [PluginFile("ICSharpCode.NRefactory.Cecil.dll", PluginFileType.Assembly)]

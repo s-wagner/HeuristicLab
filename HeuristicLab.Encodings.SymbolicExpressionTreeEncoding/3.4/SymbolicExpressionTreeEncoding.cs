@@ -1,7 +1,7 @@
 ﻿#region License Information
 
 /* HeuristicLab
- * Copyright (C) 2002-2015 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2016 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -158,6 +158,7 @@ namespace HeuristicLab.Encodings.SymbolicExpressionTreeEncoding {
 
     [StorableConstructor]
     private SymbolicExpressionTreeEncoding(bool deserializing) : base(deserializing) { }
+    public SymbolicExpressionTreeEncoding() : this(new SimpleSymbolicExpressionGrammar()) { }
     public SymbolicExpressionTreeEncoding(ISymbolicExpressionGrammar grammar) : this("SymbolicExpressionTree", grammar, 50, 50) { }
     public SymbolicExpressionTreeEncoding(ISymbolicExpressionGrammar grammar, int maximumLength, int maximumDepth) : this("SymbolicExpressionTree", grammar, maximumLength, maximumDepth) { }
     public SymbolicExpressionTreeEncoding(string name, ISymbolicExpressionGrammar grammar, int maximumLength, int maximumDepth)

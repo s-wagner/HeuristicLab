@@ -1,6 +1,6 @@
 #region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2015 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2016 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -33,7 +33,9 @@ namespace HeuristicLab.Problems.QuadraticAssignment {
   /// </summary>
   [Item("QAPPopulationDiversityAnalyzer", "An operator for analyzing the diversity of solutions of Quadratic Assignment Problems regarding their structural identity (number of equal facilty->location assignments).")]
   [StorableClass]
+#pragma warning disable 0612
   public sealed class QAPPopulationDiversityAnalyzer : PopulationDiversityAnalyzer<Permutation> {
+#pragma warning restore 0612
     public IValueParameter<BoolValue> UsePhenotypeSimilarityParameter {
       get { return (IValueParameter<BoolValue>)Parameters["UsePhenotypeSimilarity"]; }
     }

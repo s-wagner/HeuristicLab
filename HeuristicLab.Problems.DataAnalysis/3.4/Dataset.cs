@@ -1,6 +1,6 @@
 #region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2015 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2016 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -51,6 +51,11 @@ namespace HeuristicLab.Problems.DataAnalysis {
       rows = 0;
     }
 
+    /// <summary>
+    /// Creates a new dataset. The variableValues are not cloned.
+    /// </summary>
+    /// <param name="variableNames">The names of the variables in the dataset</param>
+    /// <param name="variableValues">The values for the variables (column-oriented storage). Values are not cloned!</param>
     public Dataset(IEnumerable<string> variableNames, IEnumerable<IList> variableValues)
       : base() {
       Name = "-";
@@ -74,19 +79,7 @@ namespace HeuristicLab.Problems.DataAnalysis {
       this.variableValues = new Dictionary<string, IList>(this.variableNames.Count);
       for (int i = 0; i < this.variableNames.Count; i++) {
         var values = variableValues.ElementAt(i);
-        IList clonedValues = null;
-        if (values is IList<double>)
-          clonedValues = new List<double>(values.Cast<double>());
-        else if (values is IList<string>)
-          clonedValues = new List<string>(values.Cast<string>());
-        else if (values is IList<DateTime>)
-          clonedValues = new List<DateTime>(values.Cast<DateTime>());
-        else {
-          this.variableNames = new List<string>();
-          this.variableValues = new Dictionary<string, IList>();
-          throw new ArgumentException("The variable values must be of type IList<double>, IList<string> or IList<DateTime>");
-        }
-        this.variableValues.Add(this.variableNames[i], clonedValues);
+        this.variableValues.Add(this.variableNames[i], values);
       }
     }
 
@@ -115,6 +108,22 @@ namespace HeuristicLab.Problems.DataAnalysis {
         }
         this.variableValues.Add(columName, values);
       }
+    }
+
+    public ModifiableDataset ToModifiable() {
+      var values = new List<IList>();
+      foreach (var v in variableNames) {
+        if (VariableHasType<double>(v)) {
+          values.Add(new List<double>((List<double>)variableValues[v]));
+        } else if (VariableHasType<string>(v)) {
+          values.Add(new List<string>((List<string>)variableValues[v]));
+        } else if (VariableHasType<DateTime>(v)) {
+          values.Add(new List<DateTime>((List<DateTime>)variableValues[v]));
+        } else {
+          throw new ArgumentException("Unknown variable type.");
+        }
+      }
+      return new ModifiableDataset(variableNames, values);
     }
 
     protected Dataset(Dataset dataset) : this(dataset.variableNames, dataset.variableValues.Values) { }
@@ -200,17 +209,24 @@ namespace HeuristicLab.Problems.DataAnalysis {
     protected int rows;
     public int Rows {
       get { return rows; }
+    }
+    int IStringConvertibleMatrix.Rows {
+      get { return Rows; }
       set { throw new NotSupportedException(); }
     }
+
     public int Columns {
       get { return variableNames.Count; }
+    }
+    int IStringConvertibleMatrix.Columns {
+      get { return Columns; }
       set { throw new NotSupportedException(); }
     }
-    public bool SortableView {
+    bool IStringConvertibleMatrix.SortableView {
       get { return false; }
       set { throw new NotSupportedException(); }
     }
-    public bool ReadOnly {
+    bool IStringConvertibleMatrix.ReadOnly {
       get { return true; }
     }
     IEnumerable<string> IStringConvertibleMatrix.ColumnNames {
@@ -221,7 +237,7 @@ namespace HeuristicLab.Problems.DataAnalysis {
       get { return Enumerable.Empty<string>(); }
       set { throw new NotSupportedException(); }
     }
-    public string GetValue(int rowIndex, int columnIndex) {
+    string IStringConvertibleMatrix.GetValue(int rowIndex, int columnIndex) {
       return variableValues[variableNames[columnIndex]][rowIndex].ToString();
     }
     bool IStringConvertibleMatrix.SetValue(string value, int rowIndex, int columnIndex) {

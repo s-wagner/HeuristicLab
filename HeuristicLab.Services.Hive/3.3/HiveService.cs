@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2015 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2016 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -965,7 +965,7 @@ namespace HeuristicLab.Services.Hive {
           || task.Command == DA.Command.Abort && task.State == DA.TaskState.Aborted
           || task.Command == DA.Command.Stop && task.State == DA.TaskState.Aborted) {
         task.Command = null;
-      } else if (taskStateEntity == DA.TaskState.Paused && task.Command != null) {
+      } else if (taskStateEntity == DA.TaskState.Paused && task.Command == null) {
         // slave paused and uploaded the task (no user-command) -> set waiting.
         taskStateEntity = DA.TaskState.Waiting;
       }

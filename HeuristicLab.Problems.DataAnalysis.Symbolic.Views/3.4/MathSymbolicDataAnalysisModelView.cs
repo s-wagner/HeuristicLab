@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2015 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2016 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -60,11 +60,11 @@ namespace HeuristicLab.Problems.DataAnalysis.Symbolic.Views {
       if (Content != null) {
         HtmlElement newElement = webBrowser.Document.GetElementById("model");
         newElement.InnerText = formatter.Format(Content.SymbolicExpressionTree);
+        webBrowser.Document.InvokeScript("refreshModel");
       } else {
         HtmlElement newElement = webBrowser.Document.GetElementById("model");
         newElement.InnerText = string.Empty;
       }
-      webBrowser.Document.InvokeScript("refreshModel");
     }
   }
 }

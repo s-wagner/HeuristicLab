@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2015 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2016 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -26,7 +26,7 @@ namespace HeuristicLab.Persistence {
   /// <summary>
   /// The plugin for HeuriticLab.Persistence
   /// </summary>
-  [Plugin("HeuristicLab.Persistence", "3.3.13.13316")]
+  [Plugin("HeuristicLab.Persistence", "3.3.14.14190")]
   [PluginFile("HeuristicLab.Persistence-3.3.dll", PluginFileType.Assembly)]
   [PluginDependency("HeuristicLab.Tracing", "3.3")]
   public class HeuristicLabPersistencePlugin : PluginBase { }

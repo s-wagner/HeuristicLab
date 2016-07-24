@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2015 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2016 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -20,7 +20,6 @@
 #endregion
 
 using System;
-using System.Windows.Forms;
 using HeuristicLab.Analysis;
 using HeuristicLab.MainForm;
 
@@ -45,15 +44,13 @@ namespace HeuristicLab.DataPreprocessing.Views {
 
     private void allInOneCheckBox_CheckedChanged(object sender, EventArgs e) {
       Content.AllInOneMode = allInOneCheckBox.Checked;
- 
+
       GenerateChart();
     }
 
-    protected override void OnContentChanged()
-    {
+    protected override void OnContentChanged() {
       base.OnContentChanged();
-      if (Content != null)
-      {
+      if (Content != null) {
         allInOneCheckBox.Checked = Content.AllInOneMode;
       }
     }

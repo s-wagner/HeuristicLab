@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2015 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2016 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -27,7 +27,7 @@ using System.Text;
 using HeuristicLab.PluginInfrastructure;
 
 namespace HeuristicLab.Clients.Hive.Slave.App {
-  [Plugin("HeuristicLab.Clients.Hive.Slave.App", "3.3.13.13316")]
+  [Plugin("HeuristicLab.Clients.Hive.Slave.App", "3.3.14.14193")]
   [PluginFile("HeuristicLab.Clients.Hive.Slave.App-3.3.dll", PluginFileType.Assembly)]      
   [PluginDependency("HeuristicLab.Clients.Hive.SlaveCore", "3.3")]  
   [PluginDependency("HeuristicLab.Clients.Hive.Slave.Views", "3.3")]  

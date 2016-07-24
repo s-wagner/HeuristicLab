@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2015 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2016 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -27,11 +27,9 @@ using HeuristicLab.Analysis;
 using HeuristicLab.Collections;
 using HeuristicLab.Core.Views;
 using HeuristicLab.Data;
-using HeuristicLab.DataPreprocessing.Implementations;
 using HeuristicLab.MainForm;
 
 namespace HeuristicLab.DataPreprocessing.Views {
-
   [View("Preprocessing Chart View")]
   [Content(typeof(PreprocessingChartContent), false)]
   public partial class PreprocessingChartView : ItemView {

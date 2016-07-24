@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2015 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2016 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -22,7 +22,7 @@
 using HeuristicLab.PluginInfrastructure;
 
 namespace HeuristicLab.Encodings.LinearLinkageEncoding {
-  [Plugin("HeuristicLab.Encodings.LinearLinkageEncoding", "Provides data structures and operators for the linear linkage encoding (LLE).", "3.3.13.13316")]
+  [Plugin("HeuristicLab.Encodings.LinearLinkageEncoding", "Provides data structures and operators for the linear linkage encoding (LLE).", "3.3.14.14190")]
   [PluginFile("HeuristicLab.Encodings.LinearLinkageEncoding-3.3.dll", PluginFileType.Assembly)]
   [PluginDependency("HeuristicLab.Collections", "3.3")]
   [PluginDependency("HeuristicLab.Common", "3.3")]

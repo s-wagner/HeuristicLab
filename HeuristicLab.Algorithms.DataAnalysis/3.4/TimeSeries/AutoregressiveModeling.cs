@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2015 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2016 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -133,7 +133,7 @@ namespace HeuristicLab.Algorithms.DataAnalysis.TimeSeries {
       addition.AddSubtree(cNode);
 
       var interpreter = new SymbolicTimeSeriesPrognosisExpressionTreeInterpreter(problemData.TargetVariable);
-      var model = new SymbolicTimeSeriesPrognosisModel(tree, interpreter);
+      var model = new SymbolicTimeSeriesPrognosisModel(problemData.TargetVariable, tree, interpreter);
       var solution = model.CreateTimeSeriesPrognosisSolution((ITimeSeriesPrognosisProblemData)problemData.Clone());
       return solution;
     }

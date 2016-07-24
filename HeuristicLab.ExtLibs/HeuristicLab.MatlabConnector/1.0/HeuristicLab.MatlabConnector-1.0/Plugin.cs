@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2015 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2016 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -28,7 +28,7 @@ using System.IO;
 using HeuristicLab.PluginInfrastructure;
 
 namespace HeuristicLab.MatlabConnector {
-  [Plugin("HeuristicLab.MatlabConnector", "HeuristicLab transport plugin for the COM MATLAB connector Interop.MLAPP.dll", "1.0.12009")]
+  [Plugin("HeuristicLab.MatlabConnector", "HeuristicLab transport plugin for the COM MATLAB connector Interop.MLAPP.dll", "1.0.14186")]
   [PluginFile("HeuristicLab.MatlabConnector-1.0.dll", PluginFileType.Assembly)]
   [PluginFile("Interop.MLApp.dll",  PluginFileType.Assembly)]
   [PluginFile("Mathworks Interop License.txt", PluginFileType.License)]

@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2015 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2016 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  * and the BEACON Center for the Study of Evolution in Action.
  * 
  * This file is part of HeuristicLab.
@@ -95,7 +95,7 @@ namespace HeuristicLab.Algorithms.DataAnalysis {
         models = new List<IRegressionModel>();
         weights = new List<double>();
         // add constant model
-        models.Add(new ConstantModel(f0));
+        models.Add(new ConstantModel(f0, problemData.TargetVariable));
         weights.Add(1.0);
       }
 

@@ -1,6 +1,6 @@
 #region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2015 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2016 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -25,7 +25,7 @@ using System.Text;
 using HeuristicLab.PluginInfrastructure;
 
 namespace HeuristicLab.Problems.DataAnalysis.Symbolic.Regression.Views {
-  [Plugin("HeuristicLab.Problems.DataAnalysis.Symbolic.Regression.Views", "Provides views for symbolic regression problem classes.", "3.4.9.13316")]
+  [Plugin("HeuristicLab.Problems.DataAnalysis.Symbolic.Regression.Views", "Provides views for symbolic regression problem classes.", "3.4.10.14190")]
   [PluginFile("HeuristicLab.Problems.DataAnalysis.Symbolic.Regression.Views-3.4.dll",PluginFileType.Assembly)]
   [PluginDependency("HeuristicLab.Algorithms.DataAnalysis", "3.4")]
   [PluginDependency("HeuristicLab.Collections", "3.3")]

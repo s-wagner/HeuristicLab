@@ -1,6 +1,6 @@
 #region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2015 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2016 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -27,7 +27,7 @@ namespace HeuristicLab.Problems.ExternalEvaluation.Scilab {
   /// <summary>
   /// Plugin class for HeuristicLab.Problems.ExternalEvaluation.Scilab plugin.
   /// </summary>
-  [Plugin("HeuristicLab.Problems.ExternalEvaluation.Scilab", "3.3.13.13316")]
+  [Plugin("HeuristicLab.Problems.ExternalEvaluation.Scilab", "3.3.14.14190")]
   [PluginFile("HeuristicLab.Problems.ExternalEvaluation.Scilab-3.3.dll", PluginFileType.Assembly)]
   [PluginDependency("HeuristicLab.DotNetScilab", "1.0")]
   [PluginDependency("HeuristicLab.Collections", "3.3")]

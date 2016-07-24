@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2015 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2016 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -28,7 +28,7 @@ namespace HeuristicLab.Common {
   /// <summary>
   /// Plugin class for HeuristicLab.Common plugin.
   /// </summary>
-  [Plugin("HeuristicLab.Common", "3.3.13.13316")]
+  [Plugin("HeuristicLab.Common", "3.3.14.14190")]
   [PluginFile("HeuristicLab.Common-3.3.dll", PluginFileType.Assembly)]
   public class HeuristicLabCommonPlugin : PluginBase {
   }

@@ -1,6 +1,6 @@
 #region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2015 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2016 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -94,7 +94,7 @@ namespace HeuristicLab.Algorithms.DataAnalysis {
       rmsError = alglib.mnlrmserror(lm, inputMatrix, nRows);
       relClassError = alglib.mnlrelclserror(lm, inputMatrix, nRows);
 
-      MultinomialLogitClassificationSolution solution = new MultinomialLogitClassificationSolution((IClassificationProblemData)problemData.Clone(), new MultinomialLogitModel(lm, targetVariable, allowedInputVariables, classValues));
+      MultinomialLogitClassificationSolution solution = new MultinomialLogitClassificationSolution(new MultinomialLogitModel(lm, targetVariable, allowedInputVariables, classValues), (IClassificationProblemData)problemData.Clone());
       return solution;
     }
     #endregion

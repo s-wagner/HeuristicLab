@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2015 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2016 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -40,6 +40,19 @@ namespace HeuristicLab.Tests {
     public TestContext TestContext {
       get { return testContextInstance; }
       set { testContextInstance = value; }
+    }
+
+    [TestMethod]
+    [Description("Verify that the object graph traversal is working by checking the number of objects after traversal.")]
+    [TestCategory("General")]
+    [TestCategory("Essential")]
+    [TestProperty("Time", "medium")]
+    public void TestObjectGraphTraversal() {
+      GeneticAlgorithm ga = (GeneticAlgorithm)XmlParser.Deserialize(@"Test Resources\GA_SymbReg.hl");
+      var objects = ga.GetObjectGraphObjects().ToList();
+
+      // Should be 3982, but count may change slightly as members are added or removed
+      Assert.IsTrue(objects.Count > 1, "Number of objects in the object graph seems to small.");
     }
 
     [TestMethod]

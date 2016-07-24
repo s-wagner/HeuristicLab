@@ -200,6 +200,7 @@
     <Reference Include="HeuristicLab.Encodings.LinearLinkageEncoding-3.3, Version=3.3.0.0, Culture=neutral, PublicKeyToken=ba48961d6f65dcec, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\bin\HeuristicLab.Encodings.LinearLinkageEncoding-3.3.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="HeuristicLab.Encodings.PermutationEncoding-3.3">
       <HintPath>..\bin\HeuristicLab.Encodings.PermutationEncoding-3.3.dll</HintPath>
@@ -261,13 +262,14 @@
       <HintPath>..\bin\HeuristicLab.PluginInfrastructure-3.3.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="HeuristicLab.Problems.ArtificialAnt-3.4">
-      <HintPath>..\bin\HeuristicLab.Problems.ArtificialAnt-3.4.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="HeuristicLab.Problems.Binary-3.3, Version=3.3.0.0, Culture=neutral, PublicKeyToken=ba48961d6f65dcec, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\bin\HeuristicLab.Problems.Binary-3.3.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="HeuristicLab.Problems.BinPacking-3.3, Version=3.3.0.0, Culture=neutral, PublicKeyToken=ba48961d6f65dcec, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\bin\HeuristicLab.Problems.BinPacking-3.3.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="HeuristicLab.Problems.DataAnalysis-3.4">
@@ -310,8 +312,9 @@
       <HintPath>..\bin\HeuristicLab.Problems.GeneticProgramming-3.3.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="HeuristicLab.Problems.GrammaticalEvolution-3.3">
-      <HintPath>..\bin\HeuristicLab.Problems.GrammaticalEvolution-3.3.dll</HintPath>
+    <Reference Include="HeuristicLab.Problems.GrammaticalEvolution-3.4, Version=3.4.0.0, Culture=neutral, PublicKeyToken=ba48961d6f65dcec, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\bin\HeuristicLab.Problems.GrammaticalEvolution-3.4.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="HeuristicLab.Problems.Instances-3.3">
@@ -346,10 +349,6 @@
       <HintPath>..\bin\HeuristicLab.Problems.Knapsack-3.3.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="HeuristicLab.Problems.LawnMower-3.3">
-      <HintPath>..\bin\HeuristicLab.Problems.LawnMower-3.3.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="HeuristicLab.Problems.LinearAssignment-3.3">
       <HintPath>..\bin\HeuristicLab.Problems.LinearAssignment-3.3.dll</HintPath>
       <Private>False</Private>
@@ -368,6 +367,11 @@
       <HintPath>..\bin\HeuristicLab.Problems.Orienteering-3.3.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="HeuristicLab.Problems.PTSP-3.3, Version=3.3.0.0, Culture=neutral, PublicKeyToken=ba48961d6f65dcec, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\bin\HeuristicLab.Problems.PTSP-3.3.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="HeuristicLab.Problems.QuadraticAssignment-3.3">
       <HintPath>..\bin\HeuristicLab.Problems.QuadraticAssignment-3.3.dll</HintPath>
       <Private>False</Private>
@@ -378,6 +382,11 @@
     </Reference>
     <Reference Include="HeuristicLab.Problems.TestFunctions-3.3">
       <HintPath>..\bin\HeuristicLab.Problems.TestFunctions-3.3.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="HeuristicLab.Problems.TestFunctions.MultiObjective-3.3, Version=3.3.0.0, Culture=neutral, PublicKeyToken=ba48961d6f65dcec, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\bin\HeuristicLab.Problems.TestFunctions.MultiObjective-3.3.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="HeuristicLab.Problems.TravelingSalesman-3.3">
@@ -439,6 +448,7 @@
     <Compile Include="HeuristicLab-3.3\PluginDependenciesTest.cs" />
     <Compile Include="HeuristicLab-3.3\PluginLoader.cs" />
     <Compile Include="HeuristicLab-3.3\Samples\AlpsSampleTest.cs" />
+    <Compile Include="HeuristicLab-3.3\Samples\GABppSampleTest.cs" />
     <Compile Include="HeuristicLab-3.3\Samples\GPRobocodeSampleTest.cs" />
     <Compile Include="HeuristicLab-3.3\Samples\OSESGriewankSampleTest.cs" />
     <Compile Include="HeuristicLab-3.3\Samples\GAGroupingProblemSampleTest.cs" />
@@ -464,7 +474,7 @@
     <Compile Include="HeuristicLab-3.3\Samples\TabuSearchTspSampleTest.cs" />
     <Compile Include="HeuristicLab-3.3\Samples\TabuSearchVRPSampleTest.cs" />
     <Compile Include="HeuristicLab-3.3\Samples\VnsTspSampleTest.cs" />
-    <Compile Include="HeuristicLab-3.3\StorableConstructorTest.cs" />
+    <Compile Include="HeuristicLab-3.3\StorableTest.cs" />
     <Compile Include="HeuristicLab-3.3\ThreadSafeLogTest.cs" />
     <Compile Include="HeuristicLab-3.3\ToStringTest.cs" />
     <Compile Include="HeuristicLab.Algorithms.DataAnalysis-3.4\GradientBoostingTest.cs" />
@@ -556,6 +566,7 @@
     <Compile Include="HeuristicLab.Problems.DataAnalysis-3.4\ThresholdCalculatorsTest.cs" />
     <Compile Include="HeuristicLab.Problems.DataAnalysis-3.4\OnlineCalculatorPerformanceTest.cs" />
     <Compile Include="HeuristicLab.Problems.DataAnalysis-3.4\StatisticCalculatorsTest.cs" />
+    <Compile Include="HeuristicLab.Problems.DataAnalysis.Symbolic-3.4\InfixExpressionParserTest.cs" />
     <Compile Include="HeuristicLab.Problems.DataAnalysis.Symbolic-3.4\SymbolicExpressionTreeBottomUpSimilarityCalculatorTest.cs" />
     <Compile Include="HeuristicLab.Problems.DataAnalysis.Symbolic-3.4\SymbolicExpressionTreeMaxCommonSubtreeSimilarityCalculatorTest.cs" />
     <Compile Include="HeuristicLab.Problems.DataAnalysis.Symbolic.TimeSeriesPrognosis-3.4\SymbolicDataAnalysisExpressionTreeInterpreterTest.cs" />
@@ -571,6 +582,7 @@
     <Compile Include="HeuristicLab.Problems.Instances-3.3\QAPLIBInstanceProviderTest.cs" />
     <Compile Include="HeuristicLab.Problems.Instances-3.3\TSPLIBInstanceProviderTest.cs" />
     <Compile Include="HeuristicLab.Problems.Instances.DataAnalysis-3.3\ClassificationInstanceProviderTest.cs" />
+    <Compile Include="HeuristicLab.Problems.PTSP-3.3\PTSPMoveEvaluatorTest.cs" />
     <Compile Include="HeuristicLab.Problems.QuadraticAssignment-3.3\QAPLIBInstancesTest.cs" />
     <Compile Include="HeuristicLab.Problems.QuadraticAssignment-3.3\QAPMoveEvaluatorTest.cs" />
     <Compile Include="HeuristicLab.Problems.TestFunctions-3.3\AckleyEvaluatorTest.cs" />
@@ -584,6 +596,12 @@
     <Compile Include="HeuristicLab.Problems.TestFunctions-3.3\SphereEvaluatorTest.cs" />
     <Compile Include="HeuristicLab.Problems.TestFunctions-3.3\SumSquaresEvaluatorTest.cs" />
     <Compile Include="HeuristicLab.Problems.TestFunctions-3.3\ZakharovEvaluatorTest.cs" />
+    <Compile Include="HeuristicLab.Problems.TestFunctions.MultiObjective-3.3\CrowdingTest.cs" />
+    <Compile Include="HeuristicLab.Problems.TestFunctions.MultiObjective-3.3\FastHyperVolumeTests.cs" />
+    <Compile Include="HeuristicLab.Problems.TestFunctions.MultiObjective-3.3\GenerationalDistanceTest.cs" />
+    <Compile Include="HeuristicLab.Problems.TestFunctions.MultiObjective-3.3\HyperVolumeTests.cs" />
+    <Compile Include="HeuristicLab.Problems.TestFunctions.MultiObjective-3.3\InvertedGenerationalDistanceTest.cs" />
+    <Compile Include="HeuristicLab.Problems.TestFunctions.MultiObjective-3.3\SpacingTest.cs" />
     <Compile Include="HeuristicLab.Problems.TravelingSalesman-3.3\TSPMoveEvaluatorTest.cs" />
     <Compile Include="HeuristicLab.Problems.LinearAssignment-3.3\LinearAssignmentProblemSolverTest.cs" />
     <Compile Include="HeuristicLab.Problems.VehicleRouting-3.4\VRPInstancesTest.cs" />

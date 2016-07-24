@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2015 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2016 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -20,9 +20,11 @@
 #endregion
 
 using System.Collections.Generic;
+
 namespace HeuristicLab.Problems.DataAnalysis {
   public interface IRegressionModel : IDataAnalysisModel {
     IEnumerable<double> GetEstimatedValues(IDataset dataset, IEnumerable<int> rows);
     IRegressionSolution CreateRegressionSolution(IRegressionProblemData problemData);
+    string TargetVariable { get; }
   }
 }

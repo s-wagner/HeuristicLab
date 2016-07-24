@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2015 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2016 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -22,8 +22,9 @@
 using HeuristicLab.PluginInfrastructure;
 
 namespace HeuristicLab.Problems.Instances.DataAnalysis {
-  [Plugin("HeuristicLab.Problems.Instances.DataAnalysis", "3.3.13.13316")]
+  [Plugin("HeuristicLab.Problems.Instances.DataAnalysis", "3.3.14.14193")]
   [PluginFile("HeuristicLab.Problems.Instances.DataAnalysis-3.3.dll", PluginFileType.Assembly)]
+  [PluginDependency("HeuristicLab.ALGLIB", "3.7")]
   [PluginDependency("HeuristicLab.Common", "3.3")]
   [PluginDependency("HeuristicLab.Collections", "3.3")]
   [PluginDependency("HeuristicLab.Core", "3.3")]

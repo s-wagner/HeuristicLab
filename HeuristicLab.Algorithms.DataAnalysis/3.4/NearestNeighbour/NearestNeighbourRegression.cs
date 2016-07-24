@@ -1,6 +1,6 @@
 #region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2015 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2016 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -79,7 +79,7 @@ namespace HeuristicLab.Algorithms.DataAnalysis {
 
     public static IRegressionSolution CreateNearestNeighbourRegressionSolution(IRegressionProblemData problemData, int k) {
       var clonedProblemData = (IRegressionProblemData)problemData.Clone();
-      return new NearestNeighbourRegressionSolution(clonedProblemData, Train(problemData, k));
+      return new NearestNeighbourRegressionSolution(Train(problemData, k), clonedProblemData);
     }
 
     public static INearestNeighbourModel Train(IRegressionProblemData problemData, int k) {

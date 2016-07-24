@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2015 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2016 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -36,7 +36,7 @@ namespace HeuristicLab.Problems.Instances.TSPLIB {
 
     protected override string FileExtension { get { return "tsp"; } }
 
-    protected override TSPData LoadInstance(TSPLIBParser parser) {
+    protected override TSPData LoadInstance(TSPLIBParser parser, IDataDescriptor descriptor = null) {
       parser.Parse();
       if (parser.FixedEdges != null) throw new InvalidDataException("TSP instance " + parser.Name + " contains fixed edges which are not supported by HeuristicLab.");
       var instance = new TSPData();

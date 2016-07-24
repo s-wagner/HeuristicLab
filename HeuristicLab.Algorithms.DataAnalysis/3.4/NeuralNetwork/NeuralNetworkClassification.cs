@@ -1,6 +1,6 @@
 #region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2015 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2016 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -219,7 +219,7 @@ namespace HeuristicLab.Algorithms.DataAnalysis {
       relClassError = alglib.mlpclserror(multiLayerPerceptron, inputMatrix, nRows) / (double)nRows;
 
       var problemDataClone = (IClassificationProblemData)problemData.Clone();
-      return new NeuralNetworkClassificationSolution(problemDataClone, new NeuralNetworkModel(multiLayerPerceptron, targetVariable, allowedInputVariables, problemDataClone.ClassValues.ToArray()));
+      return new NeuralNetworkClassificationSolution(new NeuralNetworkModel(multiLayerPerceptron, targetVariable, allowedInputVariables, problemDataClone.ClassValues.ToArray()), problemDataClone);
     }
     #endregion
   }

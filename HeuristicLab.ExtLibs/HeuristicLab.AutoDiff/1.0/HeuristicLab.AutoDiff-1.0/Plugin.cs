@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2015 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2016 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -26,7 +26,7 @@ using System.Text;
 using HeuristicLab.PluginInfrastructure;
 
 namespace HeuristicLab.AutoDiff {
-  [Plugin("HeuristicLab.AutoDiff","HeuristicLab wrapper for AutoDiff library that provides fast, accurate and automatic differentiation (derivative) of mathematical functions.","1.0.0.12009")]  
+  [Plugin("HeuristicLab.AutoDiff","HeuristicLab wrapper for AutoDiff library that provides fast, accurate and automatic differentiation (derivative) of mathematical functions.","1.0.0.14186")]  
   [PluginFile("HeuristicLab.AutoDiff-1.0.dll", PluginFileType.Assembly)]
   [PluginFile("AutoDiff-1.0.dll", PluginFileType.Assembly)]
   [PluginFile("AutoDiff License-1.0.txt", PluginFileType.License)]

@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2015 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2016 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -402,7 +402,7 @@ namespace HeuristicLab.Problems.DataAnalysis.Symbolic {
             // replace "." with ".&" to align decimal points
             var constStr = string.Format(System.Globalization.NumberFormatInfo.InvariantInfo, "{0:G5}", constant);
             if (!constStr.Contains(".")) constStr = constStr + ".0";
-            constStr = constStr.Replace(".", "\\negthickspace&.");  // fix problem in rendering of aligned expressions
+            constStr = constStr.Replace(".", "&.");  // fix problem in rendering of aligned expressions
             strBuilder.Append("c_{" + i + "}& = & " + constStr);
             strBuilder.Append(@"\\");
             i++;

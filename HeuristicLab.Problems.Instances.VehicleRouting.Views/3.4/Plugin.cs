@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2015 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2016 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -22,7 +22,7 @@
 using HeuristicLab.PluginInfrastructure;
 
 namespace HeuristicLab.Problems.Instances.VehicleRouting.Views {
-  [Plugin("HeuristicLab.Problems.Instances.VehicleRouting.Views", "3.4.6.13316")]
+  [Plugin("HeuristicLab.Problems.Instances.VehicleRouting.Views", "3.4.7.14190")]
   [PluginFile("HeuristicLab.Problems.Instances.VehicleRouting.Views-3.4.dll", PluginFileType.Assembly)]
   [PluginDependency("HeuristicLab.Common.Resources", "3.3")]
   [PluginDependency("HeuristicLab.MainForm", "3.3")]

@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2015 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2016 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -291,7 +291,7 @@ namespace HeuristicLab.Problems.DataAnalysis.Views {
 
     private IRegressionSolution CreateConstantSolution() {
       double averageTrainingTarget = ProblemData.Dataset.GetDoubleValues(ProblemData.TargetVariable, ProblemData.TrainingIndices).Average();
-      var model = new ConstantModel(averageTrainingTarget);
+      var model = new ConstantModel(averageTrainingTarget, ProblemData.TargetVariable);
       var solution = model.CreateRegressionSolution(ProblemData);
       solution.Name = "Baseline (constant)";
       return solution;

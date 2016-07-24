@@ -1,6 +1,6 @@
 #region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2015 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2016 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -25,7 +25,7 @@ namespace HeuristicLab.Algorithms.CMAEvolutionStrategy {
   /// <summary>
   /// Plugin class for HeuristicLab.Algorithms.EvolutionStrategy plugin.
   /// </summary>
-  [Plugin("HeuristicLab.Algorithms.CMAEvolutionStrategy", "3.4.23.13316")]
+  [Plugin("HeuristicLab.Algorithms.CMAEvolutionStrategy", "3.4.24.14190")]
   [PluginFile("HeuristicLab.Algorithms.CMAEvolutionStrategy-3.4.dll", PluginFileType.Assembly)]
   [PluginDependency("HeuristicLab.ALGLIB", "3.7")]
   [PluginDependency("HeuristicLab.Analysis", "3.3")]

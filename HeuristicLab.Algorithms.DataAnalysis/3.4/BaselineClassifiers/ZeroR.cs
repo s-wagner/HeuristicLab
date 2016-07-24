@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2015 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2016 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -63,7 +63,7 @@ namespace HeuristicLab.Algorithms.DataAnalysis {
       var dominantClass = targetValues.GroupBy(x => x).ToDictionary(g => g.Key, g => g.Count())
         .MaxItems(kvp => kvp.Value).Select(x => x.Key).First();
 
-      var model = new ConstantModel(dominantClass);
+      var model = new ConstantModel(dominantClass, target);
       var solution = model.CreateClassificationSolution(problemData);
       return solution;
     }

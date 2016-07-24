@@ -1,6 +1,6 @@
 #region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2015 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2016 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -79,6 +79,9 @@ namespace HeuristicLab.Problems.DataAnalysis {
       get { return TestPartitionParameter.Value; }
     }
 
+    public virtual IEnumerable<int> AllIndices {
+      get { return Enumerable.Range(0, Dataset.Rows); }
+    }
     public virtual IEnumerable<int> TrainingIndices {
       get {
         return Enumerable.Range(TrainingPartition.Start, Math.Max(0, TrainingPartition.End - TrainingPartition.Start))
