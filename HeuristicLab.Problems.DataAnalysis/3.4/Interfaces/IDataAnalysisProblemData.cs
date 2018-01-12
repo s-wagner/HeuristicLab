@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2016 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2018 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -31,6 +31,9 @@ namespace HeuristicLab.Problems.DataAnalysis {
     IDataset Dataset { get; }
     ICheckedItemList<StringValue> InputVariables { get; }
     IEnumerable<string> AllowedInputVariables { get; }
+
+    double[,] AllowedInputsTrainingValues { get; }
+    double[,] AllowedInputsTestValues { get; }
 
     IntRange TrainingPartition { get; }
     IntRange TestPartition { get; }

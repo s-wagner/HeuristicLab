@@ -1,6 +1,6 @@
 #region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2016 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2018 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -42,7 +42,7 @@ namespace HeuristicLab.Encodings.SymbolicExpressionTreeEncoding {
       protected set { symbol = value; }
     }
 
-    // parent relation is not persisted or cloned (will be set on AddSubtree or RemoveSubtree)
+    [Storable]
     private ISymbolicExpressionTreeNode parent;
     public ISymbolicExpressionTreeNode Parent {
       get { return parent; }
@@ -86,7 +86,8 @@ namespace HeuristicLab.Encodings.SymbolicExpressionTreeEncoding {
     private void AfterDeserialization() {
       if (subtrees != null) {
         foreach (var subtree in subtrees)
-          subtree.Parent = this;
+          if (subtree.Parent == null)
+            subtree.Parent = this;
       }
     }
 

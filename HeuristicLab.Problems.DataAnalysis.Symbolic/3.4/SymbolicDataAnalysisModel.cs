@@ -1,6 +1,6 @@
 #region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2016 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2018 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -62,13 +62,11 @@ namespace HeuristicLab.Problems.DataAnalysis.Symbolic {
       get {
         var variables =
           SymbolicExpressionTree.IterateNodesPrefix()
-            .OfType<VariableTreeNode>()
+            .OfType<IVariableTreeNode>()
             .Select(x => x.VariableName)
             .Distinct();
-        var variableConditions = SymbolicExpressionTree.IterateNodesPrefix()
-          .OfType<VariableConditionTreeNode>().Select(x => x.VariableName).Distinct();
 
-        return variables.Union(variableConditions).OrderBy(x => x);
+        return variables.OrderBy(x => x);
       }
     }
 

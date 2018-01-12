@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2016 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2018 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -26,7 +26,7 @@ using System.Text;
 using HeuristicLab.PluginInfrastructure;
 
 namespace HeuristicLab.ALGLIB {
-  [Plugin("HeuristicLab.ALGLIB","HeuristicLab wrapper for ALGLIB® - numerical analysis library","3.7.0.14186")]  
+  [Plugin("HeuristicLab.ALGLIB","HeuristicLab wrapper for ALGLIB® - numerical analysis library","3.7.0.15584")]  
   [PluginFile("HeuristicLab.ALGLIB-3.7.0.dll", PluginFileType.Assembly)]
   [PluginFile("ALGLIB-3.7.0.dll", PluginFileType.Assembly)]
   [PluginFile("ALGLIB License-3.7.0.txt", PluginFileType.License)]

@@ -1,6 +1,6 @@
 #region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2016 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2018 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -250,9 +250,8 @@ namespace HeuristicLab.Problems.Knapsack {
       Operators.Add(new KnapsackImprovementOperator());
       Operators.Add(new KnapsackPathRelinker());
       Operators.Add(new KnapsackSimultaneousPathRelinker());
-      Operators.Add(new KnapsackSimilarityCalculator());
+      Operators.Add(new HammingSimilarityCalculator());
       Operators.Add(new QualitySimilarityCalculator());
-      Operators.Add(new NoSimilarityCalculator());
 
       Operators.Add(new BestKnapsackSolutionAnalyzer());
       Operators.Add(new PopulationSimilarityAnalyzer(Operators.OfType<ISolutionSimilarityCalculator>()));

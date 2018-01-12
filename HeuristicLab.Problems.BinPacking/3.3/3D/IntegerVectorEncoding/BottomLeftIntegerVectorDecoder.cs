@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2016 Joseph Helm and Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2018 Joseph Helm and Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -53,14 +53,14 @@ namespace HeuristicLab.Problems.BinPacking3D {
     }
 
     protected override PackingPosition FindPositionForItem(BinPacking3D bp, PackingItem item, bool useStackingConstraints) {
-      return bp.FindPositionBySliding(item, rotated: false);
+      return bp.FindPositionBySliding(item, rotated: false, stackingConstraints: useStackingConstraints);
     }
 
     protected override BinPacking3D CreatePacking(
       Solution partialSolution,
       ref IList<int> remainingIDs, IList<PackingItem> items, bool useStackingConstraints) {
       var bp = new BinPacking3D(partialSolution.BinShape);
-      bp.SlidingBasedPacking(ref remainingIDs, items);
+      bp.SlidingBasedPacking(ref remainingIDs, items, useStackingConstraints);
       return bp;
     }
   }

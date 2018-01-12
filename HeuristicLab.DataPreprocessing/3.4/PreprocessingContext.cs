@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2016 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2018 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -31,7 +31,6 @@ namespace HeuristicLab.DataPreprocessing {
   [Item("PreprocessingContext", "PreprocessingContext")]
   [StorableClass]
   public class PreprocessingContext : NamedItem, IStorableContent {
-
     public string Filename { get; set; }
 
     [Storable]
@@ -66,12 +65,12 @@ namespace HeuristicLab.DataPreprocessing {
     public void Import(IDataAnalysisProblemData problemData, IItem source = null) {
       if (problemData == null) throw new ArgumentNullException("problemData");
       if (source != null && ExtractProblemData(source) != problemData)
-        throw new ArgumentException("The ProblemData extracted from the Source is different than the given ProblemData.");
+        source = null; // ignore the source if the source's problem data is different
       Source = source ?? problemData;
       var namedSource = Source as INamedItem;
       if (namedSource != null)
         Name = "Preprocessing " + namedSource.Name;
-      Data = new FilteredPreprocessingData(new TransactionalPreprocessingData(problemData));
+      Data = new FilteredPreprocessingData(new PreprocessingData(problemData));
       OnReset();
       // Reset GUI:
       // - OnContentChanged for PreprocessingView!

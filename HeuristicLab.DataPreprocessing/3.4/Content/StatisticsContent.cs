@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2016 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2018 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -22,37 +22,36 @@
 using System.Drawing;
 using HeuristicLab.Common;
 using HeuristicLab.Core;
+using HeuristicLab.Persistence.Default.CompositeSerializers.Storable;
 
 namespace HeuristicLab.DataPreprocessing {
   [Item("Statistics", "Represents the statistics grid.")]
-  public class StatisticsContent : Item, IViewShortcut {
-
-    private readonly StatisticsLogic statisticsLogic;
-    public StatisticsContent(StatisticsLogic theStatisticsLogic) {
-      statisticsLogic = theStatisticsLogic;
-    }
-
-    public StatisticsContent(StatisticsContent content, Cloner cloner)
-      : base(content, cloner) {
-
-    }
-
-    public StatisticsLogic StatisticsLogic {
-      get { return statisticsLogic; }
-    }
-
+  [StorableClass]
+  public class StatisticsContent : PreprocessingContent, IViewShortcut {
     public static new Image StaticItemImage {
       get { return HeuristicLab.Common.Resources.VSImageLibrary.Object; }
     }
 
+    #region Constructor, Cloning & Persistence
+    public StatisticsContent(IFilteredPreprocessingData preprocessingData)
+      : base(preprocessingData) {
+    }
+
+    public StatisticsContent(StatisticsContent original, Cloner cloner)
+      : base(original, cloner) {
+    }
     public override IDeepCloneable Clone(Cloner cloner) {
       return new StatisticsContent(this, cloner);
     }
 
-    public event DataPreprocessingChangedEventHandler Changed {
-      add { statisticsLogic.Changed += value; }
-      remove { statisticsLogic.Changed -= value; }
-    }
+    [StorableConstructor]
+    protected StatisticsContent(bool deserializing)
+      : base(deserializing) { }
+    #endregion
 
+    public event DataPreprocessingChangedEventHandler Changed {
+      add { PreprocessingData.Changed += value; }
+      remove { PreprocessingData.Changed -= value; }
+    }
   }
 }

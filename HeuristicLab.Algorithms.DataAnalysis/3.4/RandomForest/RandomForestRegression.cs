@@ -1,6 +1,6 @@
 #region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2016 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2018 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -19,6 +19,7 @@
  */
 #endregion
 
+using System.Threading;
 using HeuristicLab.Common;
 using HeuristicLab.Core;
 using HeuristicLab.Data;
@@ -130,7 +131,7 @@ namespace HeuristicLab.Algorithms.DataAnalysis {
     }
 
     #region random forest
-    protected override void Run() {
+    protected override void Run(CancellationToken cancellationToken) {
       double rmsError, avgRelError, outOfBagRmsError, outOfBagAvgRelError;
       if (SetSeedRandomly) Seed = new System.Random().Next();
       var model = CreateRandomForestRegressionModel(Problem.ProblemData, NumberOfTrees, R, M, Seed,
@@ -158,7 +159,8 @@ namespace HeuristicLab.Algorithms.DataAnalysis {
     public static RandomForestModel CreateRandomForestRegressionModel(IRegressionProblemData problemData, int nTrees,
       double r, double m, int seed,
       out double rmsError, out double avgRelError, out double outOfBagRmsError, out double outOfBagAvgRelError) {
-      return RandomForestModel.CreateRegressionModel(problemData, nTrees, r, m, seed, out rmsError, out avgRelError, out outOfBagRmsError, out outOfBagAvgRelError);
+      return RandomForestModel.CreateRegressionModel(problemData, nTrees, r, m, seed,
+        rmsError: out rmsError, avgRelError: out avgRelError, outOfBagRmsError: out outOfBagRmsError, outOfBagAvgRelError: out outOfBagAvgRelError);
     }
 
     #endregion

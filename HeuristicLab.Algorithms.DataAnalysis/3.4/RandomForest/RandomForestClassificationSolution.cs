@@ -1,6 +1,6 @@
 #region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2016 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2018 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -35,6 +35,10 @@ namespace HeuristicLab.Algorithms.DataAnalysis {
     public new IRandomForestModel Model {
       get { return (IRandomForestModel)base.Model; }
       set { base.Model = value; }
+    }
+
+    public int NumberOfTrees {
+      get { return Model.NumberOfTrees; }
     }
 
     [StorableConstructor]

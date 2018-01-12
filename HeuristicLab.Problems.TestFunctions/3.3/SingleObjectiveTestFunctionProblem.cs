@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2016 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2018 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -260,8 +260,9 @@ namespace HeuristicLab.Problems.TestFunctions {
       Operators.Add(new SingleObjectiveTestFunctionImprovementOperator());
       Operators.Add(new SingleObjectiveTestFunctionPathRelinker());
       Operators.Add(new SingleObjectiveTestFunctionSimilarityCalculator());
+      Operators.Add(new HammingSimilarityCalculator());
+      Operators.Add(new EuclideanSimilarityCalculator());
       Operators.Add(new QualitySimilarityCalculator());
-      Operators.Add(new NoSimilarityCalculator());
 
       Operators.Add(new BestSingleObjectiveTestFunctionSolutionAnalyzer());
       Operators.Add(new PopulationSimilarityAnalyzer(Operators.OfType<ISolutionSimilarityCalculator>()));
@@ -357,8 +358,6 @@ namespace HeuristicLab.Problems.TestFunctions {
         op.RealVectorParameter.Hidden = true;
         op.BoundsParameter.ActualName = BoundsParameter.Name;
         op.BoundsParameter.Hidden = true;
-        op.ProblemSizeParameter.ActualName = ProblemSizeParameter.Name;
-        op.ProblemSizeParameter.Hidden = true;
       }
       foreach (var op in Operators.OfType<IRealVectorParticleUpdater>()) {
         op.RealVectorParameter.ActualName = SolutionCreator.RealVectorParameter.ActualName;

@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2016 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2018 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -19,6 +19,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using HeuristicLab.Common;
@@ -83,6 +84,15 @@ namespace HeuristicLab.Optimization {
       return Enumerable.Empty<Individual>();
     }
 
+    protected Tuple<Individual, double> GetBestIndividual(Individual[] individuals, double[] qualities) {
+      return GetBestIndividual(individuals, qualities, Maximization);
+    }
+    public static Tuple<Individual, double> GetBestIndividual(Individual[] individuals, double[] qualities, bool maximization) {
+      var zipped = individuals.Zip(qualities, (i, q) => new { Individual = i, Quality = q });
+      var best = (maximization ? zipped.OrderByDescending(z => z.Quality) : zipped.OrderBy(z => z.Quality)).First();
+      return Tuple.Create(best.Individual, best.Quality);
+    }
+
     protected override void OnOperatorsChanged() {
       base.OnOperatorsChanged();
       if (Encoding != null) {
@@ -99,6 +109,12 @@ namespace HeuristicLab.Optimization {
     private void PruneMultiObjectiveOperators(IEncoding encoding) {
       if (encoding.Operators.Any(x => x is IMultiObjectiveOperator && !(x is ISingleObjectiveOperator)))
         encoding.Operators = encoding.Operators.Where(x => !(x is IMultiObjectiveOperator) || x is ISingleObjectiveOperator).ToList();
+
+      foreach (var multiOp in Encoding.Operators.OfType<IMultiOperator>()) {
+        foreach (var moOp in multiOp.Operators.Where(x => x is IMultiObjectiveOperator).ToList()) {
+          multiOp.RemoveOperator(moOp);
+        }
+      }
     }
 
     protected override void OnEvaluatorChanged() {

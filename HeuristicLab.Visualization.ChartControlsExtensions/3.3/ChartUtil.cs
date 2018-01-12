@@ -1,7 +1,7 @@
 ﻿#region License Information
 
 /* HeuristicLab
- * Copyright (C) 2002-2016 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2018 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -37,7 +37,7 @@ namespace HeuristicLab.Visualization.ChartControlsExtensions {
 
       // if one of the interval ends is a multiple of 5 or 10, change the other interval end to be a multiple as well
       if ((aMin.Mod(5).IsAlmost(0) || aMin.Mod(10).IsAlmost(0)) && Math.Abs(aMax) >= 5 && !(aMax.Mod(5).IsAlmost(0) || aMax.Mod(10).IsAlmost(0))) {
-        aMax = Math.Min(aMax + 5 - aMax % 5, aMax + 10 - aMax % 10);
+        aMax = Math.Min(aMax + 5 - aMax.Mod(5), aMax + 10 - aMax.Mod(10));
       } else if ((aMax.Mod(5).IsAlmost(0) || aMax.Mod(10).IsAlmost(0)) && Math.Abs(aMin) >= 5 && !(aMin.Mod(5).IsAlmost(0) || aMin.Mod(10).IsAlmost(0))) {
         aMin = Math.Max(aMin - aMin.Mod(5), aMin - aMin.Mod(10));
       }

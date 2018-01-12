@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2016 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2018 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -29,7 +29,7 @@ using HeuristicLab.Persistence.Default.CompositeSerializers.Storable;
 namespace HeuristicLab.Problems.DataAnalysis.Symbolic {
   [StorableClass]
   [Item("Variable Condition", "Represents a condition that tests a given variable against a specified threshold.")]
-  public sealed class VariableCondition : Symbol {
+  public sealed class VariableCondition : Symbol, IVariableSymbol {
     #region properties
     [Storable]
     private double thresholdInitializerMu;
@@ -147,6 +147,27 @@ namespace HeuristicLab.Problems.DataAnalysis.Symbolic {
           slopeManipulatorSigma = value;
           OnChanged(EventArgs.Empty);
         }
+      }
+    }
+
+    /// <summary>
+    /// Flag to indicate if the interpreter should ignore the slope parameter (introduced for representation of expression trees)
+    /// </summary>
+    [Storable]
+    private bool ignoreSlope;
+    public bool IgnoreSlope {
+      get { return ignoreSlope; }
+      set { ignoreSlope = value; }
+    }
+
+    public override bool Enabled {
+      get {
+        if (variableNames.Count == 0) return false;
+        return base.Enabled;
+      }
+      set {
+        if (variableNames.Count == 0) base.Enabled = false;
+        else base.Enabled = value;
       }
     }
 

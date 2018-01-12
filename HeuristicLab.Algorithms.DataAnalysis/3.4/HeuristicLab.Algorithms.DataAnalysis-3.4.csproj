@@ -121,6 +121,8 @@
     <Reference Include="System.Drawing" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BaselineClassifiers\OneFactorClassificationModel.cs" />
+    <Compile Include="BaselineClassifiers\OneFactorClassificationSolution.cs" />
     <Compile Include="BaselineClassifiers\OneR.cs" />
     <Compile Include="BaselineClassifiers\OneRClassificationModel.cs" />
     <Compile Include="BaselineClassifiers\OneRClassificationSolution.cs" />
@@ -237,14 +239,22 @@
     <Compile Include="Interfaces\ISupportVectorMachineModel.cs" />
     <Compile Include="Interfaces\ISupportVectorMachineSolution.cs" />
     <Compile Include="Interfaces\IDataAnalysisAlgorithm.cs" />
+    <Compile Include="KernelRidgeRegression\KernelFunctions\CicularKernel.cs" />
+    <Compile Include="KernelRidgeRegression\KernelFunctions\GaussianKernel.cs" />
+    <Compile Include="KernelRidgeRegression\KernelFunctions\IKernel.cs" />
+    <Compile Include="KernelRidgeRegression\KernelFunctions\InverseMultiquadraticKernel.cs" />
+    <Compile Include="KernelRidgeRegression\KernelFunctions\KernelBase.cs" />
+    <Compile Include="KernelRidgeRegression\KernelFunctions\MultiquadraticKernel.cs" />
+    <Compile Include="KernelRidgeRegression\KernelFunctions\PolysplineKernel.cs" />
+    <Compile Include="KernelRidgeRegression\KernelFunctions\ThinPlatePolysplineKernel.cs" />
+    <Compile Include="KernelRidgeRegression\KernelRidgeRegression.cs" />
+    <Compile Include="KernelRidgeRegression\KernelRidgeRegressionModel.cs" />
     <Compile Include="kMeans\KMeansClustering.cs" />
     <Compile Include="kMeans\KMeansClusteringModel.cs" />
     <Compile Include="kMeans\KMeansClusteringSolution.cs" />
     <Compile Include="kMeans\KMeansClusteringUtil.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Linear\AlglibUtil.cs" />
-    <Compile Include="Linear\Scaling.cs" />
     <Compile Include="Linear\LinearDiscriminantAnalysis.cs" />
     <Compile Include="Linear\LinearRegression.cs">
       <SubType>Code</SubType>
@@ -252,6 +262,7 @@
     <Compile Include="Linear\MultinomialLogitClassification.cs" />
     <Compile Include="Linear\MultinomialLogitClassificationSolution.cs" />
     <Compile Include="Linear\MultinomialLogitModel.cs" />
+    <Compile Include="Linear\Scaling.cs" />
     <Compile Include="Nca\Initialization\INcaInitializer.cs" />
     <Compile Include="Nca\Initialization\LdaInitializer.cs" />
     <Compile Include="Nca\Initialization\NcaInitializer.cs" />
@@ -303,6 +314,19 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="TimeSeries\AutoregressiveModeling.cs" />
+    <Compile Include="TSNE\Distances\CosineDistance.cs" />
+    <Compile Include="TSNE\Distances\DistanceBase.cs" />
+    <Compile Include="TSNE\Distances\EuclideanDistance.cs" />
+    <Compile Include="TSNE\Distances\IndexedItemDistance.cs" />
+    <Compile Include="TSNE\Distances\ManhattanDistance.cs" />
+	<Compile Include="TSNE\Distances\WeightedEuclideanDistance.cs" />
+    <Compile Include="TSNE\Distances\IDistance.cs" />
+    <Compile Include="TSNE\PriorityQueue.cs" />
+    <Compile Include="TSNE\SpacePartitioningTree.cs" />
+    <Compile Include="TSNE\TSNEAlgorithm.cs" />
+    <Compile Include="TSNE\TSNEStatic.cs" />
+    <Compile Include="TSNE\TSNEUtils.cs" />
+    <Compile Include="TSNE\VantagePointTree.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\HeuristicLab.Algorithms.GradientDescent\3.3\HeuristicLab.Algorithms.GradientDescent-3.3.csproj">

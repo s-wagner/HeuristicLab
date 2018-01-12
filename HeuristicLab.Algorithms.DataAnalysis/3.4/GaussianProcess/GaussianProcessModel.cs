@@ -1,6 +1,6 @@
 #region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2016 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2018 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -42,6 +42,12 @@ namespace HeuristicLab.Algorithms.DataAnalysis {
     private double negativeLogLikelihood;
     public double NegativeLogLikelihood {
       get { return negativeLogLikelihood; }
+    }
+
+    [Storable]
+    private double loocvNegLogPseudoLikelihood;
+    public double LooCvNegativeLogPseudoLikelihood {
+      get { return loocvNegLogPseudoLikelihood; }
     }
 
     [Storable]
@@ -127,6 +133,7 @@ namespace HeuristicLab.Algorithms.DataAnalysis {
         this.inputScaling = cloner.Clone(original.inputScaling);
       this.trainingDataset = cloner.Clone(original.trainingDataset);
       this.negativeLogLikelihood = original.negativeLogLikelihood;
+      this.loocvNegLogPseudoLikelihood = original.loocvNegLogPseudoLikelihood;
       this.sqrSigmaNoise = original.sqrSigmaNoise;
       if (original.meanParameter != null) {
         this.meanParameter = (double[])original.meanParameter.Clone();
@@ -164,8 +171,7 @@ namespace HeuristicLab.Algorithms.DataAnalysis {
       sqrSigmaNoise = Math.Exp(2.0 * hyp.Last());
       try {
         CalculateModel(ds, rows, scaleInputs);
-      }
-      catch (alglib.alglibexception ae) {
+      } catch (alglib.alglibexception ae) {
         // wrap exception so that calling code doesn't have to know about alglib implementation
         throw new ArgumentException("There was a problem in the calculation of the Gaussian process model", ae);
       }
@@ -217,6 +223,23 @@ namespace HeuristicLab.Algorithms.DataAnalysis {
 
       alglib.spdmatrixcholeskyinverse(ref lCopy, n, false, out info, out matInvRep);
       if (info != 1) throw new ArgumentException("Can't invert matrix to calculate gradients.");
+
+      // LOOCV log pseudo-likelihood (or log predictive probability) (GPML page 116 and 117)
+      var sumLoo = 0.0;
+      var ki = new double[n];
+      for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) ki[j] = cov.Covariance(x, i, j);
+        ki[i] += sqrSigmaNoise;
+
+        var yi = Util.ScalarProd(ki, alpha);
+        var yi_loo = yi - alpha[i] / (lCopy[i, i] / sqrSigmaNoise);
+        var s2_loo = 1.0 / (lCopy[i, i] / sqrSigmaNoise);
+        var err = ym[i] - yi_loo;
+        var nll_loo = 0.5 * Math.Log(2 * Math.PI * s2_loo) + 0.5 * err * err / s2_loo;
+        sumLoo += nll_loo;
+      }
+      loocvNegLogPseudoLikelihood = sumLoo;
+
       for (int i = 0; i < n; i++) {
         for (int j = 0; j <= i; j++)
           lCopy[i, j] = lCopy[i, j] / sqrSigmaNoise - alpha[i] * alpha[j];
@@ -259,9 +282,28 @@ namespace HeuristicLab.Algorithms.DataAnalysis {
 
     private static double[,] GetData(IDataset ds, IEnumerable<string> allowedInputs, IEnumerable<int> rows, Scaling scaling) {
       if (scaling != null) {
-        return AlglibUtil.PrepareAndScaleInputMatrix(ds, allowedInputs, rows, scaling);
+        // BackwardsCompatibility3.3
+        #region Backwards compatible code, remove with 3.4
+        // TODO: completely remove Scaling class
+        List<string> variablesList = allowedInputs.ToList();
+        List<int> rowsList = rows.ToList();
+
+        double[,] matrix = new double[rowsList.Count, variablesList.Count];
+
+        int col = 0;
+        foreach (string column in variablesList) {
+          var values = scaling.GetScaledValues(ds, column, rowsList);
+          int row = 0;
+          foreach (var value in values) {
+            matrix[row, col] = value;
+            row++;
+          }
+          col++;
+        }
+        return matrix;
+        #endregion
       } else {
-        return AlglibUtil.PrepareInputMatrix(ds, allowedInputs, rows);
+        return ds.ToArray(allowedInputs, rows);
       }
     }
 
@@ -333,8 +375,7 @@ namespace HeuristicLab.Algorithms.DataAnalysis {
 
         return Enumerable.Range(0, newN)
           .Select(i => ms[i] + Util.ScalarProd(Ks[i], alpha));
-      }
-      catch (alglib.alglibexception ae) {
+      } catch (alglib.alglibexception ae) {
         // wrap exception so that calling code doesn't have to know about alglib implementation
         throw new ArgumentException("There was a problem in the calculation of the Gaussian process model", ae);
       }
@@ -380,8 +421,7 @@ namespace HeuristicLab.Algorithms.DataAnalysis {
           if (kss[i] < 0) kss[i] = 0;
         }
         return kss;
-      }
-      catch (alglib.alglibexception ae) {
+      } catch (alglib.alglibexception ae) {
         // wrap exception so that calling code doesn't have to know about alglib implementation
         throw new ArgumentException("There was a problem in the calculation of the Gaussian process model", ae);
       }

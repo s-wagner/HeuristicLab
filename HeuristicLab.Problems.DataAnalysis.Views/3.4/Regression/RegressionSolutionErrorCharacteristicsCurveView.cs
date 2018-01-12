@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2016 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2018 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -153,7 +153,7 @@ namespace HeuristicLab.Problems.DataAnalysis.Views {
         AddSeries(sol);
       }
 
-      chart.ChartAreas[0].AxisX.Title = residualComboBox.SelectedItem.ToString();
+      chart.ChartAreas[0].AxisX.Title = string.Format("{0} ({1})", residualComboBox.SelectedItem, Content.ProblemData.TargetVariable);
     }
 
     protected void AddSeries(IRegressionSolution solution) {

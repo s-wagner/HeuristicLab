@@ -1,6 +1,6 @@
 #region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2016 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2018 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -110,6 +110,8 @@ namespace HeuristicLab.Encodings.SymbolicExpressionTreeEncoding {
         return parent0;
       } else {
         var selectedBranch = SelectRandomBranch(random, allowedBranches, internalCrossoverPointProbability);
+        if (selectedBranch != null)
+          selectedBranch = (ISymbolicExpressionTreeNode)selectedBranch.Clone();
 
         if (crossoverPoint0.Child != null) {
           // manipulate the tree of parent0 in place

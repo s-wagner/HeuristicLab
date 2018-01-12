@@ -1,6 +1,6 @@
 #region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2016 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2018 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -80,6 +80,15 @@ namespace HeuristicLab.Problems.DataAnalysis.Symbolic {
             FormatRecursively(subtree, strBuilder);
           }
           strBuilder.Append(")");
+        } else {
+          // function with multiple arguments
+          strBuilder.Append(token).Append("(");
+          FormatRecursively(node.Subtrees.First(), strBuilder);
+          foreach (var subtree in node.Subtrees.Skip(1)) {
+            strBuilder.Append(", ");
+            FormatRecursively(subtree, strBuilder);
+          }
+          strBuilder.Append(")");
         }
       } else if (node.SubtreeCount == 1) {
         var token = GetToken(node.Symbol);
@@ -93,14 +102,30 @@ namespace HeuristicLab.Problems.DataAnalysis.Symbolic {
         } else if (token == "+" || token == "*") {
           FormatRecursively(node.GetSubtree(0), strBuilder);
         } else {
-          // function
+          // function with only one argument
           strBuilder.Append(token).Append("(");
           FormatRecursively(node.GetSubtree(0), strBuilder);
           strBuilder.Append(")");
         }
       } else {
         // no subtrees
-        if (node.Symbol is Variable) {
+        if (node.Symbol is LaggedVariable) {
+          var varNode = node as LaggedVariableTreeNode;
+          if (!varNode.Weight.IsAlmost(1.0)) {
+            strBuilder.Append("(");
+            strBuilder.AppendFormat(CultureInfo.InvariantCulture, "{0}", varNode.Weight);
+            strBuilder.Append("*");
+          }
+          strBuilder.Append("LAG(");
+          if (varNode.VariableName.Contains("'")) {
+            strBuilder.AppendFormat("\"{0}\"", varNode.VariableName);
+          } else {
+            strBuilder.AppendFormat("'{0}'", varNode.VariableName);
+          }
+          strBuilder.Append(", ")
+            .AppendFormat(CultureInfo.InvariantCulture, "{0}", varNode.Lag)
+            .Append(")");
+        } else if (node.Symbol is Variable) {
           var varNode = node as VariableTreeNode;
           if (!varNode.Weight.IsAlmost(1.0)) {
             strBuilder.Append("(");
@@ -115,12 +140,44 @@ namespace HeuristicLab.Problems.DataAnalysis.Symbolic {
           if (!varNode.Weight.IsAlmost(1.0)) {
             strBuilder.Append(")");
           }
+        } else if (node.Symbol is FactorVariable) {
+          var factorNode = node as FactorVariableTreeNode;
+          if (factorNode.VariableName.Contains("'")) {
+            strBuilder.AppendFormat("\"{0}\"", factorNode.VariableName);
+          } else {
+            strBuilder.AppendFormat("'{0}'", factorNode.VariableName);
+          }
+          strBuilder.AppendFormat("[{0}]",
+            string.Join(", ", factorNode.Weights.Select(w => w.ToString(CultureInfo.InvariantCulture))));
+        } else if (node.Symbol is BinaryFactorVariable) {
+          var factorNode = node as BinaryFactorVariableTreeNode;
+          if (!factorNode.Weight.IsAlmost(1.0)) {
+            strBuilder.Append("(");
+            strBuilder.AppendFormat(CultureInfo.InvariantCulture, "{0}", factorNode.Weight);
+            strBuilder.Append("*");
+          }
+          if (factorNode.VariableName.Contains("'")) {
+            strBuilder.AppendFormat("\"{0}\"", factorNode.VariableName);
+          } else {
+            strBuilder.AppendFormat("'{0}'", factorNode.VariableName);
+          }
+          strBuilder.Append(" = ");
+          if (factorNode.VariableValue.Contains("'")) {
+            strBuilder.AppendFormat("\"{0}\"", factorNode.VariableValue);
+          } else {
+            strBuilder.AppendFormat("'{0}'", factorNode.VariableValue);
+          }
+
+          if (!factorNode.Weight.IsAlmost(1.0)) {
+            strBuilder.Append(")");
+          }
+
         } else if (node.Symbol is Constant) {
           var constNode = node as ConstantTreeNode;
           if (constNode.Value >= 0.0)
             strBuilder.AppendFormat(CultureInfo.InvariantCulture, "{0}", constNode.Value);
           else
-            strBuilder.AppendFormat(CultureInfo.InvariantCulture, "({0})", constNode.Value);     // (-1)
+            strBuilder.AppendFormat(CultureInfo.InvariantCulture, "({0})", constNode.Value); // (-1
         }
       }
     }

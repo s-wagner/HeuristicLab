@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2016 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2018 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -22,7 +22,7 @@
 using HeuristicLab.PluginInfrastructure;
 
 namespace HeuristicLab.SimSharp {
-  [Plugin("HeuristicLab.SimSharp", "Transport plugin for the simulation framework Sim#", "3.0.9.14196")]
+  [Plugin("HeuristicLab.SimSharp", "Transport plugin for the simulation framework Sim#", "3.0.9.15584")]
   [PluginFile("HeuristicLab.SimSharp-3.0.9.dll", PluginFileType.Assembly)]
   [PluginFile("SimSharp-3.0.9.dll", PluginFileType.Assembly)]
   [PluginFile("SimSharp-3.0.9 License.txt", PluginFileType.License)]

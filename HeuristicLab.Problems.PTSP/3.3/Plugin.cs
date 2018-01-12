@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2016 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2018 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -22,8 +22,9 @@
 using HeuristicLab.PluginInfrastructure;
 
 namespace HeuristicLab.Problems.PTSP {
-  [Plugin("HeuristicLab.Problems.PTSP", "Provides an implementation of the probabilistic traveling salesman problem (PTSP)", "3.3.14.14190")]
+  [Plugin("HeuristicLab.Problems.PTSP", "Provides an implementation of the probabilistic traveling salesman problem (PTSP)", "3.3.15.15587")]
   [PluginFile("HeuristicLab.Problems.PTSP-3.3.dll", PluginFileType.Assembly)]
+  [PluginDependency("HeuristicLab.Analysis", "3.3")]
   [PluginDependency("HeuristicLab.Collections", "3.3")]
   [PluginDependency("HeuristicLab.Common", "3.3")]
   [PluginDependency("HeuristicLab.Common.Resources", "3.3")]
@@ -32,6 +33,7 @@ namespace HeuristicLab.Problems.PTSP {
   [PluginDependency("HeuristicLab.Encodings.PermutationEncoding", "3.3")]
   [PluginDependency("HeuristicLab.Operators", "3.3")]
   [PluginDependency("HeuristicLab.Optimization", "3.3")]
+  [PluginDependency("HeuristicLab.Optimization.Operators", "3.3")]
   [PluginDependency("HeuristicLab.Parameters", "3.3")]
   [PluginDependency("HeuristicLab.Persistence", "3.3")]
   [PluginDependency("HeuristicLab.Problems.Instances", "3.3")]

@@ -1,6 +1,6 @@
 #region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2016 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2018 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -27,6 +27,7 @@ namespace HeuristicLab.Algorithms.DataAnalysis {
   /// </summary>
   public interface IGaussianProcessModel : IConfidenceRegressionModel {
     double NegativeLogLikelihood { get; }
+    double LooCvNegativeLogPseudoLikelihood { get; }
     double SigmaNoise { get; }
     IMeanFunction MeanFunction { get; }
     ICovarianceFunction CovarianceFunction { get; }

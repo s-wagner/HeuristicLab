@@ -1,6 +1,6 @@
 #region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2016 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2018 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -23,6 +23,10 @@ using System.Collections.Generic;
 using HeuristicLab.Core;
 
 namespace HeuristicLab.Problems.DataAnalysis {
+  /// <summary>
+  /// Interface for all data-analysis models (regression/classification/clustering).
+  /// <remarks>All methods and properties in in this interface must be implemented thread safely</remarks>
+  /// </summary>
   public interface IDataAnalysisModel : INamedItem {
     IEnumerable<string> VariablesUsedForPrediction { get; }
   }

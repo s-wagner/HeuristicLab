@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2016 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2018 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -35,7 +35,7 @@ using HeuristicLab.Random;
 
 namespace HeuristicLab.Algorithms.RandomSearch {
   [Item("Random Search Algorithm (RS)", "A random search algorithm.")]
-  [Creatable(CreatableAttribute.Categories.Algorithms, Priority = 150)]
+  [Creatable(CreatableAttribute.Categories.SingleSolutionAlgorithms, Priority = 150)]
   [StorableClass]
   public sealed class RandomSearchAlgorithm : HeuristicOptimizationEngineAlgorithm, IStorableContent {
     public string Filename { get; set; }

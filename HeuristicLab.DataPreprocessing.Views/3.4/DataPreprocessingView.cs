@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2016 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2018 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -35,38 +35,34 @@ namespace HeuristicLab.DataPreprocessing.Views {
   [View("DataPreprocessing View")]
   [Content(typeof(PreprocessingContext), true)]
   public partial class DataPreprocessingView : NamedItemView {
-
-    public DataPreprocessingView() {
-      InitializeComponent();
-    }
-
     public new PreprocessingContext Content {
       get { return (PreprocessingContext)base.Content; }
       set { base.Content = value; }
+    }
+
+    public DataPreprocessingView() {
+      InitializeComponent();
     }
 
     protected override void OnContentChanged() {
       base.OnContentChanged();
       if (Content != null) {
         var data = Content.Data;
-        var filterLogic = new FilterLogic(data);
-        var searchLogic = new SearchLogic(data, filterLogic);
-        var statisticsLogic = new StatisticsLogic(data, searchLogic);
-        var manipulationLogic = new ManipulationLogic(data, searchLogic, statisticsLogic);
 
         var viewShortcuts = new ItemList<IViewShortcut> {
-          new DataGridContent(data, manipulationLogic, filterLogic),
-          new StatisticsContent(statisticsLogic),
+          new DataGridContent(data),
+          new StatisticsContent(data),
 
           new LineChartContent(data),
           new HistogramContent(data),
-          new ScatterPlotContent(data),
+          new SingleScatterPlotContent(data),
+          new MultiScatterPlotContent(data),
           new CorrelationMatrixContent(Content),
-          new DataCompletenessChartContent(searchLogic),
+          new DataCompletenessChartContent(data),
 
-          new FilterContent(filterLogic),
-          new ManipulationContent(manipulationLogic, searchLogic, filterLogic),
-          new TransformationContent(data, filterLogic)
+          new FilterContent(data),
+          new ManipulationContent(data),
+          new TransformationContent(data)
         };
 
         viewShortcutListView.Content = viewShortcuts.AsReadOnly();
@@ -124,13 +120,24 @@ namespace HeuristicLab.DataPreprocessing.Views {
       newProblemDataTypeContextMenuStrip.Show(Cursor.Position);
     }
     private void newRegressionToolStripMenuItem_Click(object sender, EventArgs e) {
-      Content.Import(new RegressionProblemData());
+      if (CheckNew("Regression"))
+        Content.Import(new RegressionProblemData());
     }
     private void newClassificationToolStripMenuItem_Click(object sender, EventArgs e) {
-      Content.Import(new ClassificationProblemData());
+      if (CheckNew("Classification"))
+        Content.Import(new ClassificationProblemData());
     }
     private void newTimeSeriesToolStripMenuItem_Click(object sender, EventArgs e) {
-      Content.Import(new TimeSeriesPrognosisProblemData());
+      if (CheckNew("Time Series Prognosis"))
+        Content.Import(new TimeSeriesPrognosisProblemData());
+    }
+
+    private bool CheckNew(string type) {
+      return DialogResult.OK == MessageBox.Show(
+               this,
+               string.Format("When creating a new {0}, all previous information will be lost.", type),
+               "Continue?",
+               MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
     }
     #endregion
 
@@ -138,24 +145,24 @@ namespace HeuristicLab.DataPreprocessing.Views {
     private void importButton_Click(object sender, EventArgs e) {
       importProblemDataTypeContextMenuStrip.Show(Cursor.Position);
     }
-    private void importRegressionToolStripMenuItem_Click(object sender, EventArgs e) {
-      Import(new RegressionCSVInstanceProvider(), new RegressionImportTypeDialog(),
-        (dialog => ((RegressionImportTypeDialog)dialog).ImportType));
+    private async void importRegressionToolStripMenuItem_Click(object sender, EventArgs e) {
+      await ImportAsync(new RegressionCSVInstanceProvider(), new RegressionImportDialog(),
+        dialog => ((RegressionImportDialog)dialog).ImportType);
     }
-    private void importClassificationToolStripMenuItem_Click(object sender, EventArgs e) {
-      Import(new ClassificationCSVInstanceProvider(), new ClassificationImportTypeDialog(),
-        (dialog => ((ClassificationImportTypeDialog)dialog).ImportType));
+    private async void importClassificationToolStripMenuItem_Click(object sender, EventArgs e) {
+      await ImportAsync(new ClassificationCSVInstanceProvider(), new ClassificationImportDialog(),
+        dialog => ((ClassificationImportDialog)dialog).ImportType);
     }
-    private void importTimeSeriesToolStripMenuItem_Click(object sender, EventArgs e) {
-      Import(new TimeSeriesPrognosisCSVInstanceProvider(), new TimeSeriesPrognosisImportTypeDialog(),
-        (dialog => ((TimeSeriesPrognosisImportTypeDialog)dialog).ImportType));
+    private async void importTimeSeriesToolStripMenuItem_Click(object sender, EventArgs e) {
+      await ImportAsync(new TimeSeriesPrognosisCSVInstanceProvider(), new TimeSeriesPrognosisImportDialog(),
+        dialog => ((TimeSeriesPrognosisImportDialog)dialog).ImportType);
     }
-    private void Import<TProblemData, TImportType>(DataAnalysisInstanceProvider<TProblemData, TImportType> instanceProvider, DataAnalysisImportTypeDialog importTypeDialog,
-      Func<DataAnalysisImportTypeDialog, TImportType> getImportType)
+    private async Task ImportAsync<TProblemData, TImportType>(DataAnalysisInstanceProvider<TProblemData, TImportType> instanceProvider, DataAnalysisImportDialog importDialog,
+      Func<DataAnalysisImportDialog, TImportType> getImportType)
       where TProblemData : class, IDataAnalysisProblemData
       where TImportType : DataAnalysisImportType {
-      if (importTypeDialog.ShowDialog() == DialogResult.OK) {
-        Task.Run(() => {
+      if (importDialog.ShowDialog() == DialogResult.OK) {
+        await Task.Run(() => {
           TProblemData instance;
           var mainForm = (MainForm.WindowsForms.MainForm)MainFormManager.MainForm;
           // lock active view and show progress bar
@@ -166,7 +173,7 @@ namespace HeuristicLab.DataPreprocessing.Views {
 
             instanceProvider.ProgressChanged += (o, args) => { progress.ProgressValue = args.ProgressPercentage / 100.0; };
 
-            instance = instanceProvider.ImportData(importTypeDialog.Path, getImportType(importTypeDialog), importTypeDialog.CSVFormat);
+            instance = instanceProvider.ImportData(importDialog.Path, getImportType(importDialog), importDialog.CSVFormat);
           } catch (IOException ex) {
             MessageBox.Show(string.Format("There was an error parsing the file: {0}", Environment.NewLine + ex.Message), "Error while parsing", MessageBoxButtons.OK, MessageBoxIcon.Error);
             mainForm.RemoveOperationProgressFromContent(activeView.Content);
@@ -175,7 +182,7 @@ namespace HeuristicLab.DataPreprocessing.Views {
           try {
             Content.Import(instance);
           } catch (IOException ex) {
-            MessageBox.Show(string.Format("This problem does not support loading the instance {0}: {1}", Path.GetFileName(importTypeDialog.Path), Environment.NewLine + ex.Message), "Cannot load instance");
+            MessageBox.Show(string.Format("This problem does not support loading the instance {0}: {1}", Path.GetFileName(importDialog.Path), Environment.NewLine + ex.Message), "Cannot load instance");
           } finally {
             mainForm.RemoveOperationProgressFromContent(activeView.Content);
           }

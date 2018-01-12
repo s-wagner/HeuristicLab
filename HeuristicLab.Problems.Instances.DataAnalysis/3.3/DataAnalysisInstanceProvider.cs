@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2016 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2018 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -39,6 +39,7 @@ namespace HeuristicLab.Problems.Instances.DataAnalysis {
 
     public TData ImportData(string path, ImportType type, DataAnalysisCSVFormat csvFormat) {
       TableFileParser csvFileParser = new TableFileParser();
+      csvFileParser.Encoding = csvFormat.Encoding;
       long fileSize = new FileInfo(path).Length;
       csvFileParser.ProgressChanged += (sender, e) => {
         OnProgressChanged(e / (double)fileSize);

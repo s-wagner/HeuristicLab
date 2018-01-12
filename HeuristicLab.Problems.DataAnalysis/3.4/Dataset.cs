@@ -1,6 +1,6 @@
 #region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2016 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2018 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -73,7 +73,6 @@ namespace HeuristicLab.Problems.DataAnalysis {
           message += duplicateVariableName + Environment.NewLine;
         throw new ArgumentException(message);
       }
-
       rows = variableValues.First().Count;
       this.variableNames = new List<string>(variableNames);
       this.variableValues = new Dictionary<string, IList>(this.variableNames.Count);
@@ -114,16 +113,25 @@ namespace HeuristicLab.Problems.DataAnalysis {
       var values = new List<IList>();
       foreach (var v in variableNames) {
         if (VariableHasType<double>(v)) {
-          values.Add(new List<double>((List<double>)variableValues[v]));
+          values.Add(new List<double>((IList<double>)variableValues[v]));
         } else if (VariableHasType<string>(v)) {
-          values.Add(new List<string>((List<string>)variableValues[v]));
+          values.Add(new List<string>((IList<string>)variableValues[v]));
         } else if (VariableHasType<DateTime>(v)) {
-          values.Add(new List<DateTime>((List<DateTime>)variableValues[v]));
+          values.Add(new List<DateTime>((IList<DateTime>)variableValues[v]));
         } else {
           throw new ArgumentException("Unknown variable type.");
         }
       }
       return new ModifiableDataset(variableNames, values);
+    }
+    /// <summary>
+    /// Shuffle a dataset's rows
+    /// </summary>
+    /// <param name="random">Random number generator used for shuffling.</param>
+    /// <returns>A shuffled copy of the current dataset.</returns>
+    public Dataset Shuffle(IRandom random) {
+      var values = variableNames.Select(x => variableValues[x]).ToList();
+      return new Dataset(variableNames, values.ShuffleLists(random));
     }
 
     protected Dataset(Dataset dataset) : this(dataset.variableNames, dataset.variableValues.Values) { }
@@ -165,8 +173,17 @@ namespace HeuristicLab.Problems.DataAnalysis {
       }
     }
     public IEnumerable<string> DoubleVariables {
-      get { return variableValues.Where(p => p.Value is List<double>).Select(p => p.Key); }
+      get { return variableValues.Where(p => p.Value is IList<double>).Select(p => p.Key); }
     }
+
+    public IEnumerable<string> StringVariables {
+      get { return variableValues.Where(p => p.Value is IList<string>).Select(p => p.Key); }
+    }
+
+    public IEnumerable<string> DateTimeVariables {
+      get { return variableValues.Where(p => p.Value is IList<DateTime>).Select(p => p.Key); }
+    }
+
     public IEnumerable<double> GetDoubleValues(string variableName) {
       return GetValues<double>(variableName);
     }
@@ -179,7 +196,7 @@ namespace HeuristicLab.Problems.DataAnalysis {
 
     public ReadOnlyCollection<double> GetReadOnlyDoubleValues(string variableName) {
       var values = GetValues<double>(variableName);
-      return values.AsReadOnly();
+      return new ReadOnlyCollection<double>(values);
     }
     public double GetDoubleValue(string variableName, int row) {
       var values = GetValues<double>(variableName);
@@ -188,15 +205,42 @@ namespace HeuristicLab.Problems.DataAnalysis {
     public IEnumerable<double> GetDoubleValues(string variableName, IEnumerable<int> rows) {
       return GetValues<double>(variableName, rows);
     }
+
+    public string GetStringValue(string variableName, int row) {
+      var values = GetValues<string>(variableName);
+      return values[row];
+    }
+
+    public IEnumerable<string> GetStringValues(string variableName, IEnumerable<int> rows) {
+      return GetValues<string>(variableName, rows);
+    }
+    public ReadOnlyCollection<string> GetReadOnlyStringValues(string variableName) {
+      var values = GetValues<string>(variableName);
+      return new ReadOnlyCollection<string>(values);
+    }
+
+    public DateTime GetDateTimeValue(string variableName, int row) {
+      var values = GetValues<DateTime>(variableName);
+      return values[row];
+    }
+    public IEnumerable<DateTime> GetDateTimeValues(string variableName, IEnumerable<int> rows) {
+      return GetValues<DateTime>(variableName, rows);
+    }
+    public ReadOnlyCollection<DateTime> GetReadOnlyDateTimeValues(string variableName) {
+      var values = GetValues<DateTime>(variableName);
+      return new ReadOnlyCollection<DateTime>(values);
+    }
+
+
     private IEnumerable<T> GetValues<T>(string variableName, IEnumerable<int> rows) {
       var values = GetValues<T>(variableName);
       return rows.Select(x => values[x]);
     }
-    private List<T> GetValues<T>(string variableName) {
+    private IList<T> GetValues<T>(string variableName) {
       IList list;
       if (!variableValues.TryGetValue(variableName, out list))
         throw new ArgumentException("The variable " + variableName + " does not exist in the dataset.");
-      List<T> values = list as List<T>;
+      IList<T> values = list as IList<T>;
       if (values == null) throw new ArgumentException("The variable " + variableName + " is not a " + typeof(T) + " variable.");
       return values;
     }

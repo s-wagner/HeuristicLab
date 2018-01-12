@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2016 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2018 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -26,7 +26,7 @@ using System.Linq;
 using HeuristicLab.PluginInfrastructure;
 
 namespace HeuristicLab.MathJax {
-  [Plugin("HeuristicLab.MathJax", "HeuristicLab transport plugin for MathJax (www.mathjax.org) , an open source JavaScript display engine for mathematics that works in all browsers", "1.1.14186")]
+  [Plugin("HeuristicLab.MathJax", "HeuristicLab transport plugin for MathJax (www.mathjax.org) , an open source JavaScript display engine for mathematics that works in all browsers", "1.1.15584")]
   [PluginFile("HeuristicLab.MathJax-2.6.1.dll", PluginFileType.Assembly)]
   [PluginFile("MathJax license.txt", PluginFileType.License)]
   [PluginFile("mathjax.zip", PluginFileType.Data)]

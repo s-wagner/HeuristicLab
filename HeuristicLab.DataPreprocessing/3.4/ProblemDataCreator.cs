@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2016 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2018 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -27,16 +27,15 @@ using HeuristicLab.Problems.DataAnalysis;
 
 namespace HeuristicLab.DataPreprocessing {
   public class ProblemDataCreator {
-
     private readonly PreprocessingContext context;
 
     private Dataset ExportedDataset {
-      get {
-        return context.Data.ExportToDataset();
-      }
+      get { return context.Data.ExportToDataset(); }
     }
 
-    private IList<ITransformation> Transformations { get { return context.Data.Transformations; } }
+    private IList<ITransformation> Transformations {
+      get { return context.Data.Transformations; }
+    }
 
     public ProblemDataCreator(PreprocessingContext context) {
       this.context = context;

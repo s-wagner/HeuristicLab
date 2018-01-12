@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2016 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2018 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -21,6 +21,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using HeuristicLab.Common;
 using HeuristicLab.Core;
 using HeuristicLab.Data;
@@ -31,75 +32,100 @@ using HeuristicLab.Persistence.Default.CompositeSerializers.Storable;
 namespace HeuristicLab.Problems.DataAnalysis.Symbolic {
   [StorableClass]
   [Item("SymbolicDataAnalysisExpressionTreeInterpreter", "Interpreter for symbolic expression trees including automatically defined functions.")]
-  public class SymbolicDataAnalysisExpressionTreeInterpreter : ParameterizedNamedItem, ISymbolicDataAnalysisExpressionTreeInterpreter {
+  public class SymbolicDataAnalysisExpressionTreeInterpreter : ParameterizedNamedItem,
+    ISymbolicDataAnalysisExpressionTreeInterpreter {
     private const string CheckExpressionsWithIntervalArithmeticParameterName = "CheckExpressionsWithIntervalArithmetic";
+    private const string CheckExpressionsWithIntervalArithmeticParameterDescription = "Switch that determines if the interpreter checks the validity of expressions with interval arithmetic before evaluating the expression.";
     private const string EvaluatedSolutionsParameterName = "EvaluatedSolutions";
 
-    public override bool CanChangeName { get { return false; } }
-    public override bool CanChangeDescription { get { return false; } }
-
-    #region parameter properties
-    public IValueParameter<BoolValue> CheckExpressionsWithIntervalArithmeticParameter {
-      get { return (IValueParameter<BoolValue>)Parameters[CheckExpressionsWithIntervalArithmeticParameterName]; }
+    public override bool CanChangeName {
+      get { return false; }
     }
 
-    public IValueParameter<IntValue> EvaluatedSolutionsParameter {
-      get { return (IValueParameter<IntValue>)Parameters[EvaluatedSolutionsParameterName]; }
+    public override bool CanChangeDescription {
+      get { return false; }
+    }
+
+    #region parameter properties
+    public IFixedValueParameter<BoolValue> CheckExpressionsWithIntervalArithmeticParameter {
+      get { return (IFixedValueParameter<BoolValue>)Parameters[CheckExpressionsWithIntervalArithmeticParameterName]; }
+    }
+
+    public IFixedValueParameter<IntValue> EvaluatedSolutionsParameter {
+      get { return (IFixedValueParameter<IntValue>)Parameters[EvaluatedSolutionsParameterName]; }
     }
     #endregion
 
     #region properties
-    public BoolValue CheckExpressionsWithIntervalArithmetic {
-      get { return CheckExpressionsWithIntervalArithmeticParameter.Value; }
-      set { CheckExpressionsWithIntervalArithmeticParameter.Value = value; }
+    public bool CheckExpressionsWithIntervalArithmetic {
+      get { return CheckExpressionsWithIntervalArithmeticParameter.Value.Value; }
+      set { CheckExpressionsWithIntervalArithmeticParameter.Value.Value = value; }
     }
 
-    public IntValue EvaluatedSolutions {
-      get { return EvaluatedSolutionsParameter.Value; }
-      set { EvaluatedSolutionsParameter.Value = value; }
+    public int EvaluatedSolutions {
+      get { return EvaluatedSolutionsParameter.Value.Value; }
+      set { EvaluatedSolutionsParameter.Value.Value = value; }
     }
     #endregion
 
     [StorableConstructor]
     protected SymbolicDataAnalysisExpressionTreeInterpreter(bool deserializing) : base(deserializing) { }
-    protected SymbolicDataAnalysisExpressionTreeInterpreter(SymbolicDataAnalysisExpressionTreeInterpreter original, Cloner cloner) : base(original, cloner) { }
+
+    protected SymbolicDataAnalysisExpressionTreeInterpreter(SymbolicDataAnalysisExpressionTreeInterpreter original,
+      Cloner cloner)
+      : base(original, cloner) { }
+
     public override IDeepCloneable Clone(Cloner cloner) {
       return new SymbolicDataAnalysisExpressionTreeInterpreter(this, cloner);
     }
 
     public SymbolicDataAnalysisExpressionTreeInterpreter()
       : base("SymbolicDataAnalysisExpressionTreeInterpreter", "Interpreter for symbolic expression trees including automatically defined functions.") {
-      Parameters.Add(new ValueParameter<BoolValue>(CheckExpressionsWithIntervalArithmeticParameterName, "Switch that determines if the interpreter checks the validity of expressions with interval arithmetic before evaluating the expression.", new BoolValue(false)));
-      Parameters.Add(new ValueParameter<IntValue>(EvaluatedSolutionsParameterName, "A counter for the total number of solutions the interpreter has evaluated", new IntValue(0)));
+      Parameters.Add(new FixedValueParameter<BoolValue>(CheckExpressionsWithIntervalArithmeticParameterName, "Switch that determines if the interpreter checks the validity of expressions with interval arithmetic before evaluating the expression.", new BoolValue(false)));
+      Parameters.Add(new FixedValueParameter<IntValue>(EvaluatedSolutionsParameterName, "A counter for the total number of solutions the interpreter has evaluated", new IntValue(0)));
     }
 
     protected SymbolicDataAnalysisExpressionTreeInterpreter(string name, string description)
       : base(name, description) {
-      Parameters.Add(new ValueParameter<BoolValue>(CheckExpressionsWithIntervalArithmeticParameterName, "Switch that determines if the interpreter checks the validity of expressions with interval arithmetic before evaluating the expression.", new BoolValue(false)));
-      Parameters.Add(new ValueParameter<IntValue>(EvaluatedSolutionsParameterName, "A counter for the total number of solutions the interpreter has evaluated", new IntValue(0)));
+      Parameters.Add(new FixedValueParameter<BoolValue>(CheckExpressionsWithIntervalArithmeticParameterName, "Switch that determines if the interpreter checks the validity of expressions with interval arithmetic before evaluating the expression.", new BoolValue(false)));
+      Parameters.Add(new FixedValueParameter<IntValue>(EvaluatedSolutionsParameterName, "A counter for the total number of solutions the interpreter has evaluated", new IntValue(0)));
     }
 
     [StorableHook(HookType.AfterDeserialization)]
     private void AfterDeserialization() {
-      if (!Parameters.ContainsKey(EvaluatedSolutionsParameterName))
-        Parameters.Add(new ValueParameter<IntValue>(EvaluatedSolutionsParameterName, "A counter for the total number of solutions the interpreter has evaluated", new IntValue(0)));
+      var evaluatedSolutions = new IntValue(0);
+      var checkExpressionsWithIntervalArithmetic = new BoolValue(false);
+      if (Parameters.ContainsKey(EvaluatedSolutionsParameterName)) {
+        var evaluatedSolutionsParameter = (IValueParameter<IntValue>)Parameters[EvaluatedSolutionsParameterName];
+        evaluatedSolutions = evaluatedSolutionsParameter.Value;
+        Parameters.Remove(EvaluatedSolutionsParameterName);
+      }
+      Parameters.Add(new FixedValueParameter<IntValue>(EvaluatedSolutionsParameterName, "A counter for the total number of solutions the interpreter has evaluated", evaluatedSolutions));
+      if (Parameters.ContainsKey(CheckExpressionsWithIntervalArithmeticParameterName)) {
+        var checkExpressionsWithIntervalArithmeticParameter = (IValueParameter<BoolValue>)Parameters[CheckExpressionsWithIntervalArithmeticParameterName];
+        Parameters.Remove(CheckExpressionsWithIntervalArithmeticParameterName);
+        checkExpressionsWithIntervalArithmetic = checkExpressionsWithIntervalArithmeticParameter.Value;
+      }
+      Parameters.Add(new FixedValueParameter<BoolValue>(CheckExpressionsWithIntervalArithmeticParameterName, CheckExpressionsWithIntervalArithmeticParameterDescription, checkExpressionsWithIntervalArithmetic));
     }
 
     #region IStatefulItem
     public void InitializeState() {
-      EvaluatedSolutions.Value = 0;
+      EvaluatedSolutions = 0;
     }
 
-    public void ClearState() {
-    }
+    public void ClearState() { }
     #endregion
 
-    public IEnumerable<double> GetSymbolicExpressionTreeValues(ISymbolicExpressionTree tree, IDataset dataset, IEnumerable<int> rows) {
-      if (CheckExpressionsWithIntervalArithmetic.Value)
+    private readonly object syncRoot = new object();
+    public IEnumerable<double> GetSymbolicExpressionTreeValues(ISymbolicExpressionTree tree, IDataset dataset,
+      IEnumerable<int> rows) {
+      if (CheckExpressionsWithIntervalArithmetic) {
         throw new NotSupportedException("Interval arithmetic is not yet supported in the symbolic data analysis interpreter.");
+      }
 
-      lock (EvaluatedSolutions) {
-        EvaluatedSolutions.Value++; // increment the evaluated solutions counter
+      lock (syncRoot) {
+        EvaluatedSolutions++; // increment the evaluated solutions counter
       }
       var state = PrepareInterpreterState(tree, dataset);
 
@@ -117,6 +143,12 @@ namespace HeuristicLab.Problems.DataAnalysis.Symbolic {
         if (instr.opCode == OpCodes.Variable) {
           var variableTreeNode = (VariableTreeNode)instr.dynamicNode;
           instr.data = dataset.GetReadOnlyDoubleValues(variableTreeNode.VariableName);
+        } else if (instr.opCode == OpCodes.FactorVariable) {
+          var factorTreeNode = instr.dynamicNode as FactorVariableTreeNode;
+          instr.data = dataset.GetReadOnlyStringValues(factorTreeNode.VariableName);
+        } else if (instr.opCode == OpCodes.BinaryFactorVariable) {
+          var factorTreeNode = instr.dynamicNode as BinaryFactorVariableTreeNode;
+          instr.data = dataset.GetReadOnlyStringValues(factorTreeNode.VariableName);
         } else if (instr.opCode == OpCodes.LagVariable) {
           var laggedVariableTreeNode = (LaggedVariableTreeNode)instr.dynamicNode;
           instr.data = dataset.GetReadOnlyDoubleValues(laggedVariableTreeNode.VariableName);
@@ -129,7 +161,6 @@ namespace HeuristicLab.Problems.DataAnalysis.Symbolic {
       }
       return new InterpreterState(code, necessaryArgStackSize);
     }
-
 
     public virtual double Evaluate(IDataset dataset, ref int row, InterpreterState state) {
       Instruction currentInstr = state.NextInstruction();
@@ -146,7 +177,7 @@ namespace HeuristicLab.Problems.DataAnalysis.Symbolic {
             for (int i = 1; i < currentInstr.nArguments; i++) {
               s -= Evaluate(dataset, ref row, state);
             }
-            if (currentInstr.nArguments == 1) s = -s;
+            if (currentInstr.nArguments == 1) { s = -s; }
             return s;
           }
         case OpCodes.Mul: {
@@ -161,7 +192,7 @@ namespace HeuristicLab.Problems.DataAnalysis.Symbolic {
             for (int i = 1; i < currentInstr.nArguments; i++) {
               p /= Evaluate(dataset, ref row, state);
             }
-            if (currentInstr.nArguments == 1) p = 1.0 / p;
+            if (currentInstr.nArguments == 1) { p = 1.0 / p; }
             return p;
           }
         case OpCodes.Average: {
@@ -204,8 +235,7 @@ namespace HeuristicLab.Problems.DataAnalysis.Symbolic {
           }
         case OpCodes.Gamma: {
             var x = Evaluate(dataset, ref row, state);
-            if (double.IsNaN(x)) return double.NaN;
-            else return alglib.gammafunction(x);
+            if (double.IsNaN(x)) { return double.NaN; } else { return alglib.gammafunction(x); }
           }
         case OpCodes.Psi: {
             var x = Evaluate(dataset, ref row, state);
@@ -215,12 +245,12 @@ namespace HeuristicLab.Problems.DataAnalysis.Symbolic {
           }
         case OpCodes.Dawson: {
             var x = Evaluate(dataset, ref row, state);
-            if (double.IsNaN(x)) return double.NaN;
+            if (double.IsNaN(x)) { return double.NaN; }
             return alglib.dawsonintegral(x);
           }
         case OpCodes.ExponentialIntegralEi: {
             var x = Evaluate(dataset, ref row, state);
-            if (double.IsNaN(x)) return double.NaN;
+            if (double.IsNaN(x)) { return double.NaN; }
             return alglib.exponentialintegralei(x);
           }
         case OpCodes.SineIntegral: {
@@ -348,21 +378,19 @@ namespace HeuristicLab.Problems.DataAnalysis.Symbolic {
             // this is equal to a consecutive execution of binary XOR operations.
             int positiveSignals = 0;
             for (int i = 0; i < currentInstr.nArguments; i++) {
-              if (Evaluate(dataset, ref row, state) > 0.0) positiveSignals++;
+              if (Evaluate(dataset, ref row, state) > 0.0) { positiveSignals++; }
             }
             return positiveSignals % 2 != 0 ? 1.0 : -1.0;
           }
         case OpCodes.GT: {
             double x = Evaluate(dataset, ref row, state);
             double y = Evaluate(dataset, ref row, state);
-            if (x > y) return 1.0;
-            else return -1.0;
+            if (x > y) { return 1.0; } else { return -1.0; }
           }
         case OpCodes.LT: {
             double x = Evaluate(dataset, ref row, state);
             double y = Evaluate(dataset, ref row, state);
-            if (x < y) return 1.0;
-            else return -1.0;
+            if (x < y) { return 1.0; } else { return -1.0; }
           }
         case OpCodes.TimeLag: {
             var timeLagTreeNode = (LaggedTreeNode)currentInstr.dynamicNode;
@@ -433,10 +461,20 @@ namespace HeuristicLab.Problems.DataAnalysis.Symbolic {
             var variableTreeNode = (VariableTreeNode)currentInstr.dynamicNode;
             return ((IList<double>)currentInstr.data)[row] * variableTreeNode.Weight;
           }
+        case OpCodes.BinaryFactorVariable: {
+            if (row < 0 || row >= dataset.Rows) return double.NaN;
+            var factorVarTreeNode = currentInstr.dynamicNode as BinaryFactorVariableTreeNode;
+            return ((IList<string>)currentInstr.data)[row] == factorVarTreeNode.VariableValue ? factorVarTreeNode.Weight : 0;
+          }
+        case OpCodes.FactorVariable: {
+            if (row < 0 || row >= dataset.Rows) return double.NaN;
+            var factorVarTreeNode = currentInstr.dynamicNode as FactorVariableTreeNode;
+            return factorVarTreeNode.GetValue(((IList<string>)currentInstr.data)[row]);
+          }
         case OpCodes.LagVariable: {
             var laggedVariableTreeNode = (LaggedVariableTreeNode)currentInstr.dynamicNode;
             int actualRow = row + laggedVariableTreeNode.Lag;
-            if (actualRow < 0 || actualRow >= dataset.Rows) return double.NaN;
+            if (actualRow < 0 || actualRow >= dataset.Rows) { return double.NaN; }
             return ((IList<double>)currentInstr.data)[actualRow] * laggedVariableTreeNode.Weight;
           }
         case OpCodes.Constant: {
@@ -449,16 +487,30 @@ namespace HeuristicLab.Problems.DataAnalysis.Symbolic {
         case OpCodes.VariableCondition: {
             if (row < 0 || row >= dataset.Rows) return double.NaN;
             var variableConditionTreeNode = (VariableConditionTreeNode)currentInstr.dynamicNode;
-            double variableValue = ((IList<double>)currentInstr.data)[row];
-            double x = variableValue - variableConditionTreeNode.Threshold;
-            double p = 1 / (1 + Math.Exp(-variableConditionTreeNode.Slope * x));
+            if (!variableConditionTreeNode.Symbol.IgnoreSlope) {
+              double variableValue = ((IList<double>)currentInstr.data)[row];
+              double x = variableValue - variableConditionTreeNode.Threshold;
+              double p = 1 / (1 + Math.Exp(-variableConditionTreeNode.Slope * x));
 
-            double trueBranch = Evaluate(dataset, ref row, state);
-            double falseBranch = Evaluate(dataset, ref row, state);
+              double trueBranch = Evaluate(dataset, ref row, state);
+              double falseBranch = Evaluate(dataset, ref row, state);
 
-            return trueBranch * p + falseBranch * (1 - p);
+              return trueBranch * p + falseBranch * (1 - p);
+            } else {
+              // strict threshold
+              double variableValue = ((IList<double>)currentInstr.data)[row];
+              if (variableValue <= variableConditionTreeNode.Threshold) {
+                var left = Evaluate(dataset, ref row, state);
+                state.SkipInstructions();
+                return left;
+              } else {
+                state.SkipInstructions();
+                return Evaluate(dataset, ref row, state);
+              }
+            }
           }
-        default: throw new NotSupportedException();
+        default:
+          throw new NotSupportedException();
       }
     }
   }

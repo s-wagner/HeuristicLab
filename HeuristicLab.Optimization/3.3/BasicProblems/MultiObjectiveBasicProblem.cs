@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2016 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2018 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -19,6 +19,8 @@
  */
 #endregion
 
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using HeuristicLab.Common;
 using HeuristicLab.Core;
@@ -56,7 +58,7 @@ namespace HeuristicLab.Optimization {
     public abstract bool[] Maximization { get; }
     public abstract double[] Evaluate(Individual individual, IRandom random);
     public virtual void Analyze(Individual[] individuals, double[][] qualities, ResultCollection results, IRandom random) { }
-
+    
     protected override void OnOperatorsChanged() {
       base.OnOperatorsChanged();
       if (Encoding != null) {
@@ -73,6 +75,12 @@ namespace HeuristicLab.Optimization {
     private void PruneSingleObjectiveOperators(IEncoding encoding) {
       if (encoding != null && encoding.Operators.Any(x => x is ISingleObjectiveOperator && !(x is IMultiObjectiveOperator)))
         encoding.Operators = encoding.Operators.Where(x => !(x is ISingleObjectiveOperator) || x is IMultiObjectiveOperator).ToList();
+
+      foreach (var multiOp in Encoding.Operators.OfType<IMultiOperator>()) {
+        foreach (var soOp in multiOp.Operators.Where(x => x is ISingleObjectiveOperator).ToList()) {
+          multiOp.RemoveOperator(soOp);
+        }
+      }
     }
 
     protected override void OnEvaluatorChanged() {

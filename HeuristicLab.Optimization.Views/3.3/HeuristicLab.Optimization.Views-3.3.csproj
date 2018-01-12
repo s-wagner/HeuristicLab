@@ -147,6 +147,12 @@
     <Compile Include="CreateNewSingleEncodingDialog.Designer.cs">
       <DependentUpon>CreateNewSingleEncodingDialog.cs</DependentUpon>
     </Compile>
+    <Compile Include="ICharacteristicCalculatorView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ICharacteristicCalculatorView.Designer.cs">
+      <DependentUpon>ICharacteristicCalculatorView.cs</DependentUpon>
+    </Compile>
     <Compile Include="ISolutionSimilarityCalculatorView.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -261,6 +267,12 @@
     </Compile>
     <Compile Include="RunCollectionConstraintViews\RunCollectionEqualityConstraintView.Designer.cs">
       <DependentUpon>RunCollectionEqualityConstraintView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="RunCollectionViews\RunCollectionRLDView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="RunCollectionViews\RunCollectionRLDView.Designer.cs">
+      <DependentUpon>RunCollectionRLDView.cs</DependentUpon>
     </Compile>
     <Compile Include="RunCollectionViews\RunCollectionTableView.cs">
       <SubType>UserControl</SubType>

@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2016 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2018 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -25,7 +25,7 @@ namespace HeuristicLab.DataPreprocessing {
   /// <summary>
   /// Plugin class for HeuristicLab.Data plugin.
   /// </summary>
-  [Plugin("HeuristicLab.DataPreprocessing.Views", "3.4.4.14190")]
+  [Plugin("HeuristicLab.DataPreprocessing.Views", "3.4.5.15599")]
   [PluginFile("HeuristicLab.DataPreprocessing.Views-3.4.dll", PluginFileType.Assembly)]
   [PluginDependency("HeuristicLab.Analysis", "3.3")]
   [PluginDependency("HeuristicLab.Analysis.Views", "3.3")]

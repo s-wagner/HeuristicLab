@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2016 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2018 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -28,7 +28,6 @@ using HeuristicLab.Problems.DataAnalysis.Views;
 
 namespace HeuristicLab.DataPreprocessing.Views {
   public class DataPreprocessorStarter : IDataPreprocessorStarter {
-
     public void Start(IDataAnalysisProblemData problemData, IContentView currentView) {
       IAlgorithm algorithm;
       IDataAnalysisProblem problem;

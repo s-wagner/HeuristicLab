@@ -1,7 +1,7 @@
 ﻿#region License Information
 
 /* HeuristicLab
- * Copyright (C) 2002-2016 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2018 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -173,7 +173,6 @@ namespace HeuristicLab.Problems.BinPacking3D {
     }
 
     public override bool Maximization { get { return true; } }
-
 
     public override double Evaluate(Individual individual, IRandom random) {
       var encodedSolutionCand = (TSol)individual[EncodedSolutionName];

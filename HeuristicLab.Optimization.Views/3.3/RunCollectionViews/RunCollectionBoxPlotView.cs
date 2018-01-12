@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2016 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2018 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -462,6 +462,11 @@ namespace HeuristicLab.Optimization.Views {
       splitContainer.Panel2Collapsed = !showStatisticsCheckBox.Checked;
     }
 
+	public bool StatisticsVisible {
+		get { return splitContainer.Panel2Collapsed; }
+		set { splitContainer.Panel2Collapsed = value; }
+	}
+	
     public void SetXAxis(string axisName) {
       xAxisComboBox.SelectedItem = axisName;
     }

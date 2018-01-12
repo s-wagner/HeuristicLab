@@ -1,6 +1,6 @@
 #region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2016 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2018 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -25,18 +25,35 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using HeuristicLab.Collections;
+using HeuristicLab.Common;
 using HeuristicLab.Encodings.SymbolicExpressionTreeEncoding;
 
 namespace HeuristicLab.Problems.DataAnalysis.Symbolic {
   /// <summary>
   /// Parses mathematical expressions in infix form. E.g. x1 * (3.0 * x2 + x3)
   /// Identifier format (functions or variables): '_' | letter { '_' | letter | digit }
-  /// Variables names can be set under quotes "" or '' because variable names might contain spaces. 
+  /// Variables names and variable values can be set under quotes "" or '' because variable names might contain spaces. 
+  ///   Variable = ident | " ident " | ' ident ' 
   /// It is also possible to use functions e.g. log("x1") or real-valued constants e.g. 3.1415 . 
   /// Variable names are case sensitive. Function names are not case sensitive.
+  /// 
+  /// 
+  /// S             = Expr EOF
+  /// Expr          = ['-' | '+'] Term { '+' Term | '-' Term }
+  /// Term          = Fact { '*' Fact | '/' Fact }
+  /// Fact          = '(' Expr ')' 
+  ///                 | 'LAG' '(' varId ',' ['+' | '-' ] number ')' 
+  ///                 | funcId '(' ArgList ')' 
+  ///                 | VarExpr | number
+  /// ArgList       = Expr { ',' Expr }
+  /// VarExpr       = varId OptFactorPart
+  /// OptFactorPart = [ ('=' varVal | '[' ['+' | '-' ] number {',' ['+' | '-' ] number } ']' ) ]
+  /// varId         =  ident | ' ident ' | " ident "
+  /// varVal        =  ident | ' ident ' | " ident "
+  /// ident         =  '_' | letter { '_' | letter | digit }
   /// </summary>
   public sealed class InfixExpressionParser {
-    private enum TokenType { Operator, Identifier, Number, LeftPar, RightPar, End, NA };
+    private enum TokenType { Operator, Identifier, Number, LeftPar, RightPar, LeftBracket, RightBracket, Comma, Eq, End, NA };
     private class Token {
       internal double doubleVal;
       internal string strVal;
@@ -63,6 +80,8 @@ namespace HeuristicLab.Problems.DataAnalysis.Symbolic {
 
     private Constant constant = new Constant();
     private Variable variable = new Variable();
+    private BinaryFactorVariable binaryFactorVar = new BinaryFactorVariable();
+    private FactorVariable factorVar = new FactorVariable();
 
     private ProgramRootSymbol programRootSymbol = new ProgramRootSymbol();
     private StartSymbol startSymbol = new StartSymbol();
@@ -101,13 +120,14 @@ namespace HeuristicLab.Problems.DataAnalysis.Symbolic {
         { "EXPINT", new ExponentialIntegralEi()},
         { "MEAN", new Average()},
         { "IF", new IfThenElse()},
-        { ">", new GreaterThan()},
-        { "<", new LessThan()},
+        { "GT", new GreaterThan()},
+        { "LT", new LessThan()},
         { "AND", new And()},
         { "OR", new Or()},
         { "NOT", new Not()},
         { "XOR", new Xor()},
         { "DIFF", new Derivative()},
+        { "LAG", new LaggedVariable() },
       };
 
 
@@ -137,16 +157,18 @@ namespace HeuristicLab.Problems.DataAnalysis.Symbolic {
           yield break;
         }
         if (char.IsDigit(str[pos])) {
-          // read number (=> read until white space or operator)
+          // read number (=> read until white space or operator or comma)
           var sb = new StringBuilder();
           sb.Append(str[pos]);
           pos++;
           while (pos < str.Length && !char.IsWhiteSpace(str[pos])
-            && (str[pos] != '+' || str[pos-1] == 'e' || str[pos-1] == 'E')     // continue reading exponents
+            && (str[pos] != '+' || str[pos - 1] == 'e' || str[pos - 1] == 'E')     // continue reading exponents
             && (str[pos] != '-' || str[pos - 1] == 'e' || str[pos - 1] == 'E')
-            && str[pos] != '*'           
+            && str[pos] != '*'
             && str[pos] != '/'
-            && str[pos] != ')') {
+            && str[pos] != ')'
+            && str[pos] != ']'
+            && str[pos] != ',') {
             sb.Append(str[pos]);
             pos++;
           }
@@ -210,14 +232,24 @@ namespace HeuristicLab.Problems.DataAnalysis.Symbolic {
         } else if (str[pos] == ')') {
           pos++;
           yield return new Token { TokenType = TokenType.RightPar, strVal = ")" };
+        } else if (str[pos] == '[') {
+          pos++;
+          yield return new Token { TokenType = TokenType.LeftBracket, strVal = "[" };
+        } else if (str[pos] == ']') {
+          pos++;
+          yield return new Token { TokenType = TokenType.RightBracket, strVal = "]" };
+        } else if (str[pos] == '=') {
+          pos++;
+          yield return new Token { TokenType = TokenType.Eq, strVal = "=" };
+        } else if (str[pos] == ',') {
+          pos++;
+          yield return new Token { TokenType = TokenType.Comma, strVal = "," };
+        } else {
+          throw new ArgumentException("Invalid character: " + str[pos]);
         }
       }
     }
-
-    // S = Expr EOF
-    // Expr = ['-' | '+'] Term { '+' Term | '-' Term }
-    // Term = Fact { '*' Fact | '/' Fact }
-    // Fact = '(' Expr ')' | funcId '(' Expr ')' | varId | number
+    /// S             = Expr EOF
     private ISymbolicExpressionTreeNode ParseS(Queue<Token> tokens) {
       var expr = ParseExpr(tokens);
 
@@ -227,6 +259,8 @@ namespace HeuristicLab.Problems.DataAnalysis.Symbolic {
 
       return expr;
     }
+
+    /// Expr          = ['-' | '+'] Term { '+' Term | '-' Term }
     private ISymbolicExpressionTreeNode ParseExpr(Queue<Token> tokens) {
       var next = tokens.Peek();
       var posTerms = new List<ISymbolicExpressionTreeNode>();
@@ -290,7 +324,7 @@ namespace HeuristicLab.Problems.DataAnalysis.Symbolic {
       return symb;
     }
 
-    // Term = Fact { '*' Fact | '/' Fact }
+    /// Term          = Fact { '*' Fact | '/' Fact }
     private ISymbolicExpressionTreeNode ParseTerm(Queue<Token> tokens) {
       var factors = new List<ISymbolicExpressionTreeNode>();
       var firstFactor = ParseFact(tokens);
@@ -325,7 +359,16 @@ namespace HeuristicLab.Problems.DataAnalysis.Symbolic {
       }
     }
 
-    // Fact = '(' Expr ')' | funcId '(' Expr ')' | varId | number
+    /// Fact          = '(' Expr ')' 
+    ///                 | 'LAG' '(' varId ',' ['+' | '-' ] number ')' 
+    ///                 | funcId '(' ArgList ')' 
+    ///                 | VarExpr | number
+    /// ArgList       = Expr { ',' Expr }
+    /// VarExpr       = varId OptFactorPart
+    /// OptFactorPart = [ ('=' varVal | '[' ['+' | '-' ] number {',' ['+' | '-' ] number } ']' ) ]
+    /// varId         =  ident | ' ident ' | " ident "
+    /// varVal        =  ident | ' ident ' | " ident "
+    /// ident         =  '_' | letter { '_' | letter | digit }
     private ISymbolicExpressionTreeNode ParseFact(Queue<Token> tokens) {
       var next = tokens.Peek();
       if (next.TokenType == TokenType.LeftPar) {
@@ -338,26 +381,104 @@ namespace HeuristicLab.Problems.DataAnalysis.Symbolic {
       } else if (next.TokenType == TokenType.Identifier) {
         var idTok = tokens.Dequeue();
         if (tokens.Peek().TokenType == TokenType.LeftPar) {
-          // function identifier
+          // function identifier or LAG
           var funcId = idTok.strVal.ToUpperInvariant();
 
           var funcNode = GetSymbol(funcId).CreateTreeNode();
           var lPar = tokens.Dequeue();
           if (lPar.TokenType != TokenType.LeftPar)
             throw new ArgumentException("expected (");
-          var expr = ParseExpr(tokens);
+
+          // handle 'lag' specifically
+          if (funcNode.Symbol is LaggedVariable) {
+            var varId = tokens.Dequeue();
+            if (varId.TokenType != TokenType.Identifier) throw new ArgumentException("Identifier expected. Format for lagged variables: \"lag(x, -1)\"");
+            var comma = tokens.Dequeue();
+            if (comma.TokenType != TokenType.Comma) throw new ArgumentException("',' expected, Format for lagged variables: \"lag(x, -1)\"");
+            double sign = 1.0;
+            if (tokens.Peek().strVal == "+" || tokens.Peek().strVal == "-") {
+              // read sign
+              var signTok = tokens.Dequeue();
+              if (signTok.strVal == "-") sign = -1.0;
+            }
+            var lagToken = tokens.Dequeue();
+            if (lagToken.TokenType != TokenType.Number) throw new ArgumentException("Number expected, Format for lagged variables: \"lag(x, -1)\"");
+            if (!lagToken.doubleVal.IsAlmost(Math.Round(lagToken.doubleVal)))
+              throw new ArgumentException("Time lags must be integer values");
+            var laggedVarNode = funcNode as LaggedVariableTreeNode;
+            laggedVarNode.VariableName = varId.strVal;
+            laggedVarNode.Lag = (int)Math.Round(sign * lagToken.doubleVal);
+            laggedVarNode.Weight = 1.0;
+          } else {
+            // functions
+            var args = ParseArgList(tokens);
+            // check number of arguments
+            if (funcNode.Symbol.MinimumArity > args.Length || funcNode.Symbol.MaximumArity < args.Length) {
+              throw new ArgumentException(string.Format("Symbol {0} requires between {1} and  {2} arguments.", funcId,
+                funcNode.Symbol.MinimumArity, funcNode.Symbol.MaximumArity));
+            }
+            foreach (var arg in args) funcNode.AddSubtree(arg);
+          }
+
           var rPar = tokens.Dequeue();
           if (rPar.TokenType != TokenType.RightPar)
             throw new ArgumentException("expected )");
 
-          funcNode.AddSubtree(expr);
           return funcNode;
         } else {
           // variable
-          var varNode = (VariableTreeNode)variable.CreateTreeNode();
-          varNode.Weight = 1.0;
-          varNode.VariableName = idTok.strVal;
-          return varNode;
+          if (tokens.Peek().TokenType == TokenType.Eq) {
+            // binary factor
+            tokens.Dequeue(); // skip Eq
+            var valTok = tokens.Dequeue();
+            if (valTok.TokenType != TokenType.Identifier) throw new ArgumentException("expected identifier");
+            var binFactorNode = (BinaryFactorVariableTreeNode)binaryFactorVar.CreateTreeNode();
+            binFactorNode.Weight = 1.0;
+            binFactorNode.VariableName = idTok.strVal;
+            binFactorNode.VariableValue = valTok.strVal;
+            return binFactorNode;
+          } else if (tokens.Peek().TokenType == TokenType.LeftBracket) {
+            // factor variable
+            var factorVariableNode = (FactorVariableTreeNode)factorVar.CreateTreeNode();
+            factorVariableNode.VariableName = idTok.strVal;
+
+            tokens.Dequeue(); // skip [
+            var weights = new List<double>();
+            // at least one weight is necessary
+            var sign = 1.0;
+            if (tokens.Peek().TokenType == TokenType.Operator) {
+              var opToken = tokens.Dequeue();
+              if (opToken.strVal == "+") sign = 1.0;
+              else if (opToken.strVal == "-") sign = -1.0;
+              else throw new ArgumentException();
+            }
+            if (tokens.Peek().TokenType != TokenType.Number) throw new ArgumentException("number expected");
+            var weightTok = tokens.Dequeue();
+            weights.Add(sign * weightTok.doubleVal);
+            while (tokens.Peek().TokenType == TokenType.Comma) {
+              // skip comma
+              tokens.Dequeue();
+              if (tokens.Peek().TokenType == TokenType.Operator) {
+                var opToken = tokens.Dequeue();
+                if (opToken.strVal == "+") sign = 1.0;
+                else if (opToken.strVal == "-") sign = -1.0;
+                else throw new ArgumentException();
+              }
+              weightTok = tokens.Dequeue();
+              if (weightTok.TokenType != TokenType.Number) throw new ArgumentException("number expected");
+              weights.Add(sign * weightTok.doubleVal);
+            }
+            var rightBracketToken = tokens.Dequeue();
+            if (rightBracketToken.TokenType != TokenType.RightBracket) throw new ArgumentException("closing bracket ] expected");
+            factorVariableNode.Weights = weights.ToArray();
+            return factorVariableNode;
+          } else {
+            // variable
+            var varNode = (VariableTreeNode)variable.CreateTreeNode();
+            varNode.Weight = 1.0;
+            varNode.VariableName = idTok.strVal;
+            return varNode;
+          }
         }
       } else if (next.TokenType == TokenType.Number) {
         var numTok = tokens.Dequeue();
@@ -367,6 +488,18 @@ namespace HeuristicLab.Problems.DataAnalysis.Symbolic {
       } else {
         throw new ArgumentException(string.Format("unexpected token in expression {0}", next.strVal));
       }
+    }
+
+    // ArgList = Expr { ',' Expr }
+    private ISymbolicExpressionTreeNode[] ParseArgList(Queue<Token> tokens) {
+      var exprList = new List<ISymbolicExpressionTreeNode>();
+      exprList.Add(ParseExpr(tokens));
+      while (tokens.Peek().TokenType != TokenType.RightPar) {
+        var comma = tokens.Dequeue();
+        if (comma.TokenType != TokenType.Comma) throw new ArgumentException("expected ',' ");
+        exprList.Add(ParseExpr(tokens));
+      }
+      return exprList.ToArray();
     }
   }
 }

@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2016 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2018 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -65,7 +65,15 @@ namespace HeuristicLab.Problems.DataAnalysis {
     protected Transformation(Transformation<T> original, Cloner cloner) : base(original, cloner) { }
     protected Transformation(IEnumerable<string> allowedColumns) : base(allowedColumns) { }
 
+    public virtual void ConfigureParameters(IEnumerable<T> data) {
+      // override in transformations with parameters
+    }
+
     public abstract IEnumerable<T> Apply(IEnumerable<T> data);
+    public IEnumerable<T> ConfigureAndApply(IEnumerable<T> data) {
+      ConfigureParameters(data);
+      return Apply(data);
+    }
 
     public abstract bool Check(IEnumerable<T> data, out string errorMsg);
   }

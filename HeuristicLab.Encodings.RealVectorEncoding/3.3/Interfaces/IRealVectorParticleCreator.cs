@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2016 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2018 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -25,7 +25,6 @@ using HeuristicLab.Data;
 
 namespace HeuristicLab.Encodings.RealVectorEncoding {
   public interface IRealVectorParticleCreator : IParticleCreator, IRealVectorOperator {
-    ILookupParameter<IntValue> ProblemSizeParameter { get; }
     ILookupParameter<RealVector> RealVectorParameter { get; }
     ILookupParameter<RealVector> PersonalBestParameter { get; }
     IValueLookupParameter<DoubleMatrix> BoundsParameter { get; }

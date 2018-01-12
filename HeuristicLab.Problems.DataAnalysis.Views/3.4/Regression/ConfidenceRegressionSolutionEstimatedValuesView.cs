@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2016 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2018 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -60,17 +60,17 @@ namespace HeuristicLab.Algorithms.DataAnalysis.Views {
 
       foreach (var row in Enumerable.Range(0, Content.ProblemData.Dataset.Rows)) {
         estimated_var.MoveNext();
-        matrix[row, 7] = estimated_var.Current.ToString();
+        matrix[row, 8] = estimated_var.Current.ToString();
       }
 
       foreach (var row in Content.ProblemData.TrainingIndices) {
         estimated_var_training.MoveNext();
-        matrix[row, 8] = estimated_var_training.Current.ToString();
+        matrix[row, 9] = estimated_var_training.Current.ToString();
       }
 
       foreach (var row in Content.ProblemData.TestIndices) {
         estimated_var_test.MoveNext();
-        matrix[row, 9] = estimated_var_test.Current.ToString();
+        matrix[row, 10] = estimated_var_test.Current.ToString();
       }
 
 

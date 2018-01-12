@@ -197,10 +197,9 @@
       <Private>False</Private>
       <HintPath>..\bin\HeuristicLab.Encodings.IntegerVectorEncoding-3.3.dll</HintPath>
     </Reference>
-    <Reference Include="HeuristicLab.Encodings.LinearLinkageEncoding-3.3, Version=3.3.0.0, Culture=neutral, PublicKeyToken=ba48961d6f65dcec, processorArchitecture=MSIL">
+    <Reference Include="HeuristicLab.Encodings.LinearLinkageEncoding-3.4, Version=3.3.0.0, Culture=neutral, PublicKeyToken=ba48961d6f65dcec, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\bin\HeuristicLab.Encodings.LinearLinkageEncoding-3.3.dll</HintPath>
-      <Private>False</Private>
+      <HintPath>..\bin\HeuristicLab.Encodings.LinearLinkageEncoding-3.4.dll</HintPath>
     </Reference>
     <Reference Include="HeuristicLab.Encodings.PermutationEncoding-3.3">
       <HintPath>..\bin\HeuristicLab.Encodings.PermutationEncoding-3.3.dll</HintPath>
@@ -216,6 +215,11 @@
     </Reference>
     <Reference Include="HeuristicLab.Encodings.SymbolicExpressionTreeEncoding-3.4">
       <HintPath>..\bin\HeuristicLab.Encodings.SymbolicExpressionTreeEncoding-3.4.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="HeuristicLab.IGraph-0.8.0-pre, Version=0.8.0.0, Culture=neutral, PublicKeyToken=ba48961d6f65dcec, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\bin\HeuristicLab.IGraph-0.8.0-pre.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="HeuristicLab.MainForm-3.3">
@@ -329,6 +333,11 @@
       <HintPath>..\bin\HeuristicLab.Problems.Instances.DataAnalysis-3.3.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="HeuristicLab.Problems.Instances.DIMACS-3.3, Version=3.3.0.0, Culture=neutral, PublicKeyToken=ba48961d6f65dcec, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\bin\HeuristicLab.Problems.Instances.DIMACS-3.3.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="HeuristicLab.Problems.Instances.ElloumiCTAP-3.3">
       <HintPath>..\bin\HeuristicLab.Problems.Instances.ElloumiCTAP-3.3.dll</HintPath>
       <Private>False</Private>
@@ -436,7 +445,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInitializer.cs" />
-    <Compile Include="HeuristicLab-3.3\AlgorithmExtensions.cs" />
     <Compile Include="HeuristicLab-3.3\CloningConstructorTest.cs" />
     <Compile Include="HeuristicLab-3.3\CollectObjectGraphTest.cs" />
     <Compile Include="HeuristicLab-3.3\ContentViewTests.cs" />
@@ -450,6 +458,7 @@
     <Compile Include="HeuristicLab-3.3\Samples\AlpsSampleTest.cs" />
     <Compile Include="HeuristicLab-3.3\Samples\GABppSampleTest.cs" />
     <Compile Include="HeuristicLab-3.3\Samples\GPRobocodeSampleTest.cs" />
+    <Compile Include="HeuristicLab-3.3\Samples\GPSymbolicRegressionSampleWithOSTest.cs" />
     <Compile Include="HeuristicLab-3.3\Samples\OSESGriewankSampleTest.cs" />
     <Compile Include="HeuristicLab-3.3\Samples\GAGroupingProblemSampleTest.cs" />
     <Compile Include="HeuristicLab-3.3\Samples\VnsOpSampleTest.cs" />
@@ -464,7 +473,7 @@
     <Compile Include="HeuristicLab-3.3\Samples\GPTimeSeriesSampleTest.cs" />
     <Compile Include="HeuristicLab-3.3\Samples\GPMultiplexerSampleTest.cs" />
     <Compile Include="HeuristicLab-3.3\Samples\LocalSearchKnapsackSampleTest.cs" />
-    <Compile Include="HeuristicLab-3.3\Samples\PsoSchwefelSampleTest.cs" />
+    <Compile Include="HeuristicLab-3.3\Samples\PsoRastriginSampleTest.cs" />
     <Compile Include="HeuristicLab-3.3\Samples\RAPGASchedulingSampleTest.cs" />
     <Compile Include="HeuristicLab-3.3\Samples\SamplesUtils.cs" />
     <Compile Include="HeuristicLab-3.3\Samples\GATspSampleTest.cs" />
@@ -503,6 +512,10 @@
     <Compile Include="HeuristicLab.Encodings.IntegerVectorEncoding-3.3\DiscreteCrossoverTest.cs" />
     <Compile Include="HeuristicLab.Encodings.IntegerVectorEncoding-3.3\SinglePointCrossoverTest.cs" />
     <Compile Include="HeuristicLab.Encodings.IntegerVectorEncoding-3.3\UniformOnePositionManipulatorTest.cs" />
+    <Compile Include="HeuristicLab.Encodings.LinearLinkageEncoding-3.4\Auxiliary.cs" />
+    <Compile Include="HeuristicLab.Encodings.LinearLinkageEncoding-3.4\ConversionsTest.cs" />
+    <Compile Include="HeuristicLab.Encodings.LinearLinkageEncoding-3.4\GroupCrossoverTest.cs" />
+    <Compile Include="HeuristicLab.Encodings.LinearLinkageEncoding-3.4\MoveTests.cs" />
     <Compile Include="HeuristicLab.Encodings.PermutationEncoding-3.3\Auxiliary.cs" />
     <Compile Include="HeuristicLab.Encodings.PermutationEncoding-3.3\CosaCrossoverTest.cs" />
     <Compile Include="HeuristicLab.Encodings.PermutationEncoding-3.3\CyclicCrossover2Test.cs" />
@@ -523,6 +536,7 @@
     <Compile Include="HeuristicLab.Encodings.PermutationEncoding-3.3\TranslocationInversionManipulatorTest.cs" />
     <Compile Include="HeuristicLab.Encodings.PermutationEncoding-3.3\TranslocationManipulatorTest.cs" />
     <Compile Include="HeuristicLab.Encodings.PermutationEncoding-3.3\UniformLikeCrossoverTest.cs" />
+    <Compile Include="HeuristicLab.Encodings.PermutationEncoding-3.3\PermutationManipulationTest.cs" />
     <Compile Include="HeuristicLab.Encodings.RealVectorEncoding-3.3\Auxiliary.cs" />
     <Compile Include="HeuristicLab.Encodings.RealVectorEncoding-3.3\BlendAlphaBetaCrossoverTest.cs" />
     <Compile Include="HeuristicLab.Encodings.RealVectorEncoding-3.3\BlendAlphaCrossoverTest.cs" />
@@ -558,10 +572,14 @@
     <Compile Include="HeuristicLab.Encodings.SymbolicExpressionTreeEncoding-3.4\SubroutineDeleterTest.cs" />
     <Compile Include="HeuristicLab.Encodings.SymbolicExpressionTreeEncoding-3.4\SubroutineDuplicaterTest.cs" />
     <Compile Include="HeuristicLab.Encodings.SymbolicExpressionTreeEncoding-3.4\SubtreeCrossoverTest.cs" />
+    <Compile Include="HeuristicLab.Encodings.SymbolicExpressionTreeEncoding-3.4\GrammarsTest.cs" />
     <Compile Include="HeuristicLab.Encodings.SymbolicExpressionTreeEncoding-3.4\Util.cs" />
+    <Compile Include="HeuristicLab.IGraph\IGraphLayoutTest.cs" />
+    <Compile Include="HeuristicLab.IGraph\IGraphWrappersGraphTest.cs" />
+    <Compile Include="HeuristicLab.IGraph\IGraphWrappersMatrixTest.cs" />
+    <Compile Include="HeuristicLab.IGraph\IGraphWrappersVectorTest.cs" />
     <Compile Include="HeuristicLab.Persistence-3.3\StorableAttributeTests.cs" />
     <Compile Include="HeuristicLab.Persistence-3.3\UseCases.cs" />
-    <Compile Include="HeuristicLab.PluginInfraStructure-3.3\InstallationManagerTest.cs" />
     <Compile Include="HeuristicLab.PluginInfraStructure-3.3\TypeExtensionsTest.cs" />
     <Compile Include="HeuristicLab.Problems.DataAnalysis-3.4\ThresholdCalculatorsTest.cs" />
     <Compile Include="HeuristicLab.Problems.DataAnalysis-3.4\OnlineCalculatorPerformanceTest.cs" />
@@ -571,6 +589,7 @@
     <Compile Include="HeuristicLab.Problems.DataAnalysis.Symbolic-3.4\SymbolicExpressionTreeMaxCommonSubtreeSimilarityCalculatorTest.cs" />
     <Compile Include="HeuristicLab.Problems.DataAnalysis.Symbolic.TimeSeriesPrognosis-3.4\SymbolicDataAnalysisExpressionTreeInterpreterTest.cs" />
     <Compile Include="HeuristicLab.Problems.DataAnalysis.Symbolic.TimeSeriesPrognosis-3.4\Util.cs" />
+    <Compile Include="HeuristicLab.Problems.Instances-3.3\DIMACSGcolInstanceProviderTest.cs" />
     <Compile Include="HeuristicLab.Problems.Instances.DataAnalysis-3.3\RegressionInstanceProviderTest.cs" />
     <Compile Include="HeuristicLab.Problems.Instances.DataAnalysis-3.3\TableFileParserTest.cs" />
     <Compile Include="HeuristicLab.Problems.DataAnalysis.Symbolic-3.4\SymbolicDataAnalysisExpressionCrossoverTest.cs" />
@@ -677,6 +696,7 @@
       <CustomToolNamespace>HeuristicLab.Tests</CustomToolNamespace>
     </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

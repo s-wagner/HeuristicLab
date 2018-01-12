@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2016 Joseph Helm and Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2018 Joseph Helm and Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -45,7 +45,7 @@ namespace HeuristicLab.Problems.BinPacking2D {
       IList<int> remainingIDs = new List<int>(permutation);
       while (remainingIDs.Count > 0) {
         var bp = new BinPacking2D(binShape);
-        bp.SlidingBasedPacking(ref remainingIDs, items);
+        bp.SlidingBasedPacking(ref remainingIDs, items, stackingConstraints: false);
         result.Bins.Add(bp);
       }
       result.UpdateBinPackings();

@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2016 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) 2002-2018 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -23,13 +23,11 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
 using HeuristicLab.Core.Views;
 using HeuristicLab.MainForm;
 
 namespace HeuristicLab.DataPreprocessing.Views {
-
   [View("Histogram View")]
   [Content(typeof(DataCompletenessChartContent), true)]
   public partial class DataCompletenessView : ItemView {
@@ -53,13 +51,10 @@ namespace HeuristicLab.DataPreprocessing.Views {
     }
 
     private void InitData() {
-      IDictionary<int, IList<int>> missingValueIndices = Content.SearchLogic.GetMissingValueIndices();
-
-      bool[,] valueMissing = new bool[Content.SearchLogic.Rows, Content.SearchLogic.Columns];
-      foreach (var columnMissingValues in missingValueIndices) {
-        var column = columnMissingValues.Key;
-        foreach (var missingValueIndex in columnMissingValues.Value)
-          valueMissing[missingValueIndex, column] = true;
+      bool[,] valueMissing = new bool[Content.PreprocessingData.Rows, Content.PreprocessingData.Columns];
+      for (int row = 0; row < Content.PreprocessingData.Rows; row++) {
+        for (int column = 0; column < Content.PreprocessingData.Columns; column++)
+          valueMissing[row, column] = Content.PreprocessingData.IsCellEmpty(column, row);
       }
 
       var yValuesPerColumn = ProcessMatrixForCharting(valueMissing);
@@ -68,7 +63,6 @@ namespace HeuristicLab.DataPreprocessing.Views {
     }
 
     private void PrepareChart() {
-      chart.Titles.Add("DataCompletenessChart");
       chart.EnableDoubleClickResetsZoom = true;
       chart.ChartAreas[0].AxisX.MajorGrid.LineWidth = 0;
       chart.ChartAreas[0].AxisY.MajorGrid.LineWidth = 0;
@@ -80,7 +74,7 @@ namespace HeuristicLab.DataPreprocessing.Views {
       chart.ChartAreas[0].CursorY.IsUserSelectionEnabled = true;
       //custom x axis label
       double from = 0.5;
-      foreach (String columnName in Content.SearchLogic.VariableNames) {
+      foreach (String columnName in Content.PreprocessingData.VariableNames) {
         double to = from + 1;
         chart.ChartAreas[0].AxisX.CustomLabels.Add(from, to, columnName);
         from = to;
