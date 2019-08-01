@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2018 Joseph Helm and Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) Joseph Helm and Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -20,8 +20,10 @@
 #endregion
 
 using HeuristicLab.Core;
+using HEAL.Attic;
 
 namespace HeuristicLab.Problems.BinPacking2D {
+  [StorableType("347e0b15-f3ae-42a1-be51-0dae36e95d4c")]
   public interface IOperator<TSol> : IItem {
     ILookupParameter<ReadOnlyItemList<PackingItem>> ItemsParameter { get; }
     ILookupParameter<PackingShape> BinShapeParameter { get; }

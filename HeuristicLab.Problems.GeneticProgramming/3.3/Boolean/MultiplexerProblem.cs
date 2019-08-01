@@ -1,6 +1,6 @@
 #region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2018 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -23,19 +23,19 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq;
+using HEAL.Attic;
 using HeuristicLab.Common;
 using HeuristicLab.Core;
 using HeuristicLab.Data;
 using HeuristicLab.Encodings.SymbolicExpressionTreeEncoding;
 using HeuristicLab.Parameters;
-using HeuristicLab.Persistence.Default.CompositeSerializers.Storable;
 
 
 namespace HeuristicLab.Problems.GeneticProgramming.Boolean {
   [Item("Multiplexer Problem (MUX)",
     "The Boolean multiplexer genetic programming problem. See Koza 1992, page 171, section 7.4.1 11-multiplexer.")]
   [Creatable(CreatableAttribute.Categories.GeneticProgrammingProblems, Priority = 900)]
-  [StorableClass]
+  [StorableType("6DFE64E4-3968-446F-AE3D-FAF13C18930C")]
   public sealed class MultiplexerProblem : SymbolicExpressionTreeProblem {
 
     #region parameter names
@@ -62,7 +62,7 @@ namespace HeuristicLab.Problems.GeneticProgramming.Boolean {
     #region item cloning and persistence
     // persistence
     [StorableConstructor]
-    private MultiplexerProblem(bool deserializing) : base(deserializing) { }
+    private MultiplexerProblem(StorableConstructorFlag _) : base(_) { }
     [StorableHook(HookType.AfterDeserialization)]
     private void AfterDeserialization() {
       RegisterEventHandlers();
@@ -87,6 +87,7 @@ namespace HeuristicLab.Problems.GeneticProgramming.Boolean {
 
       var g = new SimpleSymbolicExpressionGrammar(); // will be replaced in update grammar
       Encoding = new SymbolicExpressionTreeEncoding(g, 100, 17);
+      Encoding.GrammarParameter.ReadOnly = true;
 
       UpdateGrammar();
       RegisterEventHandlers();
@@ -109,7 +110,9 @@ namespace HeuristicLab.Problems.GeneticProgramming.Boolean {
       for (int i = 0; i < inputBits; i++)
         g.AddTerminalSymbol(string.Format("d{0}", i));
 
+      Encoding.GrammarParameter.ReadOnly = false;
       Encoding.Grammar = g;
+      Encoding.GrammarParameter.ReadOnly = true;
 
       BestKnownQuality = Math.Pow(2, NumberOfBits); // this is a benchmark problem (the best achievable quality is known for a given number of bits)
     }

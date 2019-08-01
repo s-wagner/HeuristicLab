@@ -1,6 +1,6 @@
 #region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2018 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -26,7 +26,7 @@ using System.Linq;
 using HeuristicLab.PluginInfrastructure;
 
 namespace HeuristicLab.Problems.GeneticProgramming {
-  [Plugin("HeuristicLab.Problems.GeneticProgramming","Provides implementations for genetic programming problems such as the artificial ant problem.", "3.3.15.15587")]
+  [Plugin("HeuristicLab.Problems.GeneticProgramming","Provides implementations for genetic programming problems such as the artificial ant problem.", "3.3.16.17186")]
   [PluginFile("HeuristicLab.Problems.GeneticProgramming-3.3.dll", PluginFileType.Assembly)]
   [PluginFile("Robocode/robocode.zip", PluginFileType.Data)]
   [PluginFile("Robocode/BattleRunner.class", PluginFileType.Data)]
@@ -39,7 +39,7 @@ namespace HeuristicLab.Problems.GeneticProgramming {
   [PluginDependency("HeuristicLab.Encodings.SymbolicExpressionTreeEncoding","3.4")]
   [PluginDependency("HeuristicLab.Optimization", "3.3")]
   [PluginDependency("HeuristicLab.Parameters", "3.3")]
-  [PluginDependency("HeuristicLab.Persistence", "3.3")]
+  [PluginDependency("HeuristicLab.Attic", "1.0")]
   [PluginDependency("HeuristicLab.Problems.DataAnalysis", "3.4")]
   [PluginDependency("HeuristicLab.Problems.Instances", "3.3")]
   [PluginDependency("HeuristicLab.Random", "3.3")]

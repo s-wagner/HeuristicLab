@@ -1,6 +1,6 @@
 #region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2018 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -21,19 +21,19 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using HEAL.Attic;
 using HeuristicLab.Common;
 using HeuristicLab.Core;
 using HeuristicLab.Data;
 using HeuristicLab.Operators;
 using HeuristicLab.Parameters;
-using HeuristicLab.Persistence.Default.CompositeSerializers.Storable;
 
 namespace HeuristicLab.Analysis {
   /// <summary>
   /// An operator which collects the actual values of parameters and adds them to a table of data values.
   /// </summary>
   [Item("DataTableValuesCollector", "An operator which collects the actual values of parameters and adds them to a table of data values.")]
-  [StorableClass]
+  [StorableType("B3409421-D7F0-4C79-B8F8-B7E77E7C554F")]
   public class DataTableValuesCollector : ValuesCollector {
     public ValueLookupParameter<DataTable> DataTableParameter {
       get { return (ValueLookupParameter<DataTable>)Parameters["DataTable"]; }
@@ -49,7 +49,7 @@ namespace HeuristicLab.Analysis {
 
     #region Storing & Cloning
     [StorableConstructor]
-    protected DataTableValuesCollector(bool deserializing) : base(deserializing) { }
+    protected DataTableValuesCollector(StorableConstructorFlag _) : base(_) { }
     protected DataTableValuesCollector(DataTableValuesCollector original, Cloner cloner) : base(original, cloner) { }
     public override IDeepCloneable Clone(Cloner cloner) {
       return new DataTableValuesCollector(this, cloner);
@@ -58,7 +58,7 @@ namespace HeuristicLab.Analysis {
     public DataTableValuesCollector()
       : base() {
       Parameters.Add(new ValueLookupParameter<DataTable>("DataTable", "The table of data values where the collected values should be stored."));
-      Parameters.Add(new FixedValueParameter<BoolValue>("StartIndexZero", "True, if the collected data values should start with index 0, otherwise false.", new BoolValue(true), false));
+      Parameters.Add(new FixedValueParameter<BoolValue>("StartIndexZero", "True, if the collected data values should start with index 0, otherwise false.", new BoolValue(true)) { GetsCollected = false });
       StartIndexZeroParameter.Hidden = true;
     }
 
@@ -67,7 +67,7 @@ namespace HeuristicLab.Analysis {
       // BackwardsCompatibility3.3
       #region Backwards compatible code (remove with 3.4)
       if (!Parameters.ContainsKey("StartIndexZero")) {
-        Parameters.Add(new FixedValueParameter<BoolValue>("StartIndexZero", "True, if the collected data values should start with index 0, otherwise false.", new BoolValue(true), false));
+        Parameters.Add(new FixedValueParameter<BoolValue>("StartIndexZero", "True, if the collected data values should start with index 0, otherwise false.", new BoolValue(true)) { GetsCollected = false });
         StartIndexZeroParameter.Hidden = true;
       }
       #endregion

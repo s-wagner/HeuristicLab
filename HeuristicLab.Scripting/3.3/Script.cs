@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2018 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -28,14 +28,15 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Text.RegularExpressions;
+using HEAL.Attic;
 using HeuristicLab.Common;
 using HeuristicLab.Common.Resources;
 using HeuristicLab.Core;
-using HeuristicLab.Persistence.Default.CompositeSerializers.Storable;
 using Microsoft.CSharp;
 
 namespace HeuristicLab.Scripting {
-  [StorableClass]
+  [StorableType("0FA4F218-E1F5-4C09-9C2F-12B32D4EC373")]
   public abstract class Script : NamedItem, IProgrammableItem {
     #region Fields & Properties
     public static new Image StaticItemImage {
@@ -65,7 +66,7 @@ namespace HeuristicLab.Scripting {
 
     #region Construction & Initialization
     [StorableConstructor]
-    protected Script(bool deserializing) : base(deserializing) { }
+    protected Script(StorableConstructorFlag _) : base(_) { }
     protected Script(Script original, Cloner cloner)
       : base(original, cloner) {
       code = original.code;
@@ -121,7 +122,11 @@ namespace HeuristicLab.Scripting {
     }
 
     public virtual IEnumerable<Assembly> GetAssemblies() {
-      var assemblies = AppDomain.CurrentDomain.GetAssemblies().Where(a => !a.IsDynamic && File.Exists(a.Location)).ToList();
+      var assemblies = AppDomain.CurrentDomain.GetAssemblies()
+        .Where(a => !a.IsDynamic && File.Exists(a.Location))
+        .GroupBy(x => Regex.Replace(Path.GetFileName(x.Location), @"-[\d.]+\.dll$", ""))
+        .Select(x => x.OrderByDescending(y => y.GetName().Version).First())
+        .ToList();
       assemblies.Add(typeof(Microsoft.CSharp.RuntimeBinder.Binder).Assembly); // for dlr functionality
       return assemblies;
     }

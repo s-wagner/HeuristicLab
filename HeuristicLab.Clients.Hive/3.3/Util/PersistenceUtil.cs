@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2018 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -22,31 +22,39 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using HeuristicLab.Persistence.Core;
+using HEAL.Attic;
 using HeuristicLab.Persistence.Default.Xml;
 
 namespace HeuristicLab.Clients.Hive {
   public static class PersistenceUtil {
     public static byte[] Serialize(object obj, out IEnumerable<Type> types) {
-      using (MemoryStream memStream = new MemoryStream()) {
-        XmlGenerator.Serialize(obj, memStream, ConfigurationService.Instance.GetConfiguration(new XmlFormat()), false, out types);
-        byte[] jobByteArray = memStream.ToArray();
-        return jobByteArray;
-      }
+      var ser = new ProtoBufSerializer();
+      var bytes = ser.Serialize(obj, out SerializationInfo info);
+      types = info.SerializedTypes;
+      return bytes;
     }
 
     public static byte[] Serialize(object obj) {
-      using (MemoryStream memStream = new MemoryStream()) {
-        XmlGenerator.Serialize(obj, memStream);
-        byte[] jobByteArray = memStream.ToArray();
-        return jobByteArray;
-      }
+      var ser = new ProtoBufSerializer();
+      return ser.Serialize(obj);
     }
 
     public static T Deserialize<T>(byte[] sjob) {
+      var ser = new ProtoBufSerializer();
+      try {
+        return (T)ser.Deserialize(sjob);
+      } catch (PersistenceException e) {
+        if (e.InnerException is InvalidDataException) {
+          // We assume the data was not serialized with HEAL.Attic, but with the former
+          // XML-based persistence
+          return DeserializeWithXmlParser<T>(sjob);
+        } else throw;
+      }
+    }
+
+    private static T DeserializeWithXmlParser<T>(byte[] sjob) {
       using (MemoryStream memStream = new MemoryStream(sjob)) {
-        T job = XmlParser.Deserialize<T>(memStream);
-        return job;
+        return XmlParser.Deserialize<T>(memStream);
       }
     }
   }

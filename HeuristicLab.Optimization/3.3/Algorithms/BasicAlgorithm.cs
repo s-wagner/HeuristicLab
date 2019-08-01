@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2018 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -23,10 +23,10 @@ using System;
 using System.Threading;
 using HeuristicLab.Common;
 using HeuristicLab.Core;
-using HeuristicLab.Persistence.Default.CompositeSerializers.Storable;
+using HEAL.Attic;
 
 namespace HeuristicLab.Optimization {
-  [StorableClass]
+  [StorableType("EFBEE5EB-B15B-4FBB-A210-C4E36898B89D")]
   public abstract class BasicAlgorithm : Algorithm, IStorableContent {
 
     private bool pausePending;
@@ -35,6 +35,9 @@ namespace HeuristicLab.Optimization {
     public string Filename { get; set; }
 
     public abstract bool SupportsPause { get; }
+    public virtual bool SupportsStop {
+      get { return true; }
+    }
 
     [Storable]
     private bool initialized;
@@ -51,7 +54,7 @@ namespace HeuristicLab.Optimization {
     }
 
     [StorableConstructor]
-    protected BasicAlgorithm(bool deserializing) : base(deserializing) { }
+    protected BasicAlgorithm(StorableConstructorFlag _) : base(_) { }
     protected BasicAlgorithm(BasicAlgorithm original, Cloner cloner)
       : base(original, cloner) {
       results = cloner.Clone(original.Results);
@@ -105,6 +108,9 @@ namespace HeuristicLab.Optimization {
     public override void Stop() {
       // CancellationToken.ThrowIfCancellationRequested() must be called from within the Run method, otherwise stop does nothing
       // alternatively check the IsCancellationRequested property of the cancellation token
+      if (!SupportsStop)
+        throw new NotSupportedException("Stop is not supported by this algorithm.");
+
       base.Stop();
       if (ExecutionState == ExecutionState.Paused) OnStopped();
       else if (CancellationTokenSource != null) CancellationTokenSource.Cancel();

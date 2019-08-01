@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2018 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -22,7 +22,7 @@
 using HeuristicLab.PluginInfrastructure;
 
 namespace HeuristicLab.Cecil {
-  [Plugin("HeuristicLab.Cecil", "HeuristicLab wrapper for Cecil", "0.9.5.15584")]
+  [Plugin("HeuristicLab.Cecil", "HeuristicLab wrapper for Cecil", "0.9.5.17181")]
   [PluginFile("HeuristicLab.Cecil-0.9.5.dll", PluginFileType.Assembly)]
   [PluginFile("Mono.Cecil-0.9.5.dll", PluginFileType.Assembly)]
   [PluginFile("Mono.Cecil License-0.9.5.txt", PluginFileType.License)]

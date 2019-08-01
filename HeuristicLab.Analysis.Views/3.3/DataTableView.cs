@@ -1,6 +1,6 @@
 #region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2018 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -127,7 +127,7 @@ namespace HeuristicLab.Analysis.Views {
 
     public void ShowConfiguration() {
       if (Content != null) {
-        using (var dialog = new DataTableVisualPropertiesDialog(Content)) {
+        using (var dialog = new DataTableVisualPropertiesDialog<DataRow>(Content)) {
           dialog.ShowDialog(this);
         }
       } else MessageBox.Show("Nothing to configure.");
@@ -336,14 +336,6 @@ namespace HeuristicLab.Analysis.Views {
 
     #region Event Handlers
     #region Content Event Handlers
-    protected override void Content_NameChanged(object sender, EventArgs e) {
-      if (InvokeRequired)
-        Invoke(new EventHandler(Content_NameChanged), sender, e);
-      else {
-        Content.VisualProperties.Title = Content.Name;
-        base.Content_NameChanged(sender, e);
-      }
-    }
     private void Content_VisualPropertiesChanged(object sender, EventArgs e) {
       if (InvokeRequired)
         Invoke(new EventHandler(Content_VisualPropertiesChanged), sender, e);
@@ -397,7 +389,7 @@ namespace HeuristicLab.Analysis.Views {
       else {
         DataRow row = (DataRow)sender;
         Series series = chart.Series[row.Name];
-        series.Points.Clear();
+        ClearPoints(series.Points);
         ConfigureSeries(series, row);
         if (!invisibleSeries.Contains(series)) {
           FillSeriesWithRowValues(series, row);
@@ -425,7 +417,7 @@ namespace HeuristicLab.Analysis.Views {
         if (row != null) {
           Series rowSeries = chart.Series[row.Name];
           if (!invisibleSeries.Contains(rowSeries)) {
-            rowSeries.Points.Clear();
+            ClearPoints(rowSeries.Points);
             FillSeriesWithRowValues(rowSeries, row);
             RecalculateAxesScale(chart.ChartAreas[0]);
             UpdateYCursorInterval();
@@ -442,7 +434,7 @@ namespace HeuristicLab.Analysis.Views {
         if (row != null) {
           Series rowSeries = chart.Series[row.Name];
           if (!invisibleSeries.Contains(rowSeries)) {
-            rowSeries.Points.Clear();
+            ClearPoints(rowSeries.Points);
             FillSeriesWithRowValues(rowSeries, row);
             RecalculateAxesScale(chart.ChartAreas[0]);
             UpdateYCursorInterval();
@@ -460,7 +452,7 @@ namespace HeuristicLab.Analysis.Views {
           Series rowSeries = chart.Series[row.Name];
           if (!invisibleSeries.Contains(rowSeries)) {
             if (row.VisualProperties.ChartType == DataRowVisualProperties.DataRowChartType.Histogram) {
-              rowSeries.Points.Clear();
+              ClearPoints(rowSeries.Points);
               FillSeriesWithRowValues(rowSeries, row);
             } else {
               foreach (IndexedItem<double> item in e.Items) {
@@ -487,7 +479,7 @@ namespace HeuristicLab.Analysis.Views {
         if (row != null) {
           Series rowSeries = chart.Series[row.Name];
           if (!invisibleSeries.Contains(rowSeries)) {
-            rowSeries.Points.Clear();
+            ClearPoints(rowSeries.Points);
             FillSeriesWithRowValues(rowSeries, row);
             RecalculateAxesScale(chart.ChartAreas[0]);
             UpdateYCursorInterval();
@@ -505,7 +497,7 @@ namespace HeuristicLab.Analysis.Views {
         if (row != null) {
           Series rowSeries = chart.Series[row.Name];
           if (!invisibleSeries.Contains(rowSeries)) {
-            rowSeries.Points.Clear();
+            ClearPoints(rowSeries.Points);
             FillSeriesWithRowValues(rowSeries, row);
             RecalculateAxesScale(chart.ChartAreas[0]);
             UpdateYCursorInterval();
@@ -548,7 +540,7 @@ namespace HeuristicLab.Analysis.Views {
 
     private void ToggleSeriesVisible(Series series) {
       if (!invisibleSeries.Contains(series)) {
-        series.Points.Clear();
+        ClearPoints(series.Points);
         invisibleSeries.Add(series);
       } else {
         invisibleSeries.Remove(series);
@@ -579,7 +571,7 @@ namespace HeuristicLab.Analysis.Views {
                             where s != null
                             where !invisibleSeries.Contains(s)
                             select new { row = r, series = s }) {
-            h.series.Points.Clear();
+            ClearPoints(h.series.Points);
             CalculateHistogram(h.series, h.row, histograms);
           }
           break;
@@ -606,7 +598,7 @@ namespace HeuristicLab.Analysis.Views {
     }
 
     protected virtual void CalculateHistogram(Series series, DataRow row, IEnumerable<DataRow> histogramRows) {
-      series.Points.Clear();
+      ClearPoints(series.Points);
       if (!row.Values.Any()) return;
 
       var validValues = histogramRows.SelectMany(r => r.Values).Where(x => !IsInvalidValue(x)).ToList();
@@ -738,6 +730,14 @@ namespace HeuristicLab.Analysis.Views {
 
     protected static bool IsInvalidValue(double x) {
       return double.IsNaN(x) || x < (double)decimal.MinValue || x > (double)decimal.MaxValue;
+    }
+
+    // workaround for performance problem as described in https://stackoverflow.com/questions/5744930/datapointcollection-clear-performance
+    public static void ClearPoints(DataPointCollection points) {
+      points.SuspendUpdates();
+      while (points.Count > 0)
+        points.RemoveAt(points.Count - 1);
+      points.ResumeUpdates();
     }
     #endregion
   }

@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2018 Joseph Helm and Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) Joseph Helm and Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -20,7 +20,7 @@
 #endregion
 
 
-using HeuristicLab.Persistence.Default.CompositeSerializers.Storable;
+using HEAL.Attic;
 using HeuristicLab.Common;
 using HeuristicLab.Core;
 using HeuristicLab.Data;
@@ -29,7 +29,7 @@ using HeuristicLab.Problems.BinPacking;
 
 namespace HeuristicLab.Problems.BinPacking2D {
   [Item("PackingItem (2d)", "Represents a rectangular packing-item for bin-packing problems.")]
-  [StorableClass]
+  [StorableType("36B693B0-3CD9-4EE2-97EF-B8BEA8E4877A")]
   public class PackingItem : PackingShape, IPackingItem {
 
     public PackingShape TargetBin {
@@ -48,7 +48,7 @@ namespace HeuristicLab.Problems.BinPacking2D {
     }
 
     [StorableConstructor]
-    protected PackingItem(bool deserializing) : base(deserializing) { }
+    protected PackingItem(StorableConstructorFlag _) : base(_) { }
     protected PackingItem(PackingItem original, Cloner cloner)
       : base(original, cloner) {
     }

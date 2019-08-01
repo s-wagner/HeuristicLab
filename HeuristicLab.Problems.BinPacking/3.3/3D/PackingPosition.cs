@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2018 Joseph Helm and Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) Joseph Helm and Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -20,13 +20,13 @@
 #endregion
 
 using System;
-using HeuristicLab.Persistence.Default.CompositeSerializers.Storable;
+using HEAL.Attic;
 using HeuristicLab.Core;
 using HeuristicLab.Common;
 
 namespace HeuristicLab.Problems.BinPacking3D {
   [Item("Packing Position (3d)", "Represents a packing-position associated with a three dimensional packing-problem.")]
-  [StorableClass]
+  [StorableType("68408986-2325-43D3-A53B-DC2F31FB690C")]
   // PackingPosition is immutable (and handled as value type concerning Equals and GetHashCode)
   public class PackingPosition : BinPacking.PackingPosition, IComparable<PackingPosition> {
     [Storable]
@@ -41,7 +41,7 @@ namespace HeuristicLab.Problems.BinPacking3D {
     public int Z { get { return z; } }
 
     [StorableConstructor]
-    protected PackingPosition(bool deserializing) : base(deserializing) { }
+    protected PackingPosition(StorableConstructorFlag _) : base(_) { }
     protected PackingPosition(PackingPosition original, Cloner cloner)
       : base(original, cloner) {
       x = original.X;

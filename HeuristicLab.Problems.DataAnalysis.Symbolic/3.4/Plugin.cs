@@ -1,6 +1,6 @@
 #region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2018 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -25,7 +25,7 @@ using System.Text;
 using HeuristicLab.PluginInfrastructure;
 
 namespace HeuristicLab.Problems.DataAnalysis.Symbolic {
-  [Plugin("HeuristicLab.Problems.DataAnalysis.Symbolic","Provides base classes for symbolic data analysis tasks.", "3.4.11.15587")]
+  [Plugin("HeuristicLab.Problems.DataAnalysis.Symbolic","Provides base classes for symbolic data analysis tasks.", "3.4.12.17186")]
   [PluginFile("HeuristicLab.Problems.DataAnalysis.Symbolic-3.4.dll", PluginFileType.Assembly)]
   [PluginDependency("HeuristicLab.ALGLIB", "3.7.0")]
   [PluginDependency("HeuristicLab.AutoDiff", "1.0")]
@@ -36,14 +36,16 @@ namespace HeuristicLab.Problems.DataAnalysis.Symbolic {
   [PluginDependency("HeuristicLab.Core", "3.3")]
   [PluginDependency("HeuristicLab.Data", "3.3")]
   [PluginDependency("HeuristicLab.Encodings.SymbolicExpressionTreeEncoding", "3.4")]
+  [PluginDependency("HeuristicLab.NativeInterpreter", "0.1")]
   [PluginDependency("HeuristicLab.Operators", "3.3")]
   [PluginDependency("HeuristicLab.Optimization", "3.3")]
   [PluginDependency("HeuristicLab.Optimization.Operators", "3.3")]
   [PluginDependency("HeuristicLab.Parameters", "3.3")]
-  [PluginDependency("HeuristicLab.Persistence", "3.3")]
+  [PluginDependency("HeuristicLab.Attic", "1.0")]
   [PluginDependency("HeuristicLab.Problems.DataAnalysis", "3.4")]
   [PluginDependency("HeuristicLab.Problems.Instances", "3.3")]
   [PluginDependency("HeuristicLab.Random", "3.3")]
+  [PluginDependency("HeuristicLab.Selection", "3.3")]
   public class HeuristicLabProblemsDataAnalysisSymbolicPlugin : PluginBase {
   }
 }

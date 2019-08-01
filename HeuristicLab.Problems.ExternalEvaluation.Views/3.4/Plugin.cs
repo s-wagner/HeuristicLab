@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2018 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -22,7 +22,7 @@
 using HeuristicLab.PluginInfrastructure;
 
 namespace HeuristicLab.Problems.ExternalEvaluation.Views {
-  [Plugin("HeuristicLab.Problems.ExternalEvaluation.Views", "3.4.25.15587")]
+  [Plugin("HeuristicLab.Problems.ExternalEvaluation.Views", "3.4.26.17186")]
   [PluginFile("HeuristicLab.Problems.ExternalEvaluation.Views-3.4.dll", PluginFileType.Assembly)]
   [PluginDependency("HeuristicLab.Common.Resources", "3.3")]
   [PluginDependency("HeuristicLab.Core", "3.3")]

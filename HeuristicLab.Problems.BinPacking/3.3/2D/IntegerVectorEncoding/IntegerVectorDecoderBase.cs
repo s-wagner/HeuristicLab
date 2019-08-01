@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2018 Joseph Helm and Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) Joseph Helm and Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -20,18 +20,18 @@
 #endregion
 
 using HeuristicLab.Core;
-using HeuristicLab.Persistence.Default.CompositeSerializers.Storable;
+using HEAL.Attic;
 using HeuristicLab.Common;
 using System.Collections.Generic;
 using System.Linq;
 using HeuristicLab.Encodings.IntegerVectorEncoding;
 
 namespace HeuristicLab.Problems.BinPacking2D {
-  [StorableClass]
+  [StorableType("63588140-31BB-402A-BEEE-B11C8809A585")]
   public abstract class IntegerVectorDecoderBase : Item, IDecoder<IntegerVector> {
 
     [StorableConstructor]
-    protected IntegerVectorDecoderBase(bool deserializing) : base(deserializing) { }
+    protected IntegerVectorDecoderBase(StorableConstructorFlag _) : base(_) { }
     protected IntegerVectorDecoderBase(IntegerVectorDecoderBase original, Cloner cloner)
       : base(original, cloner) {
     }

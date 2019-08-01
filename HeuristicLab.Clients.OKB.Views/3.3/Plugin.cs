@@ -1,6 +1,6 @@
 #region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2018 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -25,8 +25,8 @@ namespace HeuristicLab.Clients.OKB {
   /// <summary>
   /// Plugin class for HeuristicLab.Clients.OKB.Views plugin.
   /// </summary>
-  [Plugin("HeuristicLab.Clients.OKB.Views", "3.3.15.15587")]
-  [PluginFile("HeuristicLab.Clients.OKB.Views-3.3.dll", PluginFileType.Assembly)]  
+  [Plugin("HeuristicLab.Clients.OKB.Views", "3.3.16.17186")]
+  [PluginFile("HeuristicLab.Clients.OKB.Views-3.3.dll", PluginFileType.Assembly)]
   [PluginDependency("HeuristicLab.Clients.OKB", "3.3")]
   [PluginDependency("HeuristicLab.Clients.Access", "3.3")]
   [PluginDependency("HeuristicLab.Clients.Access.Views", "3.3")]

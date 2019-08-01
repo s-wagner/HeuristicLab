@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2018 Joseph Helm and Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) Joseph Helm and Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -21,8 +21,10 @@
 
 using System.Collections.Generic;
 using HeuristicLab.Core;
+using HEAL.Attic;
 
 namespace HeuristicLab.Problems.BinPacking2D {
+  [StorableType("bd8c18da-9f11-47b7-b654-6c63309f2864")]
   public interface IDecoder<in T> : IItem {
     Solution Decode(T encodedSolution, PackingShape binShape, IList<PackingItem> items);
   }

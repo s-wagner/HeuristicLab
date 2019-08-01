@@ -1,6 +1,6 @@
 #region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2018 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -25,7 +25,7 @@ namespace HeuristicLab.Problems.TestFunctions {
   /// <summary>
   /// Plugin class for HeuristicLab.Problems.TestFunctions plugin
   /// </summary>
-  [Plugin("HeuristicLab.Problems.TestFunctions", "3.3.15.15587")]
+  [Plugin("HeuristicLab.Problems.TestFunctions", "3.3.16.17186")]
   [PluginFile("HeuristicLab.Problems.TestFunctions-3.3.dll", PluginFileType.Assembly)]
   [PluginDependency("HeuristicLab.Analysis", "3.3")]
   [PluginDependency("HeuristicLab.Collections", "3.3")]
@@ -39,7 +39,7 @@ namespace HeuristicLab.Problems.TestFunctions {
   [PluginDependency("HeuristicLab.Optimization.Operators", "3.3")]
   [PluginDependency("HeuristicLab.Problems.Instances", "3.3")]
   [PluginDependency("HeuristicLab.Parameters", "3.3")]
-  [PluginDependency("HeuristicLab.Persistence", "3.3")]
+  [PluginDependency("HeuristicLab.Attic", "1.0")]
   public class HeuristicLabProblemsTestFunctionsPlugin : PluginBase {
   }
 }

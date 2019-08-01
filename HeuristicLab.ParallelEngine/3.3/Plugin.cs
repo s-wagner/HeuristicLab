@@ -1,6 +1,6 @@
 #region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2018 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -28,11 +28,11 @@ namespace HeuristicLab.ParallelEngine {
   /// <summary>
   /// Plugin class for HeuristicLab.ParallelEngine plugin.
   /// </summary>
-  [Plugin("HeuristicLab.ParallelEngine", "3.3.15.15587")]
+  [Plugin("HeuristicLab.ParallelEngine", "3.3.16.17186")]
   [PluginFile("HeuristicLab.ParallelEngine-3.3.dll", PluginFileType.Assembly)]
   [PluginDependency("HeuristicLab.Common", "3.3")]
   [PluginDependency("HeuristicLab.Core", "3.3")]
-  [PluginDependency("HeuristicLab.Persistence", "3.3")]
+  [PluginDependency("HeuristicLab.Attic", "1.0")]
   public class HeuristicLabParallelEnginePlugin : PluginBase {
   }
 }

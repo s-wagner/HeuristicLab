@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2018 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -23,17 +23,17 @@ using System;
 using System.Globalization;
 using System.Linq;
 using System.Text;
+using HEAL.Attic;
 using HeuristicLab.Common;
 using HeuristicLab.Core;
 using HeuristicLab.Encodings.SymbolicExpressionTreeEncoding;
-using HeuristicLab.Persistence.Default.CompositeSerializers.Storable;
 
 namespace HeuristicLab.Problems.DataAnalysis.Symbolic {
   [Item("Mathematica Symbolic Expression Tree Formatter", "A string formatter that converts symbolic expression trees to Mathematica expressions.")]
-  [StorableClass]
+  [StorableType("818A9294-FA95-41F6-A5F0-D7D050BDD076")]
   public sealed class SymbolicDataAnalysisExpressionMathematicaFormatter : NamedItem, ISymbolicExpressionTreeStringFormatter {
     [StorableConstructor]
-    private SymbolicDataAnalysisExpressionMathematicaFormatter(bool deserializing) : base(deserializing) { }
+    private SymbolicDataAnalysisExpressionMathematicaFormatter(StorableConstructorFlag _) : base(_) { }
     private SymbolicDataAnalysisExpressionMathematicaFormatter(SymbolicDataAnalysisExpressionMathematicaFormatter original, Cloner cloner) : base(original, cloner) { }
     public SymbolicDataAnalysisExpressionMathematicaFormatter()
       : base() {
@@ -55,6 +55,14 @@ namespace HeuristicLab.Problems.DataAnalysis.Symbolic {
       if (node.Subtrees.Any()) {
         if (node.Symbol is Addition) {
           FormatFunction(node, "Plus", strBuilder);
+        } else if (node.Symbol is Absolute) {
+          FormatFunction(node, "Abs", strBuilder);
+        } else if (node.Symbol is AnalyticQuotient) {
+          strBuilder.Append("[");
+          FormatRecursively(node.GetSubtree(0), strBuilder);
+          strBuilder.Append("]/Sqrt[ 1 + Power[");
+          FormatRecursively(node.GetSubtree(1), strBuilder);
+          strBuilder.Append(", 2]]");
         } else if (node.Symbol is Average) {
           FormatAverage(node, strBuilder);
         } else if (node.Symbol is Multiplication) {
@@ -69,6 +77,8 @@ namespace HeuristicLab.Problems.DataAnalysis.Symbolic {
           FormatFunction(node, "Cos", strBuilder);
         } else if (node.Symbol is Tangent) {
           FormatFunction(node, "Tan", strBuilder);
+        } else if (node.Symbol is HyperbolicTangent) {
+          FormatFunction(node, "Tanh", strBuilder);
         } else if (node.Symbol is Exponential) {
           FormatFunction(node, "Exp", strBuilder);
         } else if (node.Symbol is Logarithm) {
@@ -101,6 +111,12 @@ namespace HeuristicLab.Problems.DataAnalysis.Symbolic {
           FormatSquare(node, strBuilder);
         } else if (node.Symbol is SquareRoot) {
           FormatFunction(node, "Sqrt", strBuilder);
+        } else if (node.Symbol is Cube) {
+          FormatPower(node, strBuilder, "3");
+        } else if (node.Symbol is CubeRoot) {
+          strBuilder.Append("CubeRoot[");
+          FormatRecursively(node.GetSubtree(0), strBuilder);
+          strBuilder.Append("]");
         } else if (node.Symbol is Power) {
           FormatFunction(node, "Power", strBuilder);
         } else if (node.Symbol is Root) {
@@ -202,9 +218,13 @@ namespace HeuristicLab.Problems.DataAnalysis.Symbolic {
     }
 
     private void FormatSquare(ISymbolicExpressionTreeNode node, StringBuilder strBuilder) {
+      FormatPower(node, strBuilder, "2");
+    }
+
+    private void FormatPower(ISymbolicExpressionTreeNode node, StringBuilder strBuilder, string exponent) {
       strBuilder.Append("Power[");
       FormatRecursively(node.GetSubtree(0), strBuilder);
-      strBuilder.Append(", 2]");
+      strBuilder.Append($", {exponent}]");
     }
 
     private void FormatRoot(ISymbolicExpressionTreeNode node, StringBuilder strBuilder) {

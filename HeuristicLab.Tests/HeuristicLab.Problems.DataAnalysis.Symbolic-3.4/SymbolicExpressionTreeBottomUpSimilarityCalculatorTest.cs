@@ -6,57 +6,65 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace HeuristicLab.Problems.DataAnalysis.Symbolic.Tests {
   [TestClass]
   public class BottomUpSimilarityCalculatorTest {
-    private readonly SymbolicExpressionTreeBottomUpSimilarityCalculator busCalculator;
-    private readonly SymbolicExpressionImporter importer;
+    private readonly SymbolicExpressionImporter importer = new SymbolicExpressionImporter();
+    private readonly InfixExpressionParser parser = new InfixExpressionParser();
 
-    private const int N = 150;
+    private const int N = 200;
     private const int Rows = 1;
     private const int Columns = 10;
 
     public BottomUpSimilarityCalculatorTest() {
-      busCalculator = new SymbolicExpressionTreeBottomUpSimilarityCalculator();
-      importer = new SymbolicExpressionImporter();
+      var parser = new InfixExpressionParser();
     }
 
     [TestMethod]
     [TestCategory("Problems.DataAnalysis.Symbolic")]
     [TestProperty("Time", "short")]
     public void BottomUpTreeSimilarityCalculatorTestMapping() {
-      TestMatchedNodes("(+ 1 2)", "(+ 2 1)", 5);
-      TestMatchedNodes("(- 2 1)", "(- 1 2)", 2);
-      TestMatchedNodes("(* (variable 1 X1) (variable 1 X2))", "(* (+ (variable 1 X1) 1) (+ (variable 1 X2) 1))", 2);
+      TestMatchedNodes("1 + 1", "2 + 2", 0, strict: true);
+      TestMatchedNodes("1 + 1", "2 + 2", 3, strict: false);
+      TestMatchedNodes("1 + 1", "1 + 2", 1, strict: true);
+      TestMatchedNodes("1 + 2", "2 + 1", 3, strict: true);
 
-      TestMatchedNodes("(* (variable 1 X1) (variable 1 X2))", "(* (+ (variable 1 X1) 1) (variable 1 X2))", 2);
+      TestMatchedNodes("1 - 1", "2 - 2", 0, strict: true);
+      TestMatchedNodes("1 - 1", "2 - 2", 4, strict: false); // 4, because of the way strings are parsed into trees by the infix parser
 
-      TestMatchedNodes("(+ (variable 1 a) (variable 1 b))", "(+ (variable 1 a) (variable 1 a))", 1);
-      TestMatchedNodes("(+ (+ (variable 1 a) (variable 1 b)) (variable 1 b))", "(+ (* (+ (variable 1 a) (variable 1 b)) (variable 1 b)) (+ (+ (variable 1 a) (variable 1 b)) (variable 1 b)))", 5);
+      TestMatchedNodes("2 - 1", "1 - 2", 2, strict: true);
+      TestMatchedNodes("2 - 1", "1 - 2", 4, strict: false);
 
-      TestMatchedNodes(
-        "(* (+ 2.84 (exp (+ (log (/ (variable 2.0539 X5) (variable -9.2452e-1 X6))) (/ (variable 2.0539 X5) (variable -9.2452e-1 X6))))) 2.9081)",
-        "(* (- (variable 9.581e-1 X6) (+ (- (variable 5.1491e-1 X5) 1.614e+1) (+ (/ (variable 2.0539 X5) (variable -9.2452e-1 X6)) (log (/ (variable 2.0539 X5) (variable -9.2452e-1 X6)))))) 2.9081)",
-        9);
+      TestMatchedNodes("(X1 * X2) + (X3 * X4)", "(X1 * X2) + (X3 * X4)", 7, strict: true);
+      TestMatchedNodes("(X1 * X2) + (X3 * X4)", "(X1 * X2) + (X3 * X4)", 7, strict: false);
 
-      TestMatchedNodes("(* (* (* (variable 1.68 x) (* (variable 1.68 x) (variable 2.55 x))) (variable 1.68 x)) (* (* (variable 1.68 x) (* (variable 1.68 x) (* (variable 1.68 x) (variable 2.55 x)))) (variable 2.55 x)))", "(* (variable 2.55 x) (* (variable 1.68 x) (* (variable 1.68 x) (* (variable 1.68 x) (variable 2.55 x)))))", 9);
+      TestMatchedNodes("(X1 * X2) + (X3 * X4)", "(X1 * X2) + (X5 * X6)", 3, strict: true);
+      TestMatchedNodes("(X1 * X2) + (X3 * X4)", "(X1 * X2) + (X5 * X6)", 3, strict: false);
 
-      TestMatchedNodes("(+ (exp 2.1033) (/ -4.3072 (variable 2.4691 X7)))", "(/ 1 (+ (/ -4.3072 (variable 2.4691 X7)) (exp 2.1033)))", 6);
-      TestMatchedNodes("(+ (exp 2.1033) (/ -4.3072 (variable 2.4691 X7)))", "(/ 1 (+ (/ (variable 2.4691 X7) -4.3072) (exp 2.1033)))", 4);
+      TestMatchedNodes("(X1 * X2) + (X3 * X4)", "(X1 * X2) - (X5 * X6)", 3, strict: true);
+      TestMatchedNodes("(X1 * X2) + (X3 * X4)", "(X1 * X2) - (X5 * X6)", 3, strict: false);
 
-      const string expr1 = "(* (- 1.2175e+1 (+ (/ (exp -1.4134e+1) (exp 9.2013)) (exp (log (exp (/ (exp (- (* -4.2461 (variable 2.2634 X5)) (- -9.6267e-1 3.3243))) (- (/ (/ (variable 1.0883 X1) (variable 6.9620e-1 X2)) (log 1.3011e+1)) (variable -4.3098e-1 X7)))))))) (log 1.3011e+1))";
-      const string expr2 = "(* (- 1.2175e+1 (+ (/ (/ (+ (variable 3.0140 X9) (variable 1.3430 X8)) -1.0864e+1) (exp 9.2013)) (exp (log (exp (/ (exp (- (* -4.2461 (variable 2.2634 X5)) (- -9.6267e-1 3.3243))) (- (/ (/ (variable 1.0883 X1) (variable 6.9620e-1 X2)) (log 1.3011e+1)) (variable -4.3098e-1 X7)))))))) (exp (variable 4.0899e-1 X7)))";
+      TestMatchedNodes("SIN(SIN(SIN(X1)))", "SIN(SIN(SIN(X1)))", 4, strict: true);
+      TestMatchedNodes("SIN(SIN(SIN(X1)))", "COS(SIN(SIN(X1)))", 3, strict: true);
+      TestMatchedNodes("SIN(SIN(SIN(X1)))", "COS(COS(SIN(X1)))", 2, strict: true);
+      TestMatchedNodes("SIN(SIN(SIN(X1)))", "COS(COS(COS(X1)))", 1, strict: true);
 
-      TestMatchedNodes(expr1, expr2, 23);
+      const string lhs = "(0.006153 + (X9 * X7 * X2 * 0.229506) + (X6 * X10 * X3 * 0.924598) + (X2 * X1 * 0.951272) + (X4 * X3 * 0.992570) + (X6 * X5 * 1.027299))";
+      const string rhs = "(0.006153 + (X10 * X7 * X2 * 0.229506) + (X6 * X10 * X3 * 0.924598) + (X2 * X1 * 0.951272) + (X4 * X3 * 0.992570) + (X6 * X5 * 1.027299))";
 
+      TestMatchedNodes(lhs, lhs, 24, strict: true);
+      TestMatchedNodes(lhs, lhs, 24, strict: false);
+
+      TestMatchedNodes(lhs, rhs, 21, strict: true);
+      TestMatchedNodes(lhs, rhs, 21, strict: false);
     }
 
-    private void TestMatchedNodes(string expr1, string expr2, int expected) {
-      var t1 = importer.Import(expr1);
-      var t2 = importer.Import(expr2);
+    private void TestMatchedNodes(string expr1, string expr2, int expected, bool strict) {
+      var t1 = parser.Parse(expr1);
+      var t2 = parser.Parse(expr2);
 
-      var mapping = busCalculator.ComputeBottomUpMapping(t1.Root, t2.Root);
-      var c = mapping.Count;
+      var map = SymbolicExpressionTreeBottomUpSimilarityCalculator.ComputeBottomUpMapping(t1, t2, strict);
+      Console.WriteLine($"Count: {map.Count}");
 
-      if (c != expected) {
-        throw new Exception("Match count " + c + " is different than expected value " + expected);
+      if (map.Count != expected) {
+        throw new Exception($"Match count {map.Count} is different than expected value {expected} for expressions:\n{expr1} and {expr2} (strict = {strict})\n");
       }
     }
 
@@ -73,16 +81,55 @@ namespace HeuristicLab.Problems.DataAnalysis.Symbolic.Tests {
       double s = 0;
       var sw = new Stopwatch();
 
+      var similarityCalculator = new SymbolicExpressionTreeBottomUpSimilarityCalculator { MatchVariableWeights = false, MatchConstantValues = false };
+
       sw.Start();
       for (int i = 0; i < trees.Length - 1; ++i) {
         for (int j = i + 1; j < trees.Length; ++j) {
-          s += busCalculator.CalculateSimilarity(trees[i], trees[j]);
+          s += similarityCalculator.CalculateSimilarity(trees[i], trees[j]);
         }
       }
 
       sw.Stop();
       Console.WriteLine("Elapsed time: " + sw.ElapsedMilliseconds / 1000.0 + ", Avg. similarity: " + s / (N * (N - 1) / 2));
       Console.WriteLine(N * (N + 1) / (2 * sw.ElapsedMilliseconds / 1000.0) + " similarity calculations per second.");
+    }
+
+    [TestMethod]
+    [TestCategory("Problems.DataAnalysis.Symbolic")]
+    [TestProperty("Time", "long")]
+    public void BottomUpTreeSimilarityCalculatorStrictMatchingConsistency() {
+      TestMatchingConsistency(strict: true);
+    }
+
+    [TestMethod]
+    [TestCategory("Problems.DataAnalysis.Symbolic")]
+    [TestProperty("Time", "long")]
+    public void BottomUpTreeSimilarityCalculatorRelaxedMatchingConsistency() {
+      TestMatchingConsistency(strict: false);
+    }
+
+    private static void TestMatchingConsistency(bool strict = false) {
+      var grammar = new TypeCoherentExpressionGrammar();
+      grammar.ConfigureAsDefaultRegressionGrammar();
+      var twister = new MersenneTwister(31415);
+      var ds = Util.CreateRandomDataset(twister, Rows, Columns);
+      var trees = Util.CreateRandomTrees(twister, ds, grammar, N, 1, 100, 0, 0);
+
+      var similarityCalculator = new SymbolicExpressionTreeBottomUpSimilarityCalculator { MatchConstantValues = strict, MatchVariableWeights = strict };
+      var bottomUpSimilarity = 0d;
+      for (int i = 0; i < trees.Length - 1; ++i) {
+        for (int j = i + 1; j < trees.Length; ++j) {
+          bottomUpSimilarity += similarityCalculator.CalculateSimilarity(trees[i], trees[j]);
+        }
+      }
+      bottomUpSimilarity /= N * (N - 1) / 2;
+
+      var hashBasedSimilarity = SymbolicExpressionTreeHash.ComputeAverageSimilarity(trees, false, strict);
+
+      Assert.AreEqual(bottomUpSimilarity, hashBasedSimilarity, 1e-6);
+
+      Console.WriteLine($"Bottom-up similarity: {bottomUpSimilarity}, hash-based similarity: {hashBasedSimilarity}");
     }
   }
 }

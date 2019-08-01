@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2018 Joseph Helm and Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) Joseph Helm and Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -19,17 +19,16 @@
  */
 #endregion
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using HeuristicLab.Persistence.Default.CompositeSerializers.Storable;
+using HEAL.Attic;
 using HeuristicLab.Core;
 using HeuristicLab.Common;
 using HeuristicLab.Collections;
 
 namespace HeuristicLab.Problems.BinPacking {
   [Item("BinPacking", "Represents a single-bin packing for a bin-packing problem.")]
-  [StorableClass]
+  [StorableType("7B0C7B64-CB50-405F-9F73-15B7C86F9B86")]
   public abstract class BinPacking<TPos, TBin, TItem> : Item
     where TPos : class, IPackingPosition
     where TBin : PackingShape<TPos>
@@ -66,7 +65,7 @@ namespace HeuristicLab.Problems.BinPacking {
     }
 
     [StorableConstructor]
-    protected BinPacking(bool deserializing) : base(deserializing) { }
+    protected BinPacking(StorableConstructorFlag _) : base(_) { }
     protected BinPacking(BinPacking<TPos, TBin, TItem> original, Cloner cloner)
       : base(original, cloner) {
       this.Positions = new ObservableDictionary<int, TPos>();

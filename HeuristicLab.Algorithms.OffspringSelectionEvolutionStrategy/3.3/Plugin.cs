@@ -1,6 +1,6 @@
 #region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2018 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -25,7 +25,7 @@ namespace HeuristicLab.Algorithms.OffspringSelectionEvolutionStrategy {
   /// <summary>
   /// Plugin class for HeuristicLab.Algorithms.OffspringSelectionEvolutionStrategy plugin.
   /// </summary>
-  [Plugin("HeuristicLab.Algorithms.OffspringSelectionEvolutionStrategy", "3.3.15.15587")]
+  [Plugin("HeuristicLab.Algorithms.OffspringSelectionEvolutionStrategy", "3.3.16.17186")]
   [PluginFile("HeuristicLab.Algorithms.OffspringSelectionEvolutionStrategy-3.3.dll", PluginFileType.Assembly)]
   [PluginDependency("HeuristicLab.Analysis", "3.3")]
   [PluginDependency("HeuristicLab.Collections", "3.3")]
@@ -36,7 +36,7 @@ namespace HeuristicLab.Algorithms.OffspringSelectionEvolutionStrategy {
   [PluginDependency("HeuristicLab.Optimization", "3.3")]
   [PluginDependency("HeuristicLab.Optimization.Operators", "3.3")]
   [PluginDependency("HeuristicLab.Parameters", "3.3")]
-  [PluginDependency("HeuristicLab.Persistence", "3.3")]
+  [PluginDependency("HeuristicLab.Attic", "1.0")]
   [PluginDependency("HeuristicLab.Random", "3.3")]
   [PluginDependency("HeuristicLab.Selection", "3.3")]
   public class HeuristicLabAlgorithmsOffspringSelectionEvolutionStrategyPlugin : PluginBase {

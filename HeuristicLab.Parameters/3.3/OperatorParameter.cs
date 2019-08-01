@@ -1,6 +1,6 @@
 #region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2018 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -19,29 +19,25 @@
  */
 #endregion
 
+using HEAL.Attic;
 using HeuristicLab.Common;
 using HeuristicLab.Core;
-using HeuristicLab.Persistence.Default.CompositeSerializers.Storable;
 
 namespace HeuristicLab.Parameters {
   /// <summary>
   /// A parameter which represents an operator.
   /// </summary>
   [Item("OperatorParameter", "A parameter which represents an operator.")]
-  [StorableClass]
+  [StorableType("59C86C8F-CAE1-45FE-A17C-837925284D93")]
   public class OperatorParameter : OptionalValueParameter<IOperator> {
     [StorableConstructor]
-    protected OperatorParameter(bool deserializing) : base(deserializing) { }
+    protected OperatorParameter(StorableConstructorFlag _) : base(_) { }
     protected OperatorParameter(OperatorParameter original, Cloner cloner) : base(original, cloner) { }
     public OperatorParameter() : base("Anonymous") { }
     public OperatorParameter(string name) : base(name) { }
-    public OperatorParameter(string name, bool getsCollected) : base(name, getsCollected) { }
     public OperatorParameter(string name, IOperator value) : base(name, value) { }
-    public OperatorParameter(string name, IOperator value, bool getsCollected) : base(name, value, getsCollected) { }
     public OperatorParameter(string name, string description) : base(name, description) { }
-    public OperatorParameter(string name, string description, bool getsCollected) : base(name, description, getsCollected) { }
     public OperatorParameter(string name, string description, IOperator value) : base(name, description, value) { }
-    public OperatorParameter(string name, string description, IOperator value, bool getsCollected) : base(name, description, value, getsCollected) { }
 
     public override IDeepCloneable Clone(Cloner cloner) {
       return new OperatorParameter(this, cloner);

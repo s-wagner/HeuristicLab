@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2018 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -24,12 +24,12 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Threading;
+using HEAL.Attic;
 using HeuristicLab.Collections;
 using HeuristicLab.Common;
 using HeuristicLab.Core;
 using HeuristicLab.Data;
 using HeuristicLab.Parameters;
-using HeuristicLab.Persistence.Default.CompositeSerializers.Storable;
 using HeuristicLab.PluginInfrastructure;
 
 namespace HeuristicLab.Optimization {
@@ -38,7 +38,7 @@ namespace HeuristicLab.Optimization {
   /// </summary>
   [Item("User-Defined Problem", "A problem which can be defined by the user.")]
   [Creatable(CreatableAttribute.Categories.Problems, Priority = 120)]
-  [StorableClass]
+  [StorableType("9F18A098-A8B8-4F70-93CF-79FF1496AC8A")]
   public sealed class UserDefinedProblem : ParameterizedNamedItem, ISingleObjectiveHeuristicOptimizationProblem, IStorableContent {
     public string Filename { get; set; }
 
@@ -121,7 +121,7 @@ namespace HeuristicLab.Optimization {
     #endregion
 
     [StorableConstructor]
-    private UserDefinedProblem(bool deserializing) : base(deserializing) { }
+    private UserDefinedProblem(StorableConstructorFlag _) : base(_) { }
     [StorableHook(HookType.AfterDeserialization)]
     private void AfterDeserialization() {
       // BackwardsCompatibility3.3
@@ -129,7 +129,7 @@ namespace HeuristicLab.Optimization {
       if (Parameters.ContainsKey("Operators") && Parameters["Operators"] is ValueParameter<ItemList<IOperator>>) {
         ItemList<IOperator> tmp = ((ValueParameter<ItemList<IOperator>>)Parameters["Operators"]).Value;
         Parameters.Remove("Operators");
-        Parameters.Add(new ValueParameter<ItemList<IItem>>("Operators", "The operators and items that the problem provides to the algorithms.", new ItemList<IItem>(tmp), false));
+        Parameters.Add(new ValueParameter<ItemList<IItem>>("Operators", "The operators and items that the problem provides to the algorithms.", new ItemList<IItem>(tmp)) { GetsCollected = false });
       }
       #endregion
 
@@ -234,12 +234,12 @@ namespace HeuristicLab.Optimization {
     #endregion
 
     [Item("EmptyUserDefinedProblemEvaluator", "A dummy evaluator that will throw an exception when executed.")]
-    [StorableClass]
+    [StorableType("E27E4145-6D44-4A9D-B15A-B0E0528ECD0D")]
     [NonDiscoverableType]
     private sealed class EmptyUserDefinedProblemEvaluator : ParameterizedNamedItem, ISingleObjectiveEvaluator {
 
       [StorableConstructor]
-      private EmptyUserDefinedProblemEvaluator(bool deserializing) : base(deserializing) { }
+      private EmptyUserDefinedProblemEvaluator(StorableConstructorFlag _) : base(_) { }
       private EmptyUserDefinedProblemEvaluator(EmptyUserDefinedProblemEvaluator original, Cloner cloner)
         : base(original, cloner) {
       }

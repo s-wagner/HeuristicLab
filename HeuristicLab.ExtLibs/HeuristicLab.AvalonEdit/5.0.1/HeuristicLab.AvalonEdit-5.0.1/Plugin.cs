@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2018 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -22,7 +22,7 @@
 using HeuristicLab.PluginInfrastructure;
 
 namespace HeuristicLab.AvalonEdit {
-  [Plugin("HeuristicLab.AvalonEdit", "HeuristicLab wrapper for AvalonEdit", "5.0.1.15584")]
+  [Plugin("HeuristicLab.AvalonEdit", "HeuristicLab wrapper for AvalonEdit", "5.0.1.17181")]
   [PluginFile("HeuristicLab.AvalonEdit-5.0.1.dll", PluginFileType.Assembly)]
   [PluginFile("ICSharpCode.AvalonEdit.dll", PluginFileType.Assembly)]
   [PluginFile("ICSharpCode.AvalonEdit License-5.0.1.txt", PluginFileType.License)]

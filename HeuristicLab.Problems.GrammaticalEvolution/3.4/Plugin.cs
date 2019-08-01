@@ -1,6 +1,6 @@
 #region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2018 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -25,7 +25,7 @@
 using HeuristicLab.PluginInfrastructure;
 
 namespace HeuristicLab.Problems.GrammaticalEvolution {
-  [Plugin("HeuristicLab.Problems.GrammaticalEvolution","Provides classes for grammatical evolution.", "3.4.3.15587")]
+  [Plugin("HeuristicLab.Problems.GrammaticalEvolution","Provides classes for grammatical evolution.", "3.4.4.17186")]
   [PluginFile("HeuristicLab.Problems.GrammaticalEvolution-3.4.dll", PluginFileType.Assembly)]
   [PluginDependency("HeuristicLab.Collections", "3.3")]
   [PluginDependency("HeuristicLab.Common", "3.3")]
@@ -37,7 +37,7 @@ namespace HeuristicLab.Problems.GrammaticalEvolution {
   [PluginDependency("HeuristicLab.Operators", "3.3")]
   [PluginDependency("HeuristicLab.Optimization", "3.3")]
   [PluginDependency("HeuristicLab.Parameters", "3.3")]
-  [PluginDependency("HeuristicLab.Persistence", "3.3")]
+  [PluginDependency("HeuristicLab.Attic", "1.0")]
   [PluginDependency("HeuristicLab.Problems.GeneticProgramming", "3.3")] // for artificial ant problem
   [PluginDependency("HeuristicLab.Problems.DataAnalysis", "3.4")]
   [PluginDependency("HeuristicLab.Problems.DataAnalysis.Symbolic", "3.4")]

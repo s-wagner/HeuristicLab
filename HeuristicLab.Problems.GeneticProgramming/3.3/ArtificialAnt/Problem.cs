@@ -1,6 +1,6 @@
 #region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2018 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -22,19 +22,19 @@
 using System;
 using System.Diagnostics.Contracts;
 using System.Linq;
+using HEAL.Attic;
 using HeuristicLab.Common;
 using HeuristicLab.Core;
 using HeuristicLab.Data;
 using HeuristicLab.Encodings.SymbolicExpressionTreeEncoding;
 using HeuristicLab.Optimization;
 using HeuristicLab.Parameters;
-using HeuristicLab.Persistence.Default.CompositeSerializers.Storable;
 
 
 namespace HeuristicLab.Problems.GeneticProgramming.ArtificialAnt {
   [Item("Artificial Ant Problem", "Represents the Artificial Ant problem.")]
   [Creatable(CreatableAttribute.Categories.GeneticProgrammingProblems, Priority = 170)]
-  [StorableClass]
+  [StorableType("D365171B-7077-4CC2-835C-1827EA67C843")]
   public sealed class Problem : SymbolicExpressionTreeProblem, IStorableContent {
 
     #region constant for default world (Santa Fe)
@@ -104,7 +104,7 @@ namespace HeuristicLab.Problems.GeneticProgramming.ArtificialAnt {
     #region item cloning and persistence
     // persistence
     [StorableConstructor]
-    private Problem(bool deserializing) : base(deserializing) { }
+    private Problem(StorableConstructorFlag _) : base(_) { }
     [StorableHook(HookType.AfterDeserialization)]
     private void AfterDeserialization() { }
 
@@ -127,6 +127,7 @@ namespace HeuristicLab.Problems.GeneticProgramming.ArtificialAnt {
       g.AddSymbols(new string[] { "Prog3" }, 3, 3);
       g.AddTerminalSymbols(new string[] { "Move", "Left", "Right" });
       base.Encoding = new SymbolicExpressionTreeEncoding(g, 20, 10);
+      base.Encoding.GrammarParameter.ReadOnly = true;
     }
 
 

@@ -1,6 +1,6 @@
 #region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2018 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -19,13 +19,13 @@
  */
 #endregion
 
+using HEAL.Attic;
 using HeuristicLab.Common;
 using HeuristicLab.Core;
 using HeuristicLab.Data;
 using HeuristicLab.Operators;
 using HeuristicLab.Optimization.Operators;
 using HeuristicLab.Parameters;
-using HeuristicLab.Persistence.Default.CompositeSerializers.Storable;
 using HeuristicLab.Selection;
 
 namespace HeuristicLab.Algorithms.OffspringSelectionGeneticAlgorithm {
@@ -33,7 +33,7 @@ namespace HeuristicLab.Algorithms.OffspringSelectionGeneticAlgorithm {
   /// An operator which represents the main loop of an offspring selection genetic algorithm.
   /// </summary>
   [Item("OffspringSelectionGeneticAlgorithmMainOperator", "An operator that represents the core of an offspring selection genetic algorithm.")]
-  [StorableClass]
+  [StorableType("43910E64-FC79-4AFF-8049-F427442E32BF")]
   public sealed class OffspringSelectionGeneticAlgorithmMainOperator : AlgorithmOperator {
     #region Parameter properties
     public ValueLookupParameter<IRandom> RandomParameter {
@@ -93,7 +93,7 @@ namespace HeuristicLab.Algorithms.OffspringSelectionGeneticAlgorithm {
     #endregion
 
     [StorableConstructor]
-    private OffspringSelectionGeneticAlgorithmMainOperator(bool deserializing) : base(deserializing) { }
+    private OffspringSelectionGeneticAlgorithmMainOperator(StorableConstructorFlag _) : base(_) { }
     private OffspringSelectionGeneticAlgorithmMainOperator(OffspringSelectionGeneticAlgorithmMainOperator original, Cloner cloner)
       : base(original, cloner) {
     }
@@ -217,10 +217,10 @@ namespace HeuristicLab.Algorithms.OffspringSelectionGeneticAlgorithm {
       mutator1.OperatorParameter.ActualName = MutatorParameter.Name;
 
       variableCreator1.Name = "MutatedOffspring = true";
-      variableCreator1.CollectedValues.Add(new ValueParameter<BoolValue>("MutatedOffspring", null, new BoolValue(true), false));
+      variableCreator1.CollectedValues.Add(new ValueParameter<BoolValue>("MutatedOffspring", null, new BoolValue(true)) { GetsCollected = false });
 
       variableCreator2.Name = "MutatedOffspring = false";
-      variableCreator2.CollectedValues.Add(new ValueParameter<BoolValue>("MutatedOffspring", null, new BoolValue(false), false));
+      variableCreator2.CollectedValues.Add(new ValueParameter<BoolValue>("MutatedOffspring", null, new BoolValue(false)) { GetsCollected = false });
 
       conditionalSelector.ConditionParameter.ActualName = "MutatedOffspring";
       conditionalSelector.ConditionParameter.Depth = 1;

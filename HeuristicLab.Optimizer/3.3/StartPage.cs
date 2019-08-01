@@ -1,6 +1,6 @@
 #region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2018 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -26,10 +26,10 @@ using System.Linq;
 using System.Reflection;
 using System.Threading;
 using System.Windows.Forms;
+using HEAL.Attic;
 using HeuristicLab.Common;
 using HeuristicLab.Core;
 using HeuristicLab.MainForm;
-using HeuristicLab.Persistence.Default.Xml;
 
 namespace HeuristicLab.Optimizer {
   [View("Start Page")]
@@ -87,7 +87,7 @@ namespace HeuristicLab.Optimizer {
     }
 
     private void LoadSamples(object state) {
-      progress = MainFormManager.GetMainForm<HeuristicLab.MainForm.WindowsForms.MainForm>().AddOperationProgressToView(samplesListView, "Loading...");
+      progress = Progress.ShowOnControl(samplesListView, "Loading...");
       try {
         var assembly = Assembly.GetExecutingAssembly();
         var samples = assembly.GetManifestResourceNames().Where(x => x.EndsWith(SampleNameSuffix));
@@ -111,23 +111,15 @@ namespace HeuristicLab.Optimizer {
 
         OnAllSamplesLoaded();
       } finally {
-        MainFormManager.GetMainForm<HeuristicLab.MainForm.WindowsForms.MainForm>().RemoveOperationProgressFromView(samplesListView);
+        Progress.HideFromControl(samplesListView);
       }
     }
 
     private void LoadSample(string name, Assembly assembly, ListViewGroup group, int count) {
-      string path = Path.GetTempFileName();
-      try {
-        using (var stream = assembly.GetManifestResourceStream(name)) {
-          WriteStreamToTempFile(stream, path); // create a file in a temporary folder (persistence cannot load these files directly from the stream)
-          var item = XmlParser.Deserialize<INamedItem>(path);
-          OnSampleLoaded(item, group, 1.0 / count);
-        }
-      } catch (Exception) {
-      } finally {
-        if (File.Exists(path)) {
-          File.Delete(path); // make sure we remove the temporary file
-        }
+      using (var stream = assembly.GetManifestResourceStream(name)) {
+        var serializer = new ProtoBufSerializer();
+        var item = (NamedItem)serializer.Deserialize(stream, false);
+        OnSampleLoaded(item, group, 1.0 / count);
       }
     }
 
@@ -137,7 +129,7 @@ namespace HeuristicLab.Optimizer {
                 "SA_Rastrigin", "SGP_SantaFe", "GP_Multiplexer", "SGP_Robocode", "SS_VRP", "TS_TSP", "TS_VRP", "VNS_OP", "VNS_TSP", "GA_BPP"
         };
       groupLookup[standardProblemsGroup] = standardProblems;
-      var dataAnalysisProblems = new List<string> { "ALPSGP_SymReg", "SGP_SymbClass", "SGP_SymbReg","OSGP_SymReg", "OSGP_TimeSeries", "GE_SymbReg", "GPR" };
+      var dataAnalysisProblems = new List<string> { "ALPSGP_SymReg", "SGP_SymbClass", "SGP_SymbReg", "OSGP_SymReg", "OSGP_TimeSeries", "GE_SymbReg", "GPR" };
       groupLookup[dataAnalysisGroup] = dataAnalysisProblems;
       var scripts = new List<string> { "GA_QAP_Script", "GUI_Automation_Script", "OSGA_Rastrigin_Script",
                                        "GridSearch_RF_Classification_Script", "GridSearch_RF_Regression_Script",
@@ -198,13 +190,5 @@ namespace HeuristicLab.Optimizer {
       Properties.Settings.Default.ShowStartPage = showStartPageCheckBox.Checked;
       Properties.Settings.Default.Save();
     }
-
-    #region Helpers
-    private void WriteStreamToTempFile(Stream stream, string path) {
-      using (FileStream output = new FileStream(path, FileMode.Create, FileAccess.Write)) {
-        stream.CopyTo(output);
-      }
-    }
-    #endregion
   }
 }

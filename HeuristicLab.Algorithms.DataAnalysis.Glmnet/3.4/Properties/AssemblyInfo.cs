@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2018 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -32,7 +32,7 @@ using HeuristicLab.PluginInfrastructure;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("HeuristicLab")]
-[assembly: AssemblyCopyright("(c) 2002-2018 HEAL, glmnet implementation by Jerome Friedman, Trevor Hastie, Noah Simon, Rob Tibshirani")]
+[assembly: AssemblyCopyright("(c) HEAL, glmnet implementation by Jerome Friedman, Trevor Hastie, Noah Simon, Rob Tibshirani")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -55,4 +55,4 @@ using HeuristicLab.PluginInfrastructure;
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
 [assembly: AssemblyVersion("3.4.0")]
-[assembly: AssemblyFileVersion("3.4.0.15584")]
+[assembly: AssemblyFileVersion("3.4.0.17186")]

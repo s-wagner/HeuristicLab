@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2018 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -19,16 +19,16 @@
  */
 #endregion
 
+using HEAL.Attic;
 using HeuristicLab.Common;
 using HeuristicLab.Core;
 using HeuristicLab.Data;
 using HeuristicLab.Encodings.SymbolicExpressionTreeEncoding;
 using HeuristicLab.Optimization;
 using HeuristicLab.Parameters;
-using HeuristicLab.Persistence.Default.CompositeSerializers.Storable;
 
 namespace HeuristicLab.Problems.GeneticProgramming.Robocode {
-  [StorableClass]
+  [StorableType("0B4FE44B-3044-4531-8CA9-3C4D3BB3A4BB")]
   [Creatable(CreatableAttribute.Categories.GeneticProgrammingProblems, Priority = 360)]
   [Item("Robocode Problem", "Evolution of a robocode program in java using genetic programming.")]
   public class Problem : SymbolicExpressionTreeProblem {
@@ -66,7 +66,7 @@ namespace HeuristicLab.Problems.GeneticProgramming.Robocode {
     #endregion
 
     [StorableConstructor]
-    protected Problem(bool deserializing) : base(deserializing) { }
+    protected Problem(StorableConstructorFlag _) : base(_) { }
     protected Problem(Problem original, Cloner cloner)
       : base(original, cloner) {
       RegisterEventHandlers();
@@ -85,6 +85,7 @@ namespace HeuristicLab.Problems.GeneticProgramming.Robocode {
       Parameters.Add(new ValueParameter<EnemyCollection>(EnemiesParameterName, "The enemies that should be battled.", robotList));
 
       Encoding = new SymbolicExpressionTreeEncoding(new Grammar(), 1000, 10);
+      Encoding.GrammarParameter.ReadOnly = true;
       Encoding.FunctionArguments = 0;
       Encoding.FunctionDefinitions = 0;
 
@@ -133,7 +134,7 @@ namespace HeuristicLab.Problems.GeneticProgramming.Robocode {
       RobocodePathParameter.Value.StringValue.ValueChanged += RobocodePathParameter_ValueChanged;
     }
 
-    void RobocodePathParameter_ValueChanged(object sender, System.EventArgs e) {
+    private void RobocodePathParameter_ValueChanged(object sender, System.EventArgs e) {
       EnemiesParameter.Value.RobocodePath = RobocodePathParameter.Value.Value;
     }
   }

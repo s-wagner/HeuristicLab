@@ -1,7 +1,7 @@
 ﻿#region License Information
 
 /* HeuristicLab
- * Copyright (C) 2002-2018 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -26,17 +26,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using HEAL.Attic;
 using HeuristicLab.Common;
 using HeuristicLab.Core;
 using HeuristicLab.Data;
 using HeuristicLab.Parameters;
-using HeuristicLab.Persistence.Default.CompositeSerializers.Storable;
 using HeuristicLab.Problems.DataAnalysis;
 using HeuristicLab.Random;
 
 namespace HeuristicLab.Algorithms.DataAnalysis {
   [Item("RFParameter", "A random forest parameter collection")]
-  [StorableClass]
+  [StorableType("40E482DA-63C5-4D39-97C7-63701CF1D021")]
   public class RFParameter : ParameterCollection {
     public RFParameter() {
       base.Add(new FixedValueParameter<IntValue>("N", "The number of random forest trees", new IntValue(50)));
@@ -45,8 +45,7 @@ namespace HeuristicLab.Algorithms.DataAnalysis {
     }
 
     [StorableConstructor]
-    protected RFParameter(bool deserializing)
-      : base(deserializing) {
+    protected RFParameter(StorableConstructorFlag _) : base(_) {
     }
 
     protected RFParameter(RFParameter original, Cloner cloner)
@@ -89,6 +88,35 @@ namespace HeuristicLab.Algorithms.DataAnalysis {
   }
 
   public static class RandomForestUtil {
+    public static void AssertParameters(double r, double m) {
+      if (r <= 0 || r > 1) throw new ArgumentException("The R parameter for random forest modeling must be between 0 and 1.");
+      if (m <= 0 || m > 1) throw new ArgumentException("The M parameter for random forest modeling must be between 0 and 1.");
+    }
+
+    public static void AssertInputMatrix(double[,] inputMatrix) {
+      if (inputMatrix.ContainsNanOrInfinity())
+        throw new NotSupportedException("Random forest modeling does not support NaN or infinity values in the input dataset.");
+    }
+
+    internal static alglib.decisionforest CreateRandomForestModel(int seed, double[,] inputMatrix, int nTrees, double r, double m, int nClasses, out alglib.dfreport rep) {
+      RandomForestUtil.AssertParameters(r, m);
+      RandomForestUtil.AssertInputMatrix(inputMatrix);
+
+      int info = 0;
+      alglib.math.rndobject = new System.Random(seed);
+      var dForest = new alglib.decisionforest();
+      rep = new alglib.dfreport();
+      int nRows = inputMatrix.GetLength(0);
+      int nColumns = inputMatrix.GetLength(1);
+      int sampleSize = Math.Max((int)Math.Round(r * nRows), 1);
+      int nFeatures = Math.Max((int)Math.Round(m * (nColumns - 1)), 1);
+
+      alglib.dforest.dfbuildinternal(inputMatrix, nRows, nColumns - 1, nClasses, nTrees, sampleSize, nFeatures, alglib.dforest.dfusestrongsplits + alglib.dforest.dfuseevs, ref info, dForest.innerobj, rep.innerobj);
+      if (info != 1) throw new ArgumentException("Error in calculation of random forest model");
+      return dForest;
+    }
+
+
     private static void CrossValidate(IRegressionProblemData problemData, Tuple<IEnumerable<int>, IEnumerable<int>>[] partitions, int nTrees, double r, double m, int seed, out double avgTestMse) {
       avgTestMse = 0;
       var ds = problemData.Dataset;

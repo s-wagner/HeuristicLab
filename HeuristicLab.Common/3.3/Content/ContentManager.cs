@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2018 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -20,9 +20,37 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+using HEAL.Attic;
 
 namespace HeuristicLab.Common {
   public abstract class ContentManager {
+    public class Info {
+      public Info() { }
+
+      public Info(string filename, TimeSpan duration) {
+        Filename = filename;
+        Duration = duration;
+      }
+
+      public Info(string filename, SerializationInfo serInfo) {
+        Filename = filename;
+        Duration = serInfo.Duration;
+        UnknownTypeGuids = serInfo.UnknownTypeGuids;
+        NumberOfSerializedObjects = serInfo.NumberOfSerializedObjects;
+        SerializedTypes = serInfo.SerializedTypes;        
+      }
+
+      public TimeSpan Duration { get; internal set; }
+      public IEnumerable<Guid> UnknownTypeGuids { get; internal set; } = Enumerable.Empty<Guid>();
+      public int NumberOfSerializedObjects { get; internal set; }
+      public IEnumerable<Type> SerializedTypes { get; internal set; } = Enumerable.Empty<Type>();
+      public string Filename { get; internal set; } = string.Empty;
+    }
+
     private static ContentManager instance;
 
     public static void Initialize(ContentManager manager) {
@@ -34,50 +62,62 @@ namespace HeuristicLab.Common {
     protected ContentManager() { }
 
     public static IStorableContent Load(string filename) {
+      return Load(filename, out var _);
+    }
+
+    public static IStorableContent Load(string filename, out Info serializationInfo) {
       if (instance == null) throw new InvalidOperationException("ContentManager is not initialized.");
-      IStorableContent content = instance.LoadContent(filename);
-      content.Filename = filename;
+      IStorableContent content = instance.LoadContent(filename, out serializationInfo);
+      
+      if (content != null) content.Filename = filename;
       return content;
     }
-    public static void LoadAsync(string filename, Action<IStorableContent, Exception> loadingCompletedCallback) {
-      if (instance == null) throw new InvalidOperationException("ContentManager is not initialized.");
-      var func = new Func<string, IStorableContent>(instance.LoadContent);
-      func.BeginInvoke(filename, delegate(IAsyncResult result) {
-        Exception error = null;
-        IStorableContent content = null;
-        try {
-          content = func.EndInvoke(result);
-          content.Filename = filename;
-        }
-        catch (Exception ex) {
-          error = ex;
-        }
-        loadingCompletedCallback(content, error);
-      }, null);
-    }
-    protected abstract IStorableContent LoadContent(string filename);
 
-    public static void Save(IStorableContent content, string filename, bool compressed) {
+
+    public static Task LoadAsync(string filename, Action<IStorableContent, Exception> loadingCompletedCallback) {
+      return LoadAsync(filename, (content, error, info) => loadingCompletedCallback(content, error)); // drop info
+    }
+
+    public static async Task LoadAsync(string filename, Action<IStorableContent, Exception, Info> loadingCompletedCallback) {
       if (instance == null) throw new InvalidOperationException("ContentManager is not initialized.");
-      instance.SaveContent(content, filename, compressed);
+
+      Exception error = null;
+      IStorableContent result = null;
+      Info serializationInfo = null;
+      try {
+        result = await Task.Run(() => {
+          var content = instance.LoadContent(filename, out serializationInfo);
+          if(content!=null) content.Filename = filename;
+          return content;
+        });
+      } catch(Exception ex) {
+        error = ex;
+      }
+      loadingCompletedCallback(result, error, serializationInfo);
+    }
+
+    protected abstract IStorableContent LoadContent(string filename, out Info serializationInfo);
+
+    public static void Save(IStorableContent content, string filename, bool compressed, CancellationToken cancellationToken = default(CancellationToken)) {
+      if (instance == null) throw new InvalidOperationException("ContentManager is not initialized.");
+      instance.SaveContent(content, filename, compressed, cancellationToken);
       content.Filename = filename;
     }
-    public static void SaveAsync(IStorableContent content, string filename, bool compressed, Action<IStorableContent, Exception> savingCompletedCallback) {
+    public static void SaveAsync(IStorableContent content, string filename, bool compressed, Action<IStorableContent, Exception> savingCompletedCallback, CancellationToken cancellationToken = default(CancellationToken)) {
       if (instance == null) throw new InvalidOperationException("ContentManager is not initialized.");
-      var action = new Action<IStorableContent, string, bool>(instance.SaveContent);
-      action.BeginInvoke(content, filename, compressed, delegate(IAsyncResult result) {
+      var action = new Action<IStorableContent, string, bool, CancellationToken>(instance.SaveContent);
+      action.BeginInvoke(content, filename, compressed, cancellationToken, delegate (IAsyncResult result) {
         Exception error = null;
         try {
           action.EndInvoke(result);
           content.Filename = filename;
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
           error = ex;
         }
         savingCompletedCallback(content, error);
       }, null);
 
     }
-    protected abstract void SaveContent(IStorableContent content, string filename, bool compressed);
+    protected abstract void SaveContent(IStorableContent content, string filename, bool compressed, CancellationToken cancellationToken);
   }
 }

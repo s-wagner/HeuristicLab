@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2018 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  * and the BEACON Center for the Study of Evolution in Action.
  * 
  * This file is part of HeuristicLab.
@@ -28,13 +28,13 @@ using System.Linq;
 using HeuristicLab.Common;
 using HeuristicLab.Core;
 using HeuristicLab.Encodings.SymbolicExpressionTreeEncoding;
-using HeuristicLab.Persistence.Default.CompositeSerializers.Storable;
 using HeuristicLab.Problems.DataAnalysis;
 using HeuristicLab.Problems.DataAnalysis.Symbolic;
 using HeuristicLab.Problems.DataAnalysis.Symbolic.Regression;
+using HEAL.Attic;
 
 namespace HeuristicLab.Algorithms.DataAnalysis {
-  [StorableClass]
+  [StorableType("C383410E-8707-486F-98F6-1DFB708B09B5")]
   [Item("RegressionTreeModel", "Represents a decision tree for regression.")]
   public sealed class RegressionTreeModel : RegressionModel {
     public override IEnumerable<string> VariablesUsedForPrediction {
@@ -90,7 +90,7 @@ namespace HeuristicLab.Algorithms.DataAnalysis {
 
     #region old storable format
     // remove with HL 3.4
-    [Storable(AllowOneWay = true)]
+    [Storable(OldName = "SerializedTree")]
     // to prevent storing the references to data caches in nodes
     // seemingly, it is bad (performance-wise) to persist tuples (tuples are used as keys in a dictionary)
     private Tuple<string, double, int, int>[] SerializedTree {
@@ -152,7 +152,7 @@ namespace HeuristicLab.Algorithms.DataAnalysis {
     #endregion
 
     [StorableConstructor]
-    private RegressionTreeModel(bool serializing) : base(serializing) { }
+    private RegressionTreeModel(StorableConstructorFlag _) : base(_) { }
     // cloning ctor
     private RegressionTreeModel(RegressionTreeModel original, Cloner cloner)
       : base(original, cloner) {

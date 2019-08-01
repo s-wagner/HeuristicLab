@@ -1,6 +1,6 @@
 #region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2018 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -23,15 +23,16 @@ using System;
 using System.ComponentModel;
 using System.Drawing;
 using HeuristicLab.Common;
-using HeuristicLab.Persistence.Default.CompositeSerializers.Storable;
+using HEAL.Attic;
 
 namespace HeuristicLab.Analysis {
   /// <summary>
   /// Visual properties of a DataRow.
   /// </summary>
-  [StorableClass]
+  [StorableType("3B28F24F-5CA7-40C2-A81C-65FCAF5B2C66")]
   public class DataRowVisualProperties : DeepCloneable, INotifyPropertyChanged {
     #region ChartType
+    [StorableType("488A018F-AF79-4B60-989A-845EF24F4A01")]
     public enum DataRowChartType {
       Line,
       Columns,
@@ -40,8 +41,10 @@ namespace HeuristicLab.Analysis {
       Histogram,
       StepLine
     }
+
     #endregion
     #region LineStyle
+    [StorableType("A064C2CE-D2CC-4292-B5FC-8DDCFA55C896")]
     public enum DataRowLineStyle {
       Dash,
       DashDot,
@@ -223,16 +226,16 @@ namespace HeuristicLab.Analysis {
     internal bool? ExactBins { get; private set; }
     internal DataRowHistogramAggregation? Aggregation { get; private set; }
 
-    [Storable(Name = "Bins", AllowOneWay = true)]
+    [Storable(OldName = "Bins")]
     private int StorableBins { set { Bins = value; } }
-    [Storable(Name = "ExactBins", AllowOneWay = true)]
+    [Storable(OldName = "ExactBins")]
     private bool StorableExactBins { set { ExactBins = value; } }
-    [Storable(Name = "Aggregation", AllowOneWay = true)]
+    [Storable(OldName = "Aggregation")]
     private DataRowHistogramAggregation StorableAggregation { set { Aggregation = value; } }
     #endregion
 
     [StorableConstructor]
-    protected DataRowVisualProperties(bool deserializing) : base() { }
+    protected DataRowVisualProperties(StorableConstructorFlag _) { }
     protected DataRowVisualProperties(DataRowVisualProperties original, Cloner cloner)
       : base(original, cloner) {
       this.chartType = original.chartType;

@@ -1,6 +1,6 @@
 #region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2018 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -21,17 +21,17 @@
 
 using System;
 using System.Drawing;
+using HEAL.Attic;
 using HeuristicLab.Collections;
 using HeuristicLab.Common;
 using HeuristicLab.Core;
-using HeuristicLab.Persistence.Default.CompositeSerializers.Storable;
 
 namespace HeuristicLab.Parameters {
   /// <summary>
   /// A parameter whose value has to be chosen from a set of valid values or is null.
   /// </summary>
   [Item("OptionalConstrainedValueParameter", "A parameter whose value has to be chosen from a set of valid values or is null.")]
-  [StorableClass]
+  [StorableType("9B2BFAE8-CD6E-499C-83A0-401B6CEE3A08")]
   public class OptionalConstrainedValueParameter<T> : Parameter, IConstrainedValueParameter<T> where T : class, IItem {
     public override Image ItemImage {
       get {
@@ -39,7 +39,7 @@ namespace HeuristicLab.Parameters {
         else return base.ItemImage;
       }
     }
-      
+
     [Storable]
     private ItemSet<T> validValues;
     public IItemSet<T> ValidValues {
@@ -51,6 +51,7 @@ namespace HeuristicLab.Parameters {
     public virtual T Value {
       get { return this.value; }
       set {
+        if (ReadOnly) throw new InvalidOperationException("Cannot set the value of a readonly parameter.");
         if (value != this.value) {
           if ((value != null) && !validValues.Contains(value)) throw new ArgumentException("Invalid value.");
           DeregisterValueEvents();
@@ -73,6 +74,17 @@ namespace HeuristicLab.Parameters {
       }
     }
 
+    [Storable(DefaultValue = false)]
+    private bool readOnly;
+    public bool ReadOnly {
+      get { return readOnly; }
+      set {
+        if (value == readOnly) return;
+        readOnly = value;
+        OnReadOnlyChanged();
+      }
+    }
+
     [Storable(DefaultValue = true)]
     private bool getsCollected;
     public bool GetsCollected {
@@ -87,94 +99,64 @@ namespace HeuristicLab.Parameters {
 
     #region Constructors
     [StorableConstructor]
-    protected OptionalConstrainedValueParameter(bool deserializing) : base(deserializing) { }
+    protected OptionalConstrainedValueParameter(StorableConstructorFlag _) : base(_) { }
     protected OptionalConstrainedValueParameter(OptionalConstrainedValueParameter<T> original, Cloner cloner)
       : base(original, cloner) {
       validValues = cloner.Clone(original.validValues);
       value = cloner.Clone(original.value);
+      readOnly = original.readOnly;
       getsCollected = original.getsCollected;
       Initialize();
     }
     public OptionalConstrainedValueParameter()
       : base("Anonymous", typeof(T)) {
       this.validValues = new ItemSet<T>();
+      this.readOnly = false;
       this.getsCollected = true;
       Initialize();
     }
     public OptionalConstrainedValueParameter(string name)
       : base(name, typeof(T)) {
       this.validValues = new ItemSet<T>();
+      this.readOnly = false;
       this.getsCollected = true;
-      Initialize();
-    }
-    public OptionalConstrainedValueParameter(string name, bool getsCollected)
-      : base(name, typeof(T)) {
-      this.validValues = new ItemSet<T>();
-      this.getsCollected = getsCollected;
       Initialize();
     }
     public OptionalConstrainedValueParameter(string name, ItemSet<T> validValues)
       : base(name, typeof(T)) {
       this.validValues = validValues;
+      this.readOnly = false;
       this.getsCollected = true;
-      Initialize();
-    }
-    public OptionalConstrainedValueParameter(string name, ItemSet<T> validValues, bool getsCollected)
-      : base(name, typeof(T)) {
-      this.validValues = validValues;
-      this.getsCollected = getsCollected;
       Initialize();
     }
     public OptionalConstrainedValueParameter(string name, ItemSet<T> validValues, T value)
       : base(name, typeof(T)) {
       this.validValues = validValues;
       this.value = value;
+      this.readOnly = false;
       this.getsCollected = true;
-      Initialize();
-    }
-    public OptionalConstrainedValueParameter(string name, ItemSet<T> validValues, T value, bool getsCollected)
-      : base(name, typeof(T)) {
-      this.validValues = validValues;
-      this.value = value;
-      this.getsCollected = getsCollected;
       Initialize();
     }
     public OptionalConstrainedValueParameter(string name, string description)
       : base(name, description, typeof(T)) {
       this.validValues = new ItemSet<T>();
+      this.readOnly = false;
       this.getsCollected = true;
-      Initialize();
-    }
-    public OptionalConstrainedValueParameter(string name, string description, bool getsCollected)
-      : base(name, description, typeof(T)) {
-      this.validValues = new ItemSet<T>();
-      this.getsCollected = getsCollected;
       Initialize();
     }
     public OptionalConstrainedValueParameter(string name, string description, ItemSet<T> validValues)
       : base(name, description, typeof(T)) {
       this.validValues = validValues;
+      this.readOnly = false;
       this.getsCollected = true;
-      Initialize();
-    }
-    public OptionalConstrainedValueParameter(string name, string description, ItemSet<T> validValues, bool getsCollected)
-      : base(name, description, typeof(T)) {
-      this.validValues = validValues;
-      this.getsCollected = getsCollected;
       Initialize();
     }
     public OptionalConstrainedValueParameter(string name, string description, ItemSet<T> validValues, T value)
       : base(name, description, typeof(T)) {
       this.validValues = validValues;
       this.value = value;
+      this.readOnly = false;
       this.getsCollected = true;
-      Initialize();
-    }
-    public OptionalConstrainedValueParameter(string name, string description, ItemSet<T> validValues, T value, bool getsCollected)
-      : base(name, description, typeof(T)) {
-      this.validValues = validValues;
-      this.value = value;
-      this.getsCollected = getsCollected;
       Initialize();
     }
     #endregion
@@ -210,6 +192,11 @@ namespace HeuristicLab.Parameters {
       if (handler != null) handler(this, EventArgs.Empty);
       OnItemImageChanged();
       OnToStringChanged();
+    }
+    public event EventHandler ReadOnlyChanged;
+    protected virtual void OnReadOnlyChanged() {
+      EventHandler handler = ReadOnlyChanged;
+      if (handler != null) handler(this, EventArgs.Empty);
     }
     public event EventHandler GetsCollectedChanged;
     protected virtual void OnGetsCollectedChanged() {

@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2018 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -22,6 +22,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using HEAL.Attic;
 using HeuristicLab.Analysis;
 using HeuristicLab.Collections;
 using HeuristicLab.Common;
@@ -31,7 +32,6 @@ using HeuristicLab.Operators;
 using HeuristicLab.Optimization;
 using HeuristicLab.Optimization.Operators;
 using HeuristicLab.Parameters;
-using HeuristicLab.Persistence.Default.CompositeSerializers.Storable;
 using HeuristicLab.PluginInfrastructure;
 using HeuristicLab.Random;
 using HeuristicLab.Selection;
@@ -39,7 +39,7 @@ using HeuristicLab.Selection;
 namespace HeuristicLab.Algorithms.ALPS {
   [Item("ALPS Genetic Algorithm", "A genetic algorithm within an age-layered population structure as described in Gregory S. Hornby. 2006. ALPS: the age-layered population structure for reducing the problem of premature convergence. In Proceedings of the 8th annual conference on Genetic and evolutionary computation (GECCO '06). 815-822.")]
   [Creatable(CreatableAttribute.Categories.PopulationBasedAlgorithms, Priority = 160)]
-  [StorableClass]
+  [StorableType("4A240A90-EB87-43D1-BD34-99A605B89C4D")]
   public sealed class AlpsGeneticAlgorithm : HeuristicOptimizationEngineAlgorithm, IStorableContent {
     public string Filename { get; set; }
 
@@ -246,8 +246,7 @@ namespace HeuristicLab.Algorithms.ALPS {
 
     #region Constructors
     [StorableConstructor]
-    private AlpsGeneticAlgorithm(bool deserializing)
-      : base(deserializing) { }
+    private AlpsGeneticAlgorithm(StorableConstructorFlag _) : base(_) { }
     [StorableHook(HookType.AfterDeserialization)]
     private void AfterDeserialization() {
       // BackwardsCompatibility3.3
@@ -444,9 +443,9 @@ namespace HeuristicLab.Algorithms.ALPS {
     protected override void OnProblemChanged() {
       base.OnProblemChanged();
       ParameterizeStochasticOperator(Problem.SolutionCreator);
-      ParameterizeStochasticOperatorForLayer(Problem.Evaluator);
       foreach (var @operator in Problem.Operators.OfType<IOperator>())
         ParameterizeStochasticOperator(@operator);
+      ParameterizeStochasticOperatorForLayer(Problem.Evaluator);
 
       ParameterizeIterationBasedOperators();
 
@@ -478,7 +477,6 @@ namespace HeuristicLab.Algorithms.ALPS {
     protected override void Problem_SolutionCreatorChanged(object sender, EventArgs e) {
       base.Problem_SolutionCreatorChanged(sender, e);
       ParameterizeStochasticOperator(Problem.SolutionCreator);
-      ParameterizeStochasticOperatorForLayer(Problem.Evaluator);
 
       Problem.Evaluator.QualityParameter.ActualNameChanged += Evaluator_QualityParameter_ActualNameChanged;
 
@@ -487,11 +485,7 @@ namespace HeuristicLab.Algorithms.ALPS {
     }
     protected override void Problem_EvaluatorChanged(object sender, EventArgs e) {
       base.Problem_EvaluatorChanged(sender, e);
-
       ParameterizeStochasticOperatorForLayer(Problem.Evaluator);
-
-      foreach (var @operator in Problem.Operators.OfType<IOperator>())
-        ParameterizeStochasticOperator(@operator);
 
       UpdateAnalyzers();
 
@@ -501,6 +495,8 @@ namespace HeuristicLab.Algorithms.ALPS {
     }
     protected override void Problem_OperatorsChanged(object sender, EventArgs e) {
       base.Problem_OperatorsChanged(sender, e);
+      foreach (IOperator op in Problem.Operators.OfType<IOperator>()) ParameterizeStochasticOperator(op);
+      ParameterizeStochasticOperatorForLayer(Problem.Evaluator);
       ParameterizeIterationBasedOperators();
       UpdateCrossovers();
       UpdateMutators();

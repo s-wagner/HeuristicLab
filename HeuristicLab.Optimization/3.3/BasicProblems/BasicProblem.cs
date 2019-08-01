@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2018 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -22,13 +22,14 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using HEAL.Attic;
 using HeuristicLab.Common;
 using HeuristicLab.Core;
+using HeuristicLab.Data;
 using HeuristicLab.Parameters;
-using HeuristicLab.Persistence.Default.CompositeSerializers.Storable;
 
 namespace HeuristicLab.Optimization {
-  [StorableClass]
+  [StorableType("D877082E-9E77-4CB1-ABDB-35F63878E116")]
   public abstract class BasicProblem<TEncoding, TEvaluator> : HeuristicOptimizationProblem<TEvaluator, ISolutionCreator>, IProblemDefinition, IStorableContent
     where TEncoding : class, IEncoding
     where TEvaluator : class, IEvaluator {
@@ -77,7 +78,7 @@ namespace HeuristicLab.Optimization {
     }
 
     [StorableConstructor]
-    protected BasicProblem(bool deserializing) : base(deserializing) { }
+    protected BasicProblem(StorableConstructorFlag _) : base(_) { }
     [StorableHook(HookType.AfterDeserialization)]
     private void AfterDeserialization() {
       oldEncoding = Encoding;
@@ -155,6 +156,21 @@ namespace HeuristicLab.Optimization {
 
     protected virtual void MultiEncodingOnEncodingsChanged(object sender, EventArgs e) {
       OnOperatorsChanged();
+    }
+
+    protected override IEnumerable<KeyValuePair<string, IItem>> GetCollectedValues(IValueParameter param) {
+      if (param.Value == null) yield break;
+      if (param.GetsCollected) {
+        if (param == EncodingParameter) // store only the name of the encoding
+          yield return new KeyValuePair<string, IItem>(String.Empty, new StringValue(EncodingParameter.Value.Name));
+        else yield return new KeyValuePair<string, IItem>(String.Empty, param.Value);
+      }
+      var parameterizedItem = param.Value as IParameterizedItem;
+      if (parameterizedItem != null) {
+        var children = new Dictionary<string, IItem>();
+        parameterizedItem.CollectParameterValues(children);
+        foreach (var child in children) yield return child;
+      }
     }
   }
 }

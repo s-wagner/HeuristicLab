@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2018 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -26,7 +26,7 @@ using System.Text;
 using HeuristicLab.PluginInfrastructure;
 
 namespace HeuristicLab.LibSVM {
-  [Plugin("HeuristicLab.LibSVM", "HeuristicLab transport plugin for libSVM version 3.12 by Chih-Chung Chang and Chih-Jen Lin", "3.12.0.15584")]
+  [Plugin("HeuristicLab.LibSVM", "HeuristicLab transport plugin for libSVM version 3.12 by Chih-Chung Chang and Chih-Jen Lin", "3.12.0.17181")]
   [PluginFile("HeuristicLab.LibSVM-3.12.dll", PluginFileType.Assembly)]
   [PluginFile("LibSVM-3.12.dll", PluginFileType.Assembly)]
   [PluginFile("LibSVM license.txt", PluginFileType.License)]

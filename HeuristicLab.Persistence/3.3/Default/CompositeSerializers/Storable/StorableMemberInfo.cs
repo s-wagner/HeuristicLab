@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2018 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -22,7 +22,7 @@
 using System;
 using System.Reflection;
 using System.Text;
-using HeuristicLab.Persistence.Core;
+using HEAL.Attic;
 
 namespace HeuristicLab.Persistence.Default.CompositeSerializers.Storable {
 
@@ -40,10 +40,10 @@ namespace HeuristicLab.Persistence.Default.CompositeSerializers.Storable {
       }
     }
     public StorableMemberInfo(StorableAttribute attribute, MemberInfo memberInfo) {
-      DisentangledName = attribute.Name;
+      DisentangledName = string.IsNullOrEmpty(attribute.OldName) ? attribute.Name : attribute.OldName;
       DefaultValue = attribute.DefaultValue;
       MemberInfo = memberInfo;
-      if (!attribute.AllowOneWay)
+      if (string.IsNullOrEmpty(attribute.OldName) && !attribute.AllowOneWay)
         CheckPropertyAccess(memberInfo as PropertyInfo);
     }
     public StorableMemberInfo(MemberInfo memberInfo, bool allowOneWay) {

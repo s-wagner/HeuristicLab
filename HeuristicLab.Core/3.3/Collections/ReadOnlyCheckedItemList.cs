@@ -1,6 +1,6 @@
 #region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2018 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -21,12 +21,12 @@
 
 using System;
 using System.Collections.Generic;
+using HEAL.Attic;
 using HeuristicLab.Collections;
 using HeuristicLab.Common;
-using HeuristicLab.Persistence.Default.CompositeSerializers.Storable;
 
 namespace HeuristicLab.Core {
-  [StorableClass]
+  [StorableType("BE738F46-3864-42BB-BD29-F3E933B0AC06")]
   [Item("ReadOnlyCheckedItemList", "Represents a read-only list of checked items.")]
   public class ReadOnlyCheckedItemList<T> : ReadOnlyItemList<T>, ICheckedItemList<T> where T : class, IItem {
     private CheckedItemList<T> CheckedItemList {
@@ -34,7 +34,7 @@ namespace HeuristicLab.Core {
     }
 
     [StorableConstructor]
-    protected ReadOnlyCheckedItemList(bool deserializing) : base(deserializing) { }
+    protected ReadOnlyCheckedItemList(StorableConstructorFlag _) : base(_) { }
     protected ReadOnlyCheckedItemList(ReadOnlyCheckedItemList<T> original, Cloner cloner)
       : base(original, cloner) {
       CheckedItemList.CheckedItemsChanged += new CollectionItemsChangedEventHandler<IndexedItem<T>>(list_CheckedItemsChanged);
@@ -71,8 +71,24 @@ namespace HeuristicLab.Core {
       return CheckedItemList.ItemChecked(item);
     }
 
+    public bool ItemChecked(int itemIndex) {
+      return CheckedItemList.ItemChecked(itemIndex);
+    }
+
     public void SetItemCheckedState(T item, bool checkedState) {
       CheckedItemList.SetItemCheckedState(item, checkedState);
+    }
+
+    public void SetItemCheckedState(IEnumerable<T> items, bool checkedState) {
+      CheckedItemList.SetItemCheckedState(items, checkedState);
+    }
+
+    public void SetItemCheckedState(int itemIndex, bool checkedState) {
+      CheckedItemList.SetItemCheckedState(itemIndex, checkedState);
+    }
+
+    public void SetItemCheckedState(IEnumerable<int> itemIndices, bool checkedState) {
+      CheckedItemList.SetItemCheckedState(itemIndices, checkedState);
     }
 
     public void Add(T item, bool checkedState) {

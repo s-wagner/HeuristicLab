@@ -1,6 +1,6 @@
 #region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2018 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -21,16 +21,16 @@
 
 using System;
 using System.Drawing;
+using HEAL.Attic;
 using HeuristicLab.Common;
 using HeuristicLab.Core;
-using HeuristicLab.Persistence.Default.CompositeSerializers.Storable;
 
 namespace HeuristicLab.Parameters {
   /// <summary>
   /// A parameter whose value is defined in the parameter itself or is null.
   /// </summary>
   [Item("OptionalValueParameter", "A parameter whose value is defined in the parameter itself or is null.")]
-  [StorableClass]
+  [StorableType("1A825EE0-3A72-458C-B621-7CE989EE2F0D")]
   public class OptionalValueParameter<T> : Parameter, IValueParameter<T> where T : class, IItem {
     public override Image ItemImage {
       get {
@@ -44,6 +44,7 @@ namespace HeuristicLab.Parameters {
     public virtual T Value {
       get { return this.value; }
       set {
+        if (ReadOnly) throw new InvalidOperationException("Cannot set the value of a readonly parameter.");
         if (value != this.value) {
           DeregisterValueEvents();
           this.value = value;
@@ -62,6 +63,17 @@ namespace HeuristicLab.Parameters {
                           typeof(T).GetPrettyName())
           );
         Value = val;
+      }
+    }
+
+    [Storable(DefaultValue = false)]
+    private bool readOnly;
+    public bool ReadOnly {
+      get { return readOnly; }
+      set {
+        if (value == readOnly) return;
+        readOnly = value;
+        OnReadOnlyChanged();
       }
     }
 
@@ -103,64 +115,47 @@ namespace HeuristicLab.Parameters {
 
     #region Constructors
     [StorableConstructor]
-    protected OptionalValueParameter(bool deserializing) : base(deserializing) { }
+    protected OptionalValueParameter(StorableConstructorFlag _) : base(_) { }
     protected OptionalValueParameter(OptionalValueParameter<T> original, Cloner cloner)
       : base(original, cloner) {
       value = cloner.Clone(original.value);
+      readOnly = original.readOnly;
       getsCollected = original.getsCollected;
       reactOnValueToStringChangedAndValueItemImageChanged = original.reactOnValueToStringChangedAndValueItemImageChanged;
       RegisterValueEvents();
     }
     public OptionalValueParameter()
       : base("Anonymous", typeof(T)) {
+      this.readOnly = false;
       this.getsCollected = true;
       this.reactOnValueToStringChangedAndValueItemImageChanged = true;
     }
     public OptionalValueParameter(string name)
       : base(name, typeof(T)) {
+      this.readOnly = false;
       this.getsCollected = true;
-      this.reactOnValueToStringChangedAndValueItemImageChanged = true;
-    }
-    public OptionalValueParameter(string name, bool getsCollected)
-      : base(name, typeof(T)) {
-      this.getsCollected = getsCollected;
       this.reactOnValueToStringChangedAndValueItemImageChanged = true;
     }
     public OptionalValueParameter(string name, T value)
       : base(name, typeof(T)) {
       this.value = value;
+      this.readOnly = false;
       this.getsCollected = true;
-      this.reactOnValueToStringChangedAndValueItemImageChanged = true;
-      RegisterValueEvents();
-    }
-    public OptionalValueParameter(string name, T value, bool getsCollected)
-      : base(name, typeof(T)) {
-      this.value = value;
-      this.getsCollected = getsCollected;
       this.reactOnValueToStringChangedAndValueItemImageChanged = true;
       RegisterValueEvents();
     }
     public OptionalValueParameter(string name, string description)
       : base(name, description, typeof(T)) {
+      this.readOnly = false;
       this.getsCollected = true;
       this.reactOnValueToStringChangedAndValueItemImageChanged = true;
     }
-    public OptionalValueParameter(string name, string description, bool getsCollected)
-      : base(name, description, typeof(T)) {
-      this.getsCollected = getsCollected;
-      this.reactOnValueToStringChangedAndValueItemImageChanged = true;
-    }
+
     public OptionalValueParameter(string name, string description, T value)
       : base(name, description, typeof(T)) {
       this.value = value;
+      this.readOnly = false;
       this.getsCollected = true;
-      this.reactOnValueToStringChangedAndValueItemImageChanged = true;
-      RegisterValueEvents();
-    }
-    public OptionalValueParameter(string name, string description, T value, bool getsCollected)
-      : base(name, description, typeof(T)) {
-      this.value = value;
-      this.getsCollected = getsCollected;
       this.reactOnValueToStringChangedAndValueItemImageChanged = true;
       RegisterValueEvents();
     }
@@ -195,6 +190,12 @@ namespace HeuristicLab.Parameters {
       if (handler != null) handler(this, EventArgs.Empty);
       OnItemImageChanged();
       OnToStringChanged();
+    }
+
+    public event EventHandler ReadOnlyChanged;
+    protected virtual void OnReadOnlyChanged() {
+      EventHandler handler = ReadOnlyChanged;
+      if (handler != null) handler(this, EventArgs.Empty);
     }
     public event EventHandler GetsCollectedChanged;
     protected virtual void OnGetsCollectedChanged() {

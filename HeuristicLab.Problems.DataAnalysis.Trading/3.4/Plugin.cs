@@ -1,6 +1,6 @@
 #region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2018 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -22,7 +22,7 @@
 using HeuristicLab.PluginInfrastructure;
 
 namespace HeuristicLab.Problems.DataAnalysis.Trading {
-  [Plugin("HeuristicLab.Problems.DataAnalysis.Trading","Provides classes to optimize trading rules.", "3.4.7.15587")]
+  [Plugin("HeuristicLab.Problems.DataAnalysis.Trading","Provides classes to optimize trading rules.", "3.4.8.17186")]
   [PluginFile("HeuristicLab.Problems.DataAnalysis.Trading-3.4.dll", PluginFileType.Assembly)]
 
   [PluginDependency("HeuristicLab.Collections", "3.3")]
@@ -33,7 +33,7 @@ namespace HeuristicLab.Problems.DataAnalysis.Trading {
   [PluginDependency("HeuristicLab.Operators", "3.3")]
   [PluginDependency("HeuristicLab.Optimization", "3.3")]
   [PluginDependency("HeuristicLab.Parameters", "3.3")]
-  [PluginDependency("HeuristicLab.Persistence", "3.3")]
+  [PluginDependency("HeuristicLab.Attic", "1.0")]
   [PluginDependency("HeuristicLab.Problems.DataAnalysis", "3.4")]
   [PluginDependency("HeuristicLab.Problems.DataAnalysis.Symbolic", "3.4")]
   [PluginDependency("HeuristicLab.Problems.Instances", "3.3")]

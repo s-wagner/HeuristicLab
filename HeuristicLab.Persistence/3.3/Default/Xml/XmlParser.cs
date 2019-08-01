@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2018 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -25,6 +25,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
 using System.Xml;
+using HEAL.Attic;
 using HeuristicLab.Persistence.Core;
 using HeuristicLab.Persistence.Core.Tokens;
 using HeuristicLab.Persistence.Interfaces;
@@ -284,6 +285,23 @@ namespace HeuristicLab.Persistence.Default.Xml {
       }
       catch (Exception e) {
         throw new PersistenceException("Unexpected exception during deserialization", e);
+      }
+    }
+
+    /// <summary>
+    /// Checks if the given file can be opened as <see cref="ZipArchive" />.
+    /// </summary>
+    /// <param name="filename">The filename.</param>
+    /// <returns><see langword="true" /> if the file can be opened as <see cref="ZipArchive" />; otherwise, <see langword="false" />.</returns>
+    public static bool CanOpen(string filename) {
+      try {
+        using (FileStream fs = new FileStream(filename, FileMode.Open, FileAccess.Read)) {
+          using (ZipArchive zip = new ZipArchive(fs)) {
+            return true;
+          }
+        }
+      } catch (InvalidDataException) {
+        return false;
       }
     }
   }

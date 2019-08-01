@@ -1,6 +1,6 @@
 #region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2018 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -22,11 +22,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using HEAL.Attic;
 using HeuristicLab.Common;
 using HeuristicLab.Core;
 using HeuristicLab.Encodings.SymbolicExpressionTreeEncoding;
 using HeuristicLab.Parameters;
-using HeuristicLab.Persistence.Default.CompositeSerializers.Storable;
 using HeuristicLab.Problems.DataAnalysis;
 using HeuristicLab.Problems.Instances;
 
@@ -34,7 +34,7 @@ using HeuristicLab.Problems.Instances;
 namespace HeuristicLab.Problems.GeneticProgramming.BasicSymbolicRegression {
   [Item("Koza-style Symbolic Regression", "An implementation of symbolic regression without bells-and-whistles. Use \"Symbolic Regression Problem (single-objective)\" if you want to use all features.")]
   [Creatable(CreatableAttribute.Categories.GeneticProgrammingProblems, Priority = 900)]
-  [StorableClass]
+  [StorableType("72011B73-28C6-4D5E-BEDF-27425BC87B9C")]
   public sealed class Problem : SymbolicExpressionTreeProblem, IRegressionProblem, IProblemInstanceConsumer<IRegressionProblemData>, IProblemInstanceExporter<IRegressionProblemData> {
 
     #region parameter names
@@ -66,7 +66,7 @@ namespace HeuristicLab.Problems.GeneticProgramming.BasicSymbolicRegression {
     #region item cloning and persistence
     // persistence
     [StorableConstructor]
-    private Problem(bool deserializing) : base(deserializing) { }
+    private Problem(StorableConstructorFlag _) : base(_) { }
     [StorableHook(HookType.AfterDeserialization)]
     private void AfterDeserialization() {
       RegisterEventHandlers();
@@ -86,6 +86,7 @@ namespace HeuristicLab.Problems.GeneticProgramming.BasicSymbolicRegression {
 
       var g = new SimpleSymbolicExpressionGrammar(); // empty grammar is replaced in UpdateGrammar()
       base.Encoding = new SymbolicExpressionTreeEncoding(g, 100, 17);
+      Encoding.GrammarParameter.ReadOnly = true;
 
       UpdateGrammar();
       RegisterEventHandlers();
@@ -176,7 +177,9 @@ namespace HeuristicLab.Problems.GeneticProgramming.BasicSymbolicRegression {
         g.AddTerminalSymbol(newErcSy);
       }
 
+      Encoding.GrammarParameter.ReadOnly = false;
       Encoding.Grammar = g;
+      Encoding.GrammarParameter.ReadOnly = true;
     }
     #endregion
 

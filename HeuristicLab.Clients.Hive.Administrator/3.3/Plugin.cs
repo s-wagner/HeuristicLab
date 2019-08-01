@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2018 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -22,7 +22,7 @@
 using HeuristicLab.PluginInfrastructure;
 
 namespace HeuristicLab.Clients.Hive.Administration {
-  [Plugin("HeuristicLab.Clients.Hive.Administrator", "3.3.15.15587")]
+  [Plugin("HeuristicLab.Clients.Hive.Administrator", "3.3.16.17186")]
   [PluginFile("HeuristicLab.Clients.Hive.Administrator-3.3.dll", PluginFileType.Assembly)]
   [PluginDependency("HeuristicLab.Clients.Access", "3.3")]  
   [PluginDependency("HeuristicLab.Clients.Access.Views", "3.3")]
@@ -31,8 +31,11 @@ namespace HeuristicLab.Clients.Hive.Administration {
   [PluginDependency("HeuristicLab.Common.Resources", "3.3")]
   [PluginDependency("HeuristicLab.Core", "3.3")]
   [PluginDependency("HeuristicLab.Core.Views", "3.3")]  
+  [PluginDependency("HeuristicLab.Clients.Common", "3.3")]
   [PluginDependency("HeuristicLab.Clients.Hive", "3.3")]
   [PluginDependency("HeuristicLab.Clients.Hive.Views", "3.3")]
+  [PluginDependency("HeuristicLab.Data", "3.3")]
+  [PluginDependency("HeuristicLab.Data.Views", "3.3")]
   [PluginDependency("HeuristicLab.DayView", "1.0.0.0")]
   [PluginDependency("HeuristicLab.Optimizer", "3.3")]
   [PluginDependency("HeuristicLab.MainForm", "3.3")]

@@ -1,6 +1,6 @@
 #region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2018 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -21,16 +21,16 @@
 
 using System;
 using System.Drawing;
+using HEAL.Attic;
 using HeuristicLab.Common;
 using HeuristicLab.Core;
-using HeuristicLab.Persistence.Default.CompositeSerializers.Storable;
 
 namespace HeuristicLab.Parameters {
   /// <summary>
   /// A parameter whose value is either defined in the parameter itself or is retrieved from the scope.
   /// </summary>
   [Item("ValueLookupParameter", "A parameter whose value is either defined in the parameter itself or is retrieved from or written to a scope.")]
-  [StorableClass]
+  [StorableType("B34BB41A-CF50-4275-9BCD-1861EBA7C58F")]
   public class ValueLookupParameter<T> : LookupParameter<T>, IValueLookupParameter<T> where T : class, IItem {
     public override Image ItemImage {
       get {
@@ -44,6 +44,7 @@ namespace HeuristicLab.Parameters {
     public T Value {
       get { return this.value; }
       set {
+        if (ReadOnly) throw new InvalidOperationException("Cannot set the value of a readonly parameter.");
         if (value != this.value) {
           DeregisterValueEvents();
           this.value = value;
@@ -65,6 +66,17 @@ namespace HeuristicLab.Parameters {
       }
     }
 
+    [Storable(DefaultValue = false)]
+    private bool readOnly;
+    public bool ReadOnly {
+      get { return readOnly; }
+      set {
+        if (value == readOnly) return;
+        readOnly = value;
+        OnReadOnlyChanged();
+      }
+    }
+
     [Storable(DefaultValue = true)]
     private bool getsCollected;
     public bool GetsCollected {
@@ -79,75 +91,53 @@ namespace HeuristicLab.Parameters {
 
     #region Constructors
     [StorableConstructor]
-    protected ValueLookupParameter(bool deserializing) : base(deserializing) { }
+    protected ValueLookupParameter(StorableConstructorFlag _) : base(_) { }
     protected ValueLookupParameter(ValueLookupParameter<T> original, Cloner cloner)
       : base(original, cloner) {
       value = cloner.Clone(original.value);
+      readOnly = original.readOnly;
       getsCollected = original.getsCollected;
       RegisterValueEvents();
     }
     public ValueLookupParameter()
       : base() {
+      this.readOnly = false;
       this.Hidden = false;
       this.getsCollected = true;
     }
     public ValueLookupParameter(string name)
       : base(name) {
+      this.readOnly = false;
       this.Hidden = false;
       this.getsCollected = true;
-    }
-    public ValueLookupParameter(string name, bool getsCollected)
-      : base(name) {
-      this.Hidden = false;
-      this.getsCollected = getsCollected;
     }
     public ValueLookupParameter(string name, T value)
       : base(name) {
       this.value = value;
+      this.readOnly = false;
       this.Hidden = false;
       this.getsCollected = true;
-      RegisterValueEvents();
-    }
-    public ValueLookupParameter(string name, T value, bool getsCollected)
-      : base(name) {
-      this.value = value;
-      this.Hidden = false;
-      this.getsCollected = getsCollected;
       RegisterValueEvents();
     }
     public ValueLookupParameter(string name, string description)
       : base(name, description) {
+      this.readOnly = false;
       this.Hidden = false;
       this.getsCollected = true;
-    }
-    public ValueLookupParameter(string name, string description, bool getsCollected)
-      : base(name, description) {
-      this.Hidden = false;
-      this.getsCollected = getsCollected;
     }
     public ValueLookupParameter(string name, string description, T value)
       : base(name, description) {
       this.value = value;
+      this.readOnly = false;
       this.Hidden = false;
       this.getsCollected = true;
-      RegisterValueEvents();
-    }
-    public ValueLookupParameter(string name, string description, T value, bool getsCollected)
-      : base(name, description) {
-      this.value = value;
-      this.Hidden = false;
-      this.getsCollected = getsCollected;
       RegisterValueEvents();
     }
     public ValueLookupParameter(string name, string description, string actualName)
       : base(name, description, actualName) {
+      this.readOnly = false;
       this.Hidden = false;
       this.getsCollected = true;
-    }
-    public ValueLookupParameter(string name, string description, string actualName, bool getsCollected)
-      : base(name, description, actualName) {
-      this.Hidden = false;
-      this.getsCollected = getsCollected;
     }
     #endregion
 
@@ -175,6 +165,11 @@ namespace HeuristicLab.Parameters {
       if (handler != null) handler(this, EventArgs.Empty);
       OnItemImageChanged();
       OnToStringChanged();
+    }
+    public event EventHandler ReadOnlyChanged;
+    protected virtual void OnReadOnlyChanged() {
+      EventHandler handler = ReadOnlyChanged;
+      if (handler != null) handler(this, EventArgs.Empty);
     }
     public event EventHandler GetsCollectedChanged;
     protected virtual void OnGetsCollectedChanged() {

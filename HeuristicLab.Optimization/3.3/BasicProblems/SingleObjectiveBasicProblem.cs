@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2018 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -22,14 +22,14 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using HEAL.Attic;
 using HeuristicLab.Common;
 using HeuristicLab.Core;
 using HeuristicLab.Data;
 using HeuristicLab.Parameters;
-using HeuristicLab.Persistence.Default.CompositeSerializers.Storable;
 
 namespace HeuristicLab.Optimization {
-  [StorableClass]
+  [StorableType("2697320D-0259-44BB-BD71-7EE1B10F664C")]
   public abstract class SingleObjectiveBasicProblem<TEncoding> : BasicProblem<TEncoding, SingleObjectiveEvaluator>,
     ISingleObjectiveProblemDefinition, ISingleObjectiveHeuristicOptimizationProblem
   where TEncoding : class, IEncoding {
@@ -50,7 +50,7 @@ namespace HeuristicLab.Optimization {
     }
 
     [StorableConstructor]
-    protected SingleObjectiveBasicProblem(bool deserializing) : base(deserializing) { }
+    protected SingleObjectiveBasicProblem(StorableConstructorFlag _) : base(_) { }
 
     protected SingleObjectiveBasicProblem(SingleObjectiveBasicProblem<TEncoding> original, Cloner cloner)
       : base(original, cloner) {
@@ -94,7 +94,6 @@ namespace HeuristicLab.Optimization {
     }
 
     protected override void OnOperatorsChanged() {
-      base.OnOperatorsChanged();
       if (Encoding != null) {
         PruneMultiObjectiveOperators(Encoding);
         var multiEncoding = Encoding as MultiEncoding;
@@ -104,6 +103,7 @@ namespace HeuristicLab.Optimization {
           }
         }
       }
+      base.OnOperatorsChanged();
     }
 
     private void PruneMultiObjectiveOperators(IEncoding encoding) {

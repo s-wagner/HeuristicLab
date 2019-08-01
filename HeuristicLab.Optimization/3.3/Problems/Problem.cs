@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2018 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -22,16 +22,16 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using HEAL.Attic;
 using HeuristicLab.Collections;
 using HeuristicLab.Common;
 using HeuristicLab.Core;
 using HeuristicLab.Data;
 using HeuristicLab.Parameters;
-using HeuristicLab.Persistence.Default.CompositeSerializers.Storable;
 
 namespace HeuristicLab.Optimization {
   [Item("Problem", "Represents the base class for a problem.")]
-  [StorableClass]
+  [StorableType("6DC97432-9BD1-4304-802A-1FC48A0E0468")]
   public abstract class Problem : ParameterizedNamedItem, IProblem {
     private const string OperatorsParameterName = "Operators";
     public IFixedValueParameter<ItemCollection<IItem>> OperatorsParameter {
@@ -43,7 +43,7 @@ namespace HeuristicLab.Optimization {
     }
 
     [StorableConstructor]
-    protected Problem(bool deserializing) : base(deserializing) { }
+    protected Problem(StorableConstructorFlag _) : base(_) { }
     protected Problem(Problem original, Cloner cloner)
       : base(original, cloner) {
       RegisterEventHandlers();
@@ -51,7 +51,7 @@ namespace HeuristicLab.Optimization {
 
     protected Problem()
       : base() {
-      Parameters.Add(new FixedValueParameter<ItemCollection<IItem>>(OperatorsParameterName, "The operators and items that the problem provides to the algorithms.", new ItemCollection<IItem>(), false));
+      Parameters.Add(new FixedValueParameter<ItemCollection<IItem>>(OperatorsParameterName, "The operators and items that the problem provides to the algorithms.", new ItemCollection<IItem>()) { GetsCollected = false });
       OperatorsParameter.Hidden = true;
       RegisterEventHandlers();
     }
@@ -65,7 +65,7 @@ namespace HeuristicLab.Optimization {
         var operators = operatorsParam.ActualValue as OperatorCollection;
         if (operators != null) {
           Parameters.Remove(OperatorsParameterName);
-          Parameters.Add(new FixedValueParameter<ItemCollection<IItem>>(OperatorsParameterName, "The operators and items that the problem provides to the algorithms.", new ItemCollection<IItem>(operators), false));
+          Parameters.Add(new FixedValueParameter<ItemCollection<IItem>>(OperatorsParameterName, "The operators and items that the problem provides to the algorithms.", new ItemCollection<IItem>(operators)) { GetsCollected = false });
           OperatorsParameter.Hidden = true;
         }
       }
@@ -83,7 +83,7 @@ namespace HeuristicLab.Optimization {
     #region properties
     // BackwardsCompatibility3.3
     #region Backwards compatible code, remove with 3.4
-    [Storable(Name = "Operators", AllowOneWay = true)]
+    [Storable(OldName = "Operators")]
     private IEnumerable<IOperator> StorableOperators {
       set {
         IParameter operatorsParam;
@@ -94,7 +94,7 @@ namespace HeuristicLab.Optimization {
 
         //necessary to convert old experiments files where no parameter was used for saving the operators
         if (!Parameters.ContainsKey(OperatorsParameterName)) {
-          Parameters.Add(new FixedValueParameter<ItemCollection<IItem>>(OperatorsParameterName, "The operators and items that the problem provides to the algorithms.", new ItemCollection<IItem>(), false));
+          Parameters.Add(new FixedValueParameter<ItemCollection<IItem>>(OperatorsParameterName, "The operators and items that the problem provides to the algorithms.", new ItemCollection<IItem>()) { GetsCollected = false });
           OperatorsParameter.Hidden = true;
         }
         if (value != null) Operators.AddRange(value);
@@ -106,7 +106,7 @@ namespace HeuristicLab.Optimization {
         // BackwardsCompatibility3.3
         #region Backwards compatible code, remove with 3.4
         if (!Parameters.ContainsKey(OperatorsParameterName)) {
-          Parameters.Add(new FixedValueParameter<ItemCollection<IItem>>(OperatorsParameterName, "The operators and items that the problem provides to the algorithms.", new ItemCollection<IItem>(), false));
+          Parameters.Add(new FixedValueParameter<ItemCollection<IItem>>(OperatorsParameterName, "The operators and items that the problem provides to the algorithms.", new ItemCollection<IItem>()) { GetsCollected = false });
           OperatorsParameter.Hidden = true;
         }
         #endregion

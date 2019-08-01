@@ -1,6 +1,6 @@
 #region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2018 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -25,13 +25,13 @@ using System.Linq;
 using HeuristicLab.Common;
 using HeuristicLab.Core;
 using HeuristicLab.Encodings.SymbolicExpressionTreeEncoding;
-using HeuristicLab.Persistence.Default.CompositeSerializers.Storable;
+using HEAL.Attic;
 
 namespace HeuristicLab.Problems.DataAnalysis.Symbolic.Classification {
   /// <summary>
   /// Represents a symbolic classification model
   /// </summary>
-  [StorableClass]
+  [StorableType("99332204-4097-496A-AB05-4DB9478DB159")]
   [Item(Name = "SymbolicDiscriminantFunctionClassificationModel", Description = "Represents a symbolic classification model unsing a discriminant function.")]
   public class SymbolicDiscriminantFunctionClassificationModel : SymbolicClassificationModel, ISymbolicDiscriminantFunctionClassificationModel {
 
@@ -57,7 +57,7 @@ namespace HeuristicLab.Problems.DataAnalysis.Symbolic.Classification {
 
 
     [StorableConstructor]
-    protected SymbolicDiscriminantFunctionClassificationModel(bool deserializing) : base(deserializing) { }
+    protected SymbolicDiscriminantFunctionClassificationModel(StorableConstructorFlag _) : base(_) { }
     protected SymbolicDiscriminantFunctionClassificationModel(SymbolicDiscriminantFunctionClassificationModel original, Cloner cloner)
       : base(original, cloner) {
       classValues = (double[])original.classValues.Clone();
@@ -111,8 +111,12 @@ namespace HeuristicLab.Problems.DataAnalysis.Symbolic.Classification {
     }
 
     public override IEnumerable<double> GetEstimatedClassValues(IDataset dataset, IEnumerable<int> rows) {
+      var estimatedValues = GetEstimatedValues(dataset, rows);
+      return GetEstimatedClassValues(estimatedValues);
+    }
+    public IEnumerable<double> GetEstimatedClassValues(IEnumerable<double> estimatedValues) {
       if (!Thresholds.Any() && !ClassValues.Any()) throw new ArgumentException("No thresholds and class values were set for the current symbolic classification model.");
-      foreach (var x in GetEstimatedValues(dataset, rows)) {
+      foreach (var x in estimatedValues) {
         int classIndex = 0;
         // find first threshold value which is larger than x => class index = threshold index + 1
         for (int i = 0; i < thresholds.Length; i++) {
@@ -122,7 +126,6 @@ namespace HeuristicLab.Problems.DataAnalysis.Symbolic.Classification {
         yield return classValues.ElementAt(classIndex - 1);
       }
     }
-
 
     public override ISymbolicClassificationSolution CreateClassificationSolution(IClassificationProblemData problemData) {
       return CreateDiscriminantClassificationSolution(problemData);

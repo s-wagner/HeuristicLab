@@ -1,6 +1,6 @@
 #region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2018 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -21,12 +21,12 @@
 
 using System;
 using System.Collections.Generic;
+using HEAL.Attic;
 using HeuristicLab.Collections;
 using HeuristicLab.Common;
-using HeuristicLab.Persistence.Default.CompositeSerializers.Storable;
 
 namespace HeuristicLab.Core {
-  [StorableClass]
+  [StorableType("81B63F7B-0AD4-4BAD-8F39-BAB1F6B006C8")]
   [Item("ReadOnlyCheckedItemCollection", "Represents a read-only collection of checked items.")]
   public class ReadOnlyCheckedItemCollection<T> : ReadOnlyItemCollection<T>, ICheckedItemCollection<T> where T : class, IItem {
     private CheckedItemCollection<T> CheckedItemCollection {
@@ -34,7 +34,7 @@ namespace HeuristicLab.Core {
     }
 
     [StorableConstructor]
-    protected ReadOnlyCheckedItemCollection(bool deserializing) : base(deserializing) { }
+    protected ReadOnlyCheckedItemCollection(StorableConstructorFlag _) : base(_) { }
     protected ReadOnlyCheckedItemCollection(ReadOnlyCheckedItemCollection<T> original, Cloner cloner)
       : base(original, cloner) {
       CheckedItemCollection.CheckedItemsChanged += new CollectionItemsChangedEventHandler<T>(collection_CheckedItemsChanged);
@@ -72,6 +72,10 @@ namespace HeuristicLab.Core {
 
     public void SetItemCheckedState(T item, bool checkedState) {
       CheckedItemCollection.SetItemCheckedState(item, checkedState);
+    }
+
+    public void SetItemCheckedState(IEnumerable<T> items, bool checkedState) {
+      CheckedItemCollection.SetItemCheckedState(items, checkedState);
     }
 
     public void Add(T item, bool checkedState) {

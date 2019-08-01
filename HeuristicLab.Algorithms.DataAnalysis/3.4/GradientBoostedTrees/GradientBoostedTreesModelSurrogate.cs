@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2018 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  * and the BEACON Center for the Study of Evolution in Action.
  * 
  * This file is part of HeuristicLab.
@@ -25,11 +25,11 @@ using System.Collections.Generic;
 using System.Linq;
 using HeuristicLab.Common;
 using HeuristicLab.Core;
-using HeuristicLab.Persistence.Default.CompositeSerializers.Storable;
+using HEAL.Attic;
 using HeuristicLab.Problems.DataAnalysis;
 
 namespace HeuristicLab.Algorithms.DataAnalysis {
-  [StorableClass]
+  [StorableType("1BF7BEFB-6739-48AA-89BC-B632E72D148C")]
   // this class is used as a surrogate for persistence of an actual GBT model 
   // since the actual GBT model would be very large when persisted we only store all necessary information to
   // recalculate the actual GBT model on demand
@@ -67,15 +67,14 @@ namespace HeuristicLab.Algorithms.DataAnalysis {
     }
 
     [StorableConstructor]
-    private GradientBoostedTreesModelSurrogate(bool deserializing)
-      : base(deserializing) {
+    private GradientBoostedTreesModelSurrogate(StorableConstructorFlag _) : base(_) {
       actualModel = new Lazy<IGradientBoostedTreesModel>(() => RecalculateModel());
     }
 
     private GradientBoostedTreesModelSurrogate(GradientBoostedTreesModelSurrogate original, Cloner cloner)
       : base(original, cloner) {
       IGradientBoostedTreesModel clonedModel = null;
-      if (original.ActualModel != null) clonedModel = cloner.Clone(original.ActualModel);
+      if (original.actualModel.IsValueCreated) clonedModel = cloner.Clone(original.ActualModel);
       actualModel = new Lazy<IGradientBoostedTreesModel>(CreateLazyInitFunc(clonedModel)); // only capture clonedModel in the closure
 
       this.trainingProblemData = cloner.Clone(original.trainingProblemData);
@@ -90,12 +89,12 @@ namespace HeuristicLab.Algorithms.DataAnalysis {
 
     private Func<IGradientBoostedTreesModel> CreateLazyInitFunc(IGradientBoostedTreesModel clonedModel) {
       return () => {
-        return clonedModel == null ? RecalculateModel() : clonedModel;
+        return clonedModel ?? RecalculateModel();
       };
     }
 
     // create only the surrogate model without an actual model
-    public GradientBoostedTreesModelSurrogate(IRegressionProblemData trainingProblemData, uint seed,
+    private GradientBoostedTreesModelSurrogate(IRegressionProblemData trainingProblemData, uint seed,
       ILossFunction lossFunction, int iterations, int maxSize, double r, double m, double nu)
       : base(trainingProblemData.TargetVariable, "Gradient boosted tree model", string.Empty) {
       this.trainingProblemData = trainingProblemData;
@@ -106,12 +105,13 @@ namespace HeuristicLab.Algorithms.DataAnalysis {
       this.r = r;
       this.m = m;
       this.nu = nu;
+
+      actualModel = new Lazy<IGradientBoostedTreesModel>(() => RecalculateModel());
     }
 
     // wrap an actual model in a surrograte
-    public GradientBoostedTreesModelSurrogate(IRegressionProblemData trainingProblemData, uint seed,
-      ILossFunction lossFunction, int iterations, int maxSize, double r, double m, double nu,
-      IGradientBoostedTreesModel model)
+    public GradientBoostedTreesModelSurrogate(IGradientBoostedTreesModel model, IRegressionProblemData trainingProblemData, uint seed,
+      ILossFunction lossFunction, int iterations, int maxSize, double r, double m, double nu)
       : this(trainingProblemData, seed, lossFunction, iterations, maxSize, r, m, nu) {
       actualModel = new Lazy<IGradientBoostedTreesModel>(() => model);
     }

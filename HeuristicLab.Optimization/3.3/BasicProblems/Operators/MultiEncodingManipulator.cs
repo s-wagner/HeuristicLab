@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2018 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -19,21 +19,37 @@
  */
 #endregion
 
+using HEAL.Attic;
 using HeuristicLab.Common;
 using HeuristicLab.Core;
-using HeuristicLab.Persistence.Default.CompositeSerializers.Storable;
+using HeuristicLab.Parameters;
 
 namespace HeuristicLab.Optimization {
   [Item("MultiEncoding Manipulator", "Applies different manipulators to change a multi-encoding.")]
-  [StorableClass]
-  public sealed class MultiEncodingManipulator : MultiEncodingOperator<IManipulator>, IManipulator {
+  [StorableType("574D0530-47E8-4FD9-8AC8-B8EA2DE3C203")]
+  public sealed class MultiEncodingManipulator : MultiEncodingOperator<IManipulator>, IManipulator, IStochasticOperator {
+    public ILookupParameter<IRandom> RandomParameter {
+      get { return (ILookupParameter<IRandom>)Parameters["Random"]; }
+    }
+
+    public override string OperatorPrefix => "Manipulator";
+
     [StorableConstructor]
-    private MultiEncodingManipulator(bool deserializing) : base(deserializing) { }
+    private MultiEncodingManipulator(StorableConstructorFlag _) : base(_) { }
     private MultiEncodingManipulator(MultiEncodingManipulator original, Cloner cloner)
       : base(original, cloner) { }
-    public MultiEncodingManipulator() { }
+    public MultiEncodingManipulator() {
+      Parameters.Add(new LookupParameter<IRandom>("Random", "The random number generator used by the individual operators."));
+    }
 
     public override IDeepCloneable Clone(Cloner cloner) { return new MultiEncodingManipulator(this, cloner); }
+
+    [StorableHook(HookType.AfterDeserialization)]
+    private void AfterDeserialization() {
+      if (!Parameters.ContainsKey("Random")) {
+        Parameters.Add(new LookupParameter<IRandom>("Random", "The random number generator used by the individual operators."));
+      }
+    }
 
   }
 }

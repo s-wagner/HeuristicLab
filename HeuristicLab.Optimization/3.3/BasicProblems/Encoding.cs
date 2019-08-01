@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2018 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -22,14 +22,14 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using HEAL.Attic;
 using HeuristicLab.Common;
 using HeuristicLab.Core;
 using HeuristicLab.Parameters;
-using HeuristicLab.Persistence.Default.CompositeSerializers.Storable;
 
 namespace HeuristicLab.Optimization {
   [Item("Encoding", "Base class for describing different encodings.")]
-  [StorableClass]
+  [StorableType("395B1372-FA54-4649-9EBE-5402A0AA9494")]
   public abstract class Encoding<T> : ParameterizedNamedItem, IEncoding
     where T : class,ISolutionCreator {
     public override sealed bool CanChangeName {
@@ -83,7 +83,7 @@ namespace HeuristicLab.Optimization {
     }
 
     [StorableConstructor]
-    protected Encoding(bool deserializing) : base(deserializing) { }
+    protected Encoding(StorableConstructorFlag _) : base(_) { }
     protected Encoding(Encoding<T> original, Cloner cloner)
       : base(original, cloner) {
       encodingOperators = cloner.Clone(original.encodingOperators);
@@ -91,7 +91,9 @@ namespace HeuristicLab.Optimization {
     }
     protected Encoding(string name)
       : base(name) {
-      Parameters.Add(new FixedValueParameter<ReadOnlyItemSet<IOperator>>(name + ".Operators", "The operators that the encoding specifies.", encodingOperators.AsReadOnly()));
+      Parameters.Add(new FixedValueParameter<ReadOnlyItemSet<IOperator>>(name + ".Operators", "The operators that the encoding specifies.", encodingOperators.AsReadOnly()) {
+        GetsCollected = false
+      });
     }
 
     public virtual Individual GetIndividual(IScope scope) {

@@ -1,6 +1,6 @@
 #region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2018 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -25,7 +25,7 @@ using System.Text;
 using HeuristicLab.PluginInfrastructure;
 
 namespace HeuristicLab.Problems.DataAnalysis.Symbolic.TimeSeriesPrognosis.Views {
-  [Plugin("HeuristicLab.Problems.DataAnalysis.Symbolic.TimeSeriesPrognosis.Views", "Provides views for symbolic time-series prognosis problem classes.", "3.4.11.15587")]
+  [Plugin("HeuristicLab.Problems.DataAnalysis.Symbolic.TimeSeriesPrognosis.Views", "Provides views for symbolic time-series prognosis problem classes.", "3.4.12.17186")]
   [PluginFile("HeuristicLab.Problems.DataAnalysis.Symbolic.TimeSeriesPrognosis.Views-3.4.dll", PluginFileType.Assembly)]
   [PluginDependency("HeuristicLab.Common.Resources", "3.3")]
   [PluginDependency("HeuristicLab.Core", "3.3")]

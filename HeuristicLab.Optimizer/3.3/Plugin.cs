@@ -1,6 +1,6 @@
 #region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2018 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -27,8 +27,10 @@ using HeuristicLab.Optimizer.Properties;
 using HeuristicLab.PluginInfrastructure;
 
 namespace HeuristicLab.Optimizer {
-  [Plugin("HeuristicLab.Optimizer", "3.3.15.15592")]
+  [Plugin("HeuristicLab.Optimizer", "3.3.16.17186")]
   [PluginFile("HeuristicLab.Optimizer-3.3.dll", PluginFileType.Assembly)]
+  [PluginDependency("HeuristicLab.Attic", "1.0")]
+  [PluginDependency("HeuristicLab.Clients.Access", "3.3")]
   [PluginDependency("HeuristicLab.Clients.Common", "3.3")]
   [PluginDependency("HeuristicLab.Collections", "3.3")]
   [PluginDependency("HeuristicLab.Common", "3.3")]
@@ -41,13 +43,11 @@ namespace HeuristicLab.Optimizer {
   [PluginDependency("HeuristicLab.MainForm.WindowsForms", "3.3")]
   [PluginDependency("HeuristicLab.Optimization", "3.3")]
   [PluginDependency("HeuristicLab.Parameters", "3.3")]
-  [PluginDependency("HeuristicLab.Persistence", "3.3")]
   [PluginDependency("HeuristicLab.Problems.Instances", "3.3")]
-  [PluginDependency("HeuristicLab.Clients.Access", "3.3")]
   public class HeuristicLabOptimizerPlugin : PluginBase {
   }
 
-  [Application("Optimizer", "HeuristicLab Optimizer 3.3.15.15592")]
+  [Application("Optimizer", "HeuristicLab Optimizer 3.3.16.17186")]
   internal class HeuristicLabOptimizerApplication : ApplicationBase {
     public override void Run(ICommandLineArgument[] args) {
       HeuristicLab.MainForm.WindowsForms.MainForm mainForm = null;

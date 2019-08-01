@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2018 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -21,22 +21,38 @@
 
 using System;
 using System.Linq;
+using HEAL.Attic;
 using HeuristicLab.Common;
 using HeuristicLab.Core;
-using HeuristicLab.Persistence.Default.CompositeSerializers.Storable;
+using HeuristicLab.Parameters;
 
 namespace HeuristicLab.Optimization {
   [Item("MultiEncodingCreator", "Contains solution creators that together create a multi-encoding.")]
-  [StorableClass]
-  public sealed class MultiEncodingCreator : MultiEncodingOperator<ISolutionCreator>, ISolutionCreator {
+  [StorableType("E261B506-6F74-4BC4-8164-5ACE20FBC319")]
+  public sealed class MultiEncodingCreator : MultiEncodingOperator<ISolutionCreator>, ISolutionCreator, IStochasticOperator {
+    public ILookupParameter<IRandom> RandomParameter {
+      get { return (ILookupParameter<IRandom>)Parameters["Random"]; }
+    }
+
+    public override string OperatorPrefix => "Creator";
+
     [StorableConstructor]
-    private MultiEncodingCreator(bool deserializing) : base(deserializing) { }
+    private MultiEncodingCreator(StorableConstructorFlag _) : base(_) { }
 
     private MultiEncodingCreator(MultiEncodingCreator original, Cloner cloner) : base(original, cloner) { }
-    public MultiEncodingCreator() { }
+    public MultiEncodingCreator() {
+      Parameters.Add(new LookupParameter<IRandom>("Random", "The random number generator used by the individual operators."));
+    }
 
     public override IDeepCloneable Clone(Cloner cloner) {
       return new MultiEncodingCreator(this, cloner);
+    }
+
+    [StorableHook(HookType.AfterDeserialization)]
+    private void AfterDeserialization() {
+      if (!Parameters.ContainsKey("Random")) {
+        Parameters.Add(new LookupParameter<IRandom>("Random", "The random number generator used by the individual operators."));
+      }
     }
 
     public override void AddEncoding(IEncoding encoding) {

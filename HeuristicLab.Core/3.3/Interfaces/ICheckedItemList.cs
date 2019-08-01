@@ -1,6 +1,6 @@
 #region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2018 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -20,14 +20,20 @@
 #endregion
 
 using System.Collections.Generic;
+using HEAL.Attic;
 using HeuristicLab.Collections;
 
 namespace HeuristicLab.Core {
+  [StorableType("ba4a82ca-92eb-47a1-95a7-f41f6ef470f4")]
   public interface ICheckedItemList<T> : IItemList<T> where T : class, IItem {
     event CollectionItemsChangedEventHandler<IndexedItem<T>> CheckedItemsChanged;
     IEnumerable<IndexedItem<T>> CheckedItems { get; }
     bool ItemChecked(T item);
+    bool ItemChecked(int itemIndex);
     void SetItemCheckedState(T item, bool checkedState);
+    void SetItemCheckedState(IEnumerable<T> items, bool checkedState);
+    void SetItemCheckedState(int itemIndex, bool checkedState);
+    void SetItemCheckedState(IEnumerable<int> itemIndices, bool checkedState);
     void Add(T item, bool checkedState);
     void Insert(int index, T item, bool checkedState);
   }

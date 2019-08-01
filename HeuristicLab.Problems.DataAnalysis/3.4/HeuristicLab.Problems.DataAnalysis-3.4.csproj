@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>HeuristicLab.Problems.DataAnalysis</RootNamespace>
     <AssemblyName>HeuristicLab.Problems.DataAnalysis-3.4</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <TargetFrameworkProfile>
     </TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
@@ -130,6 +130,7 @@
     <Compile Include="Implementation\Classification\ClassificationSolution.cs" />
     <Compile Include="Implementation\Classification\ClassificationEnsembleProblemData.cs" />
     <Compile Include="Implementation\Classification\ClassificationSolutionBase.cs" />
+    <Compile Include="Implementation\Classification\ClassificationSolutionVariableImpactsCalculator.cs" />
     <Compile Include="Implementation\Classification\ConstantClassificationSolution.cs" />
     <Compile Include="Implementation\Classification\DiscriminantFunctionClassificationSolutionBase.cs" />
     <Compile Include="Implementation\Classification\ClassificationModel.cs" />
@@ -138,6 +139,7 @@
     <Compile Include="Implementation\Clustering\ClusteringSolution.cs" />
     <Compile Include="Implementation\ConstantModel.cs" />
     <Compile Include="Implementation\DataAnalysisModel.cs" />
+    <Compile Include="Implementation\Interval.cs" />
     <Compile Include="Implementation\Regression\ConfidenceBoundRegressionSolution.cs" />
     <Compile Include="Implementation\Regression\ConstantRegressionModel.cs" />
     <Compile Include="Implementation\Regression\ConstantRegressionSolution.cs" />
@@ -241,6 +243,7 @@
     <Compile Include="Implementation\Regression\RegressionSolution.cs" />
     <Compile Include="OnlineCalculators\OnlineTheilsUStatisticCalculator.cs" />
     <Compile Include="OnlineCalculators\OnlineWeightedDirectionalSymmetryCalculator.cs" />
+    <Compile Include="OnlineCalculators\OnlineWeightedClassificationMeanSquaredErrorCalculator.cs" />
     <Compile Include="Plugin.cs" />
     <Compile Include="Implementation\Classification\ThresholdCalculators\AccuracyMaximizationThresholdCalculator.cs" />
     <Compile Include="Implementation\Classification\ThresholdCalculators\NormalDistributionCutPointsThresholdCalculator.cs" />
@@ -325,7 +328,13 @@
       <Name>HeuristicLab.Random-3.3</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Reference Include="HEAL.Attic, Version=1.0.0.0, Culture=neutral, PublicKeyToken=ba48961d6f65dcec, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\bin\HEAL.Attic.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

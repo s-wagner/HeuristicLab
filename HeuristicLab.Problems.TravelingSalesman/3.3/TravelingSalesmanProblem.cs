@@ -1,6 +1,6 @@
 #region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2018 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -23,6 +23,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using HEAL.Attic;
 using HeuristicLab.Analysis;
 using HeuristicLab.Common;
 using HeuristicLab.Core;
@@ -31,14 +32,13 @@ using HeuristicLab.Encodings.PermutationEncoding;
 using HeuristicLab.Optimization;
 using HeuristicLab.Optimization.Operators;
 using HeuristicLab.Parameters;
-using HeuristicLab.Persistence.Default.CompositeSerializers.Storable;
 using HeuristicLab.PluginInfrastructure;
 using HeuristicLab.Problems.Instances;
 
 namespace HeuristicLab.Problems.TravelingSalesman {
   [Item("Traveling Salesman Problem (TSP)", "Represents a symmetric Traveling Salesman Problem.")]
   [Creatable(CreatableAttribute.Categories.CombinatorialProblems, Priority = 100)]
-  [StorableClass]
+  [StorableType("F0A3550C-2B8F-497D-BF32-5763F8D7592C")]
   public sealed class TravelingSalesmanProblem : SingleObjectiveHeuristicOptimizationProblem<ITSPEvaluator, IPermutationCreator>, IStorableContent,
     IProblemInstanceConsumer<TSPData> {
     private static readonly int DistanceMatrixSizeLimit = 1000;
@@ -98,7 +98,7 @@ namespace HeuristicLab.Problems.TravelingSalesman {
     #endregion
 
     [StorableConstructor]
-    private TravelingSalesmanProblem(bool deserializing) : base(deserializing) { }
+    private TravelingSalesmanProblem(StorableConstructorFlag _) : base(_) { }
     private TravelingSalesmanProblem(TravelingSalesmanProblem original, Cloner cloner)
       : base(original, cloner) {
       RegisterEventHandlers();
@@ -209,7 +209,7 @@ namespace HeuristicLab.Problems.TravelingSalesman {
       ValueParameter<DoubleMatrix> oldCoordinates = (Parameters["Coordinates"] as ValueParameter<DoubleMatrix>);
       if (oldCoordinates != null) {
         Parameters.Remove(oldCoordinates);
-        Parameters.Add(new OptionalValueParameter<DoubleMatrix>("Coordinates", "The x- and y-Coordinates of the cities.", oldCoordinates.Value, oldCoordinates.GetsCollected));
+        Parameters.Add(new OptionalValueParameter<DoubleMatrix>("Coordinates", "The x- and y-Coordinates of the cities.", oldCoordinates.Value) { GetsCollected = oldCoordinates.GetsCollected });
       }
 
       if (Operators.Count == 0) InitializeOperators();

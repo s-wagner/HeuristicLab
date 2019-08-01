@@ -1,6 +1,6 @@
 #region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2018 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -20,15 +20,20 @@
 #endregion
 
 using System;
+using HEAL.Attic;
 
 namespace HeuristicLab.Core {
+  [StorableType("e4920b59-6bf5-4c43-997c-7f5434cd98d2")]
   public interface IValueParameter : IParameter {
     IItem Value { get; set; }
+    bool ReadOnly { get; set; }
     bool GetsCollected { get; set; }
     event EventHandler ValueChanged;
+    event EventHandler ReadOnlyChanged;
     event EventHandler GetsCollectedChanged;
   }
 
+  [StorableType("645945d2-9cd7-45cd-8507-575b2ed53de4")]
   public interface IValueParameter<T> : IValueParameter where T : class, IItem {
     new T Value { get; set; }
   }

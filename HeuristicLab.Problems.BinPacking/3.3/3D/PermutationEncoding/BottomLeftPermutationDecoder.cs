@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2018 Joseph Helm and Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) Joseph Helm and Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -20,18 +20,18 @@
 #endregion
 
 using HeuristicLab.Core;
-using HeuristicLab.Persistence.Default.CompositeSerializers.Storable;
+using HEAL.Attic;
 using HeuristicLab.Common;
 using System.Collections.Generic;
 using HeuristicLab.Encodings.PermutationEncoding;
 
 namespace HeuristicLab.Problems.BinPacking3D {
   [Item("Bottom-left Permutation Decoder (3d)", "Decodes the permutation and creates a packing solution candidate")]
-  [StorableClass]
+  [StorableType("120B6DE4-B1C2-4FCD-AE1F-051863DBE698")]
   public class BottomLeftPermutationDecoder : Item, IDecoder<Permutation> {
 
     [StorableConstructor]
-    protected BottomLeftPermutationDecoder(bool deserializing) : base(deserializing) { }
+    protected BottomLeftPermutationDecoder(StorableConstructorFlag _) : base(_) { }
     protected BottomLeftPermutationDecoder(BottomLeftPermutationDecoder original, Cloner cloner)
       : base(original, cloner) {
     }

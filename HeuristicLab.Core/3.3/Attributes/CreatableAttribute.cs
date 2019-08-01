@@ -1,6 +1,6 @@
 #region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2018 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -34,6 +34,7 @@ namespace HeuristicLab.Core {
       public const string Algorithms = "1" + OrderToken + "Algorithms";
       public const string PopulationBasedAlgorithms = Algorithms + SplitToken + "1" + OrderToken + "Population Based";
       public const string SingleSolutionAlgorithms = Algorithms + SplitToken + "2" + OrderToken + "Single Solution";
+      public const string ExactAlgorithms = Algorithms + SplitToken + "3" + OrderToken + "Exact";
 
       public const string Problems = "2" + OrderToken + "Problems";
       public const string CombinatorialProblems = Problems + SplitToken + "1" + OrderToken + "Combinatorial";

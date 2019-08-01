@@ -1,6 +1,6 @@
 #region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2018 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -22,15 +22,15 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using HEAL.Attic;
 using HeuristicLab.Common;
 using HeuristicLab.Core;
-using HeuristicLab.Persistence.Default.CompositeSerializers.Storable;
 
 namespace HeuristicLab.Problems.DataAnalysis {
   /// <summary>
   /// Represents discriminant function classification data analysis models.
   /// </summary>
-  [StorableClass]
+  [StorableType("E7A8648D-C938-499F-A712-185542095708")]
   [Item("DiscriminantFunctionClassificationModel", "Represents a classification model that uses a discriminant function and classification thresholds.")]
   public class DiscriminantFunctionClassificationModel : ClassificationModel, IDiscriminantFunctionClassificationModel {
     public override IEnumerable<string> VariablesUsedForPrediction {
@@ -67,7 +67,7 @@ namespace HeuristicLab.Problems.DataAnalysis {
 
 
     [StorableConstructor]
-    protected DiscriminantFunctionClassificationModel(bool deserializing) : base(deserializing) { }
+    protected DiscriminantFunctionClassificationModel(StorableConstructorFlag _) : base(_) { }
     protected DiscriminantFunctionClassificationModel(DiscriminantFunctionClassificationModel original, Cloner cloner)
       : base(original, cloner) {
       model = cloner.Clone(original.model);
@@ -120,8 +120,13 @@ namespace HeuristicLab.Problems.DataAnalysis {
     }
 
     public override IEnumerable<double> GetEstimatedClassValues(IDataset dataset, IEnumerable<int> rows) {
+      var estimatedValues = GetEstimatedValues(dataset, rows);
+      return GetEstimatedClassValues(estimatedValues);
+    }
+
+    public virtual IEnumerable<double> GetEstimatedClassValues(IEnumerable<double> estimatedValues) {
       if (!Thresholds.Any() && !ClassValues.Any()) throw new ArgumentException("No thresholds and class values were set for the current classification model.");
-      foreach (var x in GetEstimatedValues(dataset, rows)) {
+      foreach (var x in estimatedValues) {
         int classIndex = 0;
         // find first threshold value which is larger than x => class index = threshold index + 1
         for (int i = 0; i < thresholds.Length; i++) {
@@ -131,6 +136,7 @@ namespace HeuristicLab.Problems.DataAnalysis {
         yield return classValues.ElementAt(classIndex - 1);
       }
     }
+
     #region events
     public event EventHandler ThresholdsChanged;
     protected virtual void OnThresholdsChanged(EventArgs e) {

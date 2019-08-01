@@ -1,6 +1,6 @@
 ﻿#region License Information
 /* HeuristicLab
- * Copyright (C) 2002-2018 Heuristic and Evolutionary Algorithms Laboratory (HEAL)
+ * Copyright (C) Heuristic and Evolutionary Algorithms Laboratory (HEAL)
  *
  * This file is part of HeuristicLab.
  *
@@ -22,7 +22,7 @@
 using HeuristicLab.PluginInfrastructure;
 
 namespace HeuristicLab.Problems.NK {
-  [Plugin("HeuristicLab.Problems.NK", "3.3.15.15587")]
+  [Plugin("HeuristicLab.Problems.NK", "3.3.16.17186")]
   [PluginFile("HeuristicLab.Problems.NK-3.3.dll", PluginFileType.Assembly)]
   [PluginDependency("HeuristicLab.Collections", "3.3")]
   [PluginDependency("HeuristicLab.Common", "3.3")]
@@ -32,7 +32,7 @@ namespace HeuristicLab.Problems.NK {
   [PluginDependency("HeuristicLab.Operators", "3.3")]
   [PluginDependency("HeuristicLab.Optimization", "3.3")]  
   [PluginDependency("HeuristicLab.Parameters", "3.3")]
-  [PluginDependency("HeuristicLab.Persistence", "3.3")]  
+  [PluginDependency("HeuristicLab.Attic", "1.0")]  
   [PluginDependency("HeuristicLab.Problems.Binary", "3.3")]
   [PluginDependency("HeuristicLab.Random", "3.3")]    
   public class HeuristicLabProblemsNKPlugin : PluginBase { }
